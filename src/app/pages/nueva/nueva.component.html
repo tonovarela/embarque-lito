@@ -1,0 +1,195 @@
+<div class="relative sm:ml-64 ">
+    <div class="  rounded-lg  h-full  dark:border-gray-700 mt-14 transition-colors duration-30 ">
+        <div class="w-full bg-white dark:bg-gray-500 h-14 flex items-center justify-end p-2">
+            <button
+                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-1 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                Guardar
+            </button>
+
+        </div>
+        <div class="flex justify-center   ">
+            <form
+                class="font-roboto mt-2 py-4 bg-white  px-5 space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-black"
+                [formGroup]="formRegistro">
+                <!-- <p-autoComplete  styleClass="w-full" baseZIndex="9999" placeholder="Buscar OP" lazy="true"
+        scrollHeight="500px"  delay="500"
+        inputStyleClass="pl-16  py-4 rounded-md shadow-md bg-transparent border-0 w-full outline-none"
+        field="op"
+        >
+        <ng-template let-op pTemplate="item">
+          <div class="grid grid-cols-10 gap-1 justify-center items-center cursor-pointer  rounded-lg">
+            <div class="col-start-1 col-end-12  m-0">
+              <div class="flex flex-col md:flex-row items-center justify-between  ">
+                <div class="text-gray-900 text-lg text-pretty">{{op.op}}  <span class="ml-3 font-bold  text-gray-700"> {{op.componente}}</span> </div>                
+                <div class="text-gray-900 text-2xl">{{op.cantidad | number}} piezas </div>
+              </div>                                            
+            </div>
+          </div>
+        </ng-template>
+      </p-autoComplete> -->
+                <!-- <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <app-search />
+                    </div>
+                    <input type="search" id="default-search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar OP" required (input)="onSearch($event)" />
+                    <ul *ngIf="filteredResults.length > 0" class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 dark:bg-gray-700 dark:border-gray-600">
+                        <li *ngFor="let result of filteredResults" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-600">{{ result }}</li>
+                    </ul>
+                </div> -->
+
+
+                <div class="max-w-[32rem]">
+                    <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="0">Seleccione un chofer</option>
+                        @for (chofer of choferes;track chofer.id){
+                        <option value="{{chofer.id}}">{{chofer.nombre}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="max-w-[32rem]">
+                    <select id="transporte" formControlName="transporte"
+                        (change)="actualizarKilometrajeInicial($event.target )"
+                        aria-placeholder="Seleccione una unidad de transporte"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="0">Seleccione una unidad de transporte</option>
+                        @for (transporte of transportes;track transporte.id_transporte){
+                        <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} - {{transporte.placas}}
+                        </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="max-w-[32rem]">
+                    <label for="end-time"
+                        class="block  mb-2 text-sm font-medium text-gray-900 dark:text-white">Kilometraje</label>
+                    <div class="grid sm:grid-cols-2 grid-cols-1 gap-2">
+
+                        <div class="relative flex items-center mb-2">
+                            <button type="button" [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
+                                (click)="incrementar(-1,'kilometraje_inicial')" id="decrement-button"
+                                class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
+                                <app-minus />
+                            </button>
+                            <input type="text" formControlName="kilometraje_inicial"
+                                class="bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
+                                placeholder="" required />
+                            <div
+                                class="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse">
+                                <app-gauge />
+                                <span> Inicial</span>
+                            </div>
+                            <button type="button" [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
+                                id="increment-button" (click)="incrementar(1,'kilometraje_inicial')"
+                                class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
+                                <app-plus />
+                            </button>
+                        </div>
+                        <div class="relative flex items-center mb-2">
+                            <button type="button" [disabled]="formRegistro.get('kilometraje_final')!.disabled"
+                                (click)="incrementar(-1,'kilometraje_final')" id="decrement-button"
+                                class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
+                                <app-minus />
+                            </button>
+                            <input type="text" [disabled]="formRegistro.get('kilometraje_final')!.disabled"
+                                formControlName="kilometraje_final"
+                                class="bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
+                                placeholder="" required />
+                            <div
+                                class="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse">
+                                <app-gauge />
+                                <span> Final</span>
+                            </div>
+                            <button type="button" [disabled]="formRegistro.get('kilometraje_final')!.disabled"
+                                id="increment-button" (click)="incrementar(1,'kilometraje_final')"
+                                class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
+                                <app-plus />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label for="start-time"
+                        class="block  text-sm font-medium text-gray-900 dark:text-white">Salida</label>
+                    <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
+
+                        <div class="relative ">
+
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <app-calendar />
+                            </div>
+                            <input id="fecha_salida" (changeDate)="actualizarFecha($event,'fecha_salida')"
+                                name="fecha_salida" datepicker datepicker-autohide datepicker-format="dd-mm-yyyy"
+                                type="text" tabindex="1"
+                                class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Fecha de salida" />
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                <app-time />
+                            </div>
+                            <input type="time" id="start-time" tabindex="2" formControlName="hora_salida"
+                                name="hora_salida"
+                                class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-center text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                value="00:00" required />
+                        </div>
+                    </div>
+
+                    <label for="end-time"
+                        class="block   text-sm font-medium text-gray-900 dark:text-white">Regreso</label>
+                    <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
+                        <div>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <app-calendar />
+                                </div>
+                                <input id="fecha_regreso" tabindex="3" datepicker datepicker-autohide
+                                    datepicker-format="dd-mm-yyyy" type="text" readonly name="fecha_regreso"
+                                    (changeDate)="actualizarFecha($event,'fecha_regreso')"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Fecha regreso">
+
+                            </div>
+                        </div>
+                        <div class="relative">
+
+                            <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                <app-time />
+                            </div>
+                            <input type="time" id="start-time" tabindex="2" formControlName="hora_regreso"
+                                name="hora_regreso"
+                                class="bg-gray-50   leading-none border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                value="00:00" required />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="max-w-[12rem] mx-auto flex  items-center justify-around text-2xl text-gray-500 dark:text-white">
+                    @if(diferenciaTiempo.horas> 0){
+                        <div>{{diferenciaTiempo.horas}} hora{{diferenciaTiempo.horas>1?'s':''}}</div>
+                    }
+                    @if(diferenciaTiempo.minutos > 0){
+                        <div>{{diferenciaTiempo.minutos}} minuto{{diferenciaTiempo.minutos>1?'s':''}} </div>
+                    }
+                    
+                    
+
+                </div>
+                <div class="w-full">
+                    <textarea id="observaciones" rows="4" formControlName="observaciones"
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Escribe tus observaciones aqui..."></textarea>
+
+                </div>
+
+            </form>
+        </div>
+
+        <pre>
+            {{formRegistro.value | json}}   
+            {{diferenciaTiempo | json}}
+        </pre>
+
+
+    </div>
+</div>
