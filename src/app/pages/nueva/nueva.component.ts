@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, computed, inject, OnInit } from '@angular/core';
+
+import { AfterViewInit, Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Datepicker } from 'flowbite';
 
@@ -7,7 +8,11 @@ import { Choferes } from '@app/data/Chofer.data';
 import { Chofer } from '@app/interface/Usuario';
 import { Transporte } from '@app/interface/Transporte';
 import { Transportes } from '@app/data/Transporte.data';
-import { CalendarComponent, GaugeComponent, MinusComponent, PlusComponent, TimeComponent ,SearchComponent} from '@app/shared/svg';
+import { CalendarComponent, GaugeComponent, MinusComponent, PlusComponent, TimeComponent, SearchComponent } from '@app/shared/svg';
+import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
+import { PrimeNgModule } from '@app/lib/primeng.module';
+
+
 
 
 
@@ -17,30 +22,39 @@ import { CalendarComponent, GaugeComponent, MinusComponent, PlusComponent, TimeC
 @Component({
   selector: 'app-nueva',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent,SearchComponent],
+  imports: [AutocompleteComponent, PrimeNgModule, ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent],
   templateUrl: './nueva.component.html',
   styleUrl: './nueva.component.css'
 })
 export class NuevaComponent implements OnInit, AfterViewInit {
 
   fb = inject(FormBuilder);
+
+
+  ops = signal<string[]>([
+    "Orden 1",
+    "Orden 3",
+    "Orden 4",
+    "Orden 5",
+    "Orden 6",
+    "Orden 7",
+  ]);
+
   fechaSalida: string = '';
   today = new Date();
   formRegistro: FormGroup;
-  filteredResults: string[] = [];
-  diferenciaTiempo  = { horas: 0, minutos: 0 };
-  resultados: string[] = ['Resultado 1', 'Resultado 2', 'Resultado 3'];
+
+  diferenciaTiempo = { horas: 0, minutos: 0 };
+
   choferes: Chofer[] = [];
   transportes: Transporte[] = [];
 
   constructor() {
-
     this.formRegistro = this.fb.group({
-
       transporte: ['0'],
       chofer: ['0'],
-      kilometraje_inicial: [{ value: '0', disabled: true }],
-      kilometraje_final: [{ value: '0', disabled: true }],
+      kilometraje_inicial: { value: '0', disabled: true },
+      kilometraje_final: { value: '0', disabled: true },
       hora_salida: ['08:00'],
       hora_regreso: ['09:00'],
       fecha_salida: [this.today],
@@ -48,18 +62,32 @@ export class NuevaComponent implements OnInit, AfterViewInit {
       observaciones: [''],
     });
 
+
+
   }
 
   ngOnInit(): void {
     this.choferes = Choferes;
     this.transportes = Transportes;
-
   }
 
-  onSearch(event: Event): void {
-    const query = (event.target as HTMLInputElement).value.toLowerCase();
-    this.filteredResults = this.resultados.filter(result => result.toLowerCase().includes(query));
+
+  onSelectOP(op: string) {
+    const opExiste = this.ops().find((opActual) => opActual === op);
+    console.log(opExiste);
+    if (opExiste) {
+      return;
+    }
+    this.ops.update((ops) => {
+      return [...ops, op];
+    });
   }
+
+  onRemoverOP(op: string) {    
+    this.ops.update((ops) => ops.filter((opActual) => opActual !== op));
+  }
+
+
 
   incrementar(valor: number, nombre: string) {
     const valorActual = this.formRegistro.get(nombre)!.value;
@@ -74,21 +102,15 @@ export class NuevaComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {
-
-
     const $datepickerEl = document.getElementById('fecha_regreso');
     const $datepickerEl2 = document.getElementById('fecha_salida');
-    const datepicker1 = new Datepicker($datepickerEl, {
-      format: 'dd-mm-yyyy',
-    }, {});
-    const datepicker2 = new Datepicker($datepickerEl2, {
-      format: 'dd-mm-yyyy',
-    }, {});
-
+    const datepicker1 = new Datepicker($datepickerEl, { format: 'dd-mm-yyyy', }, {});
+    const datepicker2 = new Datepicker($datepickerEl2, { format: 'dd-mm-yyyy' }, {});
     setTimeout(() => {
       datepicker1.setDate(this.today);
       datepicker2.setDate(this.today);
     }, 1000);
+
 
     this.formRegistro.valueChanges.subscribe((form) => {
       const { hora_regreso, hora_salida, fecha_salida, fecha_regreso, transporte } = form;
