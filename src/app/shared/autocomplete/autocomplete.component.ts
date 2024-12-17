@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PrimeNgModule } from '@app/lib/primeng.module';
-import { of, Subject, switchMap, tap } from 'rxjs';
+import { delay, of, Subject, switchMap, tap } from 'rxjs';
 import { SearchComponent } from '../svg';
+import { opsBusqueda } from '@app/data/Orden.data';
 
 @Component({
   selector: 'app-autocomplete',
@@ -26,14 +27,11 @@ export class AutocompleteComponent {
   }
 
   constructor() {   
+
     this.valorQuerySubject.pipe(
       tap(() => this.cargandoBusqueda.set(true)),
-      switchMap(query => { return of({ ordenes: [
-        {op: 'Orden 1',descripcion: 'Descripcion 1'},
-        {op: 'Orden 2',descripcion: 'Descripcion 2'},
-        {op: 'Orden 3',descripcion: 'Descripcion 3'},
-        {op: 'Orden 4',descripcion: 'Descripcion 4'},
-      ] }) })
+      delay(1100),
+      switchMap(query => { return of({ ordenes: opsBusqueda() }) })
     ).subscribe((response) => {
       this.cargandoBusqueda.set(false);
       this.OPsBusqueda.set(response.ordenes);

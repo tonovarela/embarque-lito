@@ -2,6 +2,7 @@
     <div class="rounded-lg  h-full  dark:border-gray-700 mt-14 transition-colors duration-30 ">
         <div class="w-full bg-white dark:bg-gray-500 h-14 flex items-center justify-end p-2">
             <button
+            (click)="guardarRegistro()"
                 class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-1 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                 Guardar
             </button>
@@ -9,7 +10,7 @@
         </div>
         <div id="wrapper" class="flex justify-center  ">
             <div
-                class="font-roboto max-w-[64rem] mt-2 py-4 bg-white  px-5 space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-black">
+                class="font-roboto max-w-[45rem] mx-4 mt-2 px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-black">
                 <div class="grid gap-2 ">
                     <app-autocomplete (onSelect)="onSelectOP($event)"></app-autocomplete>                    
                     <div class="flex items-start justify-start flex-wrap gap-2 w-full ">
@@ -20,30 +21,30 @@
                      
                 </div>
                 <form class="space-y-3" [formGroup]="formRegistro">
-
                     <div class="max-w-[32rem]">
                         <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="0">Seleccione un chofer</option>
+                        [ngClass]="{'input-invalido': tieneError('chofer'), 'input': !tieneError('chofer') }">
+                            <option value='0'>SELECCIONE UN CHOFER</option>s
                             @for (chofer of choferes;track chofer.id){
-                            <option value="{{chofer.id}}">{{chofer.nombre}}</option>
+                            <option  value="{{chofer.id}}">{{chofer.nombre}}</option>
                             }
-                        </select>
+                        </select>                        
                     </div>
                     <div class="max-w-[32rem]">
                         <select id="transporte" formControlName="transporte"
                             (change)="actualizarKilometrajeInicial($event.target )"
                             aria-placeholder="Seleccione una unidad de transporte"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="0">Seleccione una unidad de transporte</option>
+                            class="capitalize"
+                            [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }"
+                            >
+                            <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
                             @for (transporte of transportes;track transporte.id_transporte){
-                            <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
+                            <option  value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
                                 {{transporte.placas}}
                             </option>
                             }
-                        </select>
+                        </select>                        
                     </div>
-
                     <div class="max-w-[32rem]">
                         <label for="end-time"
                             class="block  mb-2 text-sm font-medium text-gray-900 dark:text-white">Kilometraje</label>
@@ -91,6 +92,11 @@
                                 </button>
                             </div>
                         </div>
+                        @if(formRegistro.errors ){
+                        <div class="text-red-500 text-xs text-center w-full"> 
+                        {{formRegistro.errors["mensaje"]}}
+                        </div> 
+                    }
                     </div>
                     <div class="space-y-2">
                         <label for="start-time"
@@ -115,7 +121,7 @@
                                 </div>
                                 <input type="time" id="start-time" tabindex="2" formControlName="hora_salida"
                                     name="hora_salida"
-                                    class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-center text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     value="00:00" required />
                             </div>
                         </div>
@@ -158,11 +164,15 @@
                         }
                         @if(diferenciaTiempo.minutos > 0){
                         <div>{{diferenciaTiempo.minutos}} minuto{{diferenciaTiempo.minutos>1?'s':''}} </div>
-                        }
-
-
-
-                    </div>
+                        }                    
+                    </div>                    
+                    @if ( tieneError('hora_regreso') ) 
+                    {                                                
+                        <div class="text-red-500 text-xs text-center  w-full"> 
+                            La diferencia entre la salida y el regreso debe de ser mayor a 1 hora
+                        </div> 
+                    }
+                    
                     <div class="w-full">
                         <textarea id="observaciones" rows="4" formControlName="observaciones"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -175,11 +185,8 @@
         </div>
 
 
-        <pre>
-            {{formRegistro.value | json}}   
-            {{diferenciaTiempo | json}}
-            {{ops() | json}}        
-        </pre>
+       
+       
 
 
     </div>
