@@ -26,4 +26,23 @@ export const Choferes: Chofer[] = [
         nombre: 'RAYMUNDO RAYMUNDO CRISTOBAL',
         personal: "555"
     },
+    {
+        id:1,
+        nombre:"CYC LOGSTIC",
+        personal:"xxx"
+    },
+    {
+       id:2,
+       nombre:"MENVELO", 
+       personal:"xxx"
+    },
+    {
+        id:3,
+        nombre:"LOGISTICA TAES",
+        personal:"xxx"
+    },{
+        id:4,
+        nombre:"TRANSPORTES PORTILLO",
+        personal:"xxx"
+    }
 ]

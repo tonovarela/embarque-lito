@@ -1,6 +1,6 @@
 import { Transporte } from "@app/interface/Transporte";
 
-export const Transportes:Transporte[] = [
+export const Transportes: Transporte[] = [
     {
         id_transporte: 1,
         descripcion: 'URVAN 2015',
@@ -29,11 +29,43 @@ export const Transportes:Transporte[] = [
     {
         id_transporte: 6,
         descripcion: 'CAMION FREIGHTLINER',
-        placas: 'LC82033'        
+        placas: 'LC82033'
     },
     {
         id_transporte: 7,
-        descripcion: 'CAMIONETA CADDY',   
+        descripcion: 'CAMIONETA CADDY',
         placas: 'NSF6298'
+    },
+    {
+        id_transporte: 8,
+        descripcion: '1.5 Ton',
+        placas: 'Externo'
+    },
+    {
+        id_transporte: 9,
+        descripcion: '3.5 Ton',
+        placas: 'Externo'
+    }, {
+        id_transporte: 10,
+        descripcion: '3.5 Ton',
+        placas: 'Externo'
+    },
+    {
+        id_transporte: 11,
+        descripcion: '4.5 Ton',
+        placas: 'Externo'
+    },{
+        id_transporte: 12,
+        descripcion: 'TORTON',
+        placas: 'Externo'
+    },
+    {
+        id_transporte: 13,
+        descripcion: 'TRAILER',
+        placas: 'Externo'
+    },{
+        id_transporte: 14,
+        descripcion: 'KANGO',
+        placas: 'Externo'
     }
 ]

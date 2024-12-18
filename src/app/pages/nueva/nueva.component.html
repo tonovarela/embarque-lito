@@ -57,7 +57,7 @@
                                     <app-minus />
                                 </button>
                                 <input type="text" formControlName="kilometraje_inicial"
-                                    class="bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
+                                    class=" bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
                                     placeholder="" required />
                                 <div
                                     class="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse">
@@ -157,8 +157,7 @@
                         </div>
                     </div>
                     <div
-                        class="max-w-[24rem] mx-auto flex  items-center justify-around text-2xl text-gray-500 dark:text-white">
-                        
+                        class="max-w-[24rem] mx-auto flex  items-center justify-around text-2xl text-gray-500 dark:text-white">                        
                         @if(diferenciaTiempo.horas> 0){
                         <div>{{diferenciaTiempo.horas}} hora{{diferenciaTiempo.horas>1?'s':''}}</div>
                         }
@@ -172,6 +171,9 @@
                             La diferencia entre la salida y el regreso debe de ser mayor a 1 hora
                         </div> 
                     }
+                    <div class="w-full">
+                        <input name="destino" placeholder="Destino"  formControlName="destino" class="text-sm  bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    </div>
                     
                     <div class="w-full">
                         <textarea id="observaciones" rows="4" formControlName="observaciones"
