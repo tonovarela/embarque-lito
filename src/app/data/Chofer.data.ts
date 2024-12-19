@@ -25,24 +25,25 @@ export const Choferes: Chofer[] = [
         id: 3491,
         nombre: 'RAYMUNDO RAYMUNDO CRISTOBAL',
         personal: "555"
-    },
+    }    
+]
+
+export const ChoferesExternos :Partial<Chofer>[]=[
     {
         id:1,
-        nombre:"CYC LOGSTIC",
-        personal:"xxx"
+        nombre:"CYC LOGSTIC",        
     },
     {
        id:2,
        nombre:"MENVELO", 
-       personal:"xxx"
+       
     },
     {
         id:3,
         nombre:"LOGISTICA TAES",
-        personal:"xxx"
+       
     },{
         id:4,
-        nombre:"TRANSPORTES PORTILLO",
-        personal:"xxx"
+        nombre:"TRANSPORTES PORTILLO"       
     }
 ]

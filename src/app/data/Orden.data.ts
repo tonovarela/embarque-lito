@@ -1,6 +1,6 @@
 import { signal } from "@angular/core";
 
- export const opsData = signal<string[]>([ ]);
+
 
 
   export const opsBusqueda = signal([
