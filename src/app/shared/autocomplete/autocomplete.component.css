@@ -1,0 +1,3 @@
+::ng-deep .p-autocomplete-items{
+        @apply border border-slate-400  rounded-md        
+    }
