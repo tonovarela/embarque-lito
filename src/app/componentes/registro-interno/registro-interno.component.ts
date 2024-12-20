@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {  Choferes, Transportes } from '@app/data';
-import {  resetFormRegistro } from '@app/helpers/formModel';
+import {  resetFormRegistroInterno } from '@app/helpers/formModel';
 import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
@@ -53,7 +53,7 @@ fb= inject(FormBuilder);
   resetForm() {
   
     this.formRegistro.get('ops')!.setValue([]);
-    resetFormRegistro(this.formRegistro);
+    resetFormRegistroInterno(this.formRegistro);
   }
   onSelectOP(op: string) {    
     const opsCurrent = this.formRegistro.get('ops')!.value;      

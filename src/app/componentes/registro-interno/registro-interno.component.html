@@ -22,8 +22,7 @@
                 </select>
             </div>
             <div class="w-full">
-                <select id="transporte" formControlName="transporte"
-                    (change)="actualizarKilometrajeInicial($event.target )"
+                <select id="transporte" formControlName="transporte"                    
                     aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
                     [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
                     <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>

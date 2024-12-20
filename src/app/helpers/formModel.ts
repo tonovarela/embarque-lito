@@ -1,10 +1,11 @@
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { diferenteDeCeroValidator, kilometrajeValidator } from "./validators";
 import { Datepicker } from "flowbite";
 
 
 
-export const createFormRegistroInternoBuilder = (fb:FormBuilder) => {
+
+export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
   const today = new Date();
   return fb.group({
     transporte: [0, diferenteDeCeroValidator()],
@@ -12,7 +13,7 @@ export const createFormRegistroInternoBuilder = (fb:FormBuilder) => {
     kilometraje_inicial: [{ value: 0, disabled: true }, diferenteDeCeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, diferenteDeCeroValidator()],
     destino: [''],
-    ops:fb.array([],Validators.required),
+    ops: fb.array([], Validators.required),
     hora_salida: ['00:00'],
     hora_regreso: ['00:00'],
     fecha_salida: [today],
@@ -23,14 +24,14 @@ export const createFormRegistroInternoBuilder = (fb:FormBuilder) => {
 
 
 
-export const createFormRegistroExternoBuilder = (fb:FormBuilder) => {
+export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
   return fb.group({
-    ops:fb.array([],Validators.required),
+    ops: fb.array([], Validators.required),
     chofer: [0, diferenteDeCeroValidator()],
     transporte: [0, diferenteDeCeroValidator()],
     observaciones: [''],
     destino: [''],
-    fecha_registro: [new Date()],
+    fecha_registro: [new Date(), Validators.required],
   });
 }
 
@@ -53,7 +54,26 @@ export const createFormRegistroExternoBuilder = (fb:FormBuilder) => {
 
 // }
 
-export const resetFormRegistro = (formRegistro: FormGroup) => {
+
+
+
+export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
+  const today = new Date();
+  formRegistro.reset();
+  formRegistro.get("transporte")!.setValue("0");
+  formRegistro.get("chofer")!.setValue("0");
+  formRegistro.get("ops")!.setValue([]);
+  formRegistro.get('destino')!.setValue('');
+  formRegistro.get("fecha_registro")!.setValue(today);
+  const $datepickerEl = document.getElementById('fecha_registro');
+  const datepicker1 = new Datepicker($datepickerEl, { format: 'dd-mm-yyyy', }, {});
+  setTimeout(() => {
+    datepicker1.setDate(today);    
+  }, 500);
+
+}
+
+export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   const today = new Date();
 
   const horaActual = today.toTimeString().substring(0, 2);

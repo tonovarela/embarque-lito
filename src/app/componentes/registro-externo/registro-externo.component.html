@@ -23,8 +23,7 @@
                 </select>
             </div>
             <div class="w-full">
-                <select id="transporte" formControlName="transporte"
-                    (change)="actualizarKilometrajeInicial($event.target )"
+                <select id="transporte" formControlName="transporte"                    
                     aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
                     [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
                     <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
@@ -39,6 +38,21 @@
             <div class="w-full">
                 <input name="destino" placeholder="Destino" formControlName="destino"
                     class="text-sm  dark:placeholder:text-white bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+            </div>
+            <div class="full">
+                <div class="relative ">
+
+                    <div
+                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <app-calendar />
+                    </div>
+                    <input id="fecha_registro" (changeDate)="actualizarFecha($event,'fecha_registro')"
+                        name="fecha_registro" datepicker datepicker-autohide
+                        datepicker-format="dd-mm-yyyy" type="text" tabindex="1"
+                        class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Fecha de registro" />
+                </div>
+                
             </div>
 
             <div class="w-full">

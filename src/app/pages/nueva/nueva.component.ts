@@ -48,7 +48,7 @@ export class NuevaComponent {
   }
 
   private guardarRegistroExterno() {
-
+    this.formRegistro.get("registroExterno")!.markAllAsTouched();
 
   }
 
