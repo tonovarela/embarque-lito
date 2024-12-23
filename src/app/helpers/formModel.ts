@@ -1,8 +1,10 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { diferenteDeCeroValidator, kilometrajeValidator } from "./validators";
-import { Datepicker } from "flowbite";
 
+import { Datepicker} from 'flowbite';
+import type {  DatepickerOptions  } from "flowbite";
 
+declare var translateCalendar :any;
 
 
 export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
@@ -59,6 +61,7 @@ export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
 
 export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   const today = new Date();
+
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue("0");
   formRegistro.get("chofer")!.setValue("0");
@@ -66,15 +69,17 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   formRegistro.get('destino')!.setValue('');
   formRegistro.get("fecha_registro")!.setValue(today);
   const $datepickerEl = document.getElementById('fecha_registro');
-  const datepicker1 = new Datepicker($datepickerEl, { format: 'dd-mm-yyyy', }, {});
+  const datepicker1 = new Datepicker($datepickerEl, { format: 'dd-mm-yyyy', language: 'es' }, {});
   setTimeout(() => {
-    datepicker1.setDate(today);    
+    datepicker1.setDate(today);
+
   }, 500);
 
 }
 
 export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   const today = new Date();
+
 
   const horaActual = today.toTimeString().substring(0, 2);
   const horaSalida = new Date(today.getTime() + 60 * 60 * 1000).toTimeString().substring(0, 2);
@@ -91,11 +96,29 @@ export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   formRegistro.get("hora_regreso")!.setValue(`${horaSalida}:00`);
   const $datepickerEl = document.getElementById('fecha_regreso');
   const $datepickerEl2 = document.getElementById('fecha_salida');
-  const datepicker1 = new Datepicker($datepickerEl, { format: 'dd-mm-yyyy', }, {});
-  const datepicker2 = new Datepicker($datepickerEl2, { format: 'dd-mm-yyyy' }, {});
-  setTimeout(() => {
-    datepicker1.setDate(today);
-    datepicker2.setDate(today);
-  }, 500);
-
+  
+  // const config = {
+  //   es: {
+  //     days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+  //     daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+  //     daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+  //     months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+  //     monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+  //     today: "Hoy",
+  //     monthsTitle: "Meses",
+  //     clear: "Borrar",
+  //     weekStart: 1,
+  //     format: "dd-mm-yyyy"
+  //   }
+  // };
+  const options: DatepickerOptions = {    
+    format: 'dd-mm-yyyy',        
+  };  
+  const datepicker1: Datepicker = new Datepicker($datepickerEl, options);
+  const datepicker2: Datepicker = new Datepicker($datepickerEl2, options);
+  datepicker1.init();
+  datepicker2.init();
+  datepicker1.setDate(today);
+  datepicker2.setDate(today);    
+  translateCalendar();
 }

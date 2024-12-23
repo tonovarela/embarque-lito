@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, } from '@angular/forms';
+import { FormBuilder,  ReactiveFormsModule, } from '@angular/forms';
 import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder } from '@app/helpers/formModel';
 import { RegistroInternoComponent } from '../../componentes/registro-interno/registro-interno.component';
 import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
-
-
 
 @Component({
   selector: 'app-nueva',
@@ -15,23 +13,21 @@ import { RegistroExternoComponent } from '@app/componentes/registro-externo/regi
   styleUrl: './nueva.component.css'
 })
 export class NuevaComponent {
+
   fb = inject(FormBuilder);
   registroInterno = signal<boolean>(true);
-
   formRegistro = this.fb.group({
     registroInterno: createFormRegistroInternoBuilder(this.fb),
     registroExterno: createFormRegistroExternoBuilder(this.fb)
   })
 
-
   guardarRegistro() {
-    this.registroInterno() ? this.guardarRegistroInterno()
-      : this.guardarRegistroExterno();
+    this.registroInterno() ? this.guardarRegistroInterno() : this.guardarRegistroExterno();
   }
   private guardarRegistroInterno() {
     this.formRegistro.get("registroInterno")!.markAllAsTouched();
     const registroInterno = this.formRegistro.get("registroInterno")!;
-    console.log(registroInterno.valid);
+    //console.log(registroInterno.valid);
     if (registroInterno.invalid) {
       return;
     }
@@ -42,7 +38,6 @@ export class NuevaComponent {
     const registro = {fechaSalida, fechaRegreso, transporte, chofer,observaciones,ops,
       kilometraje_inicial: +registroInterno.get('kilometraje_inicial')!,
       kilometraje_final: +kilometraje_final!,
-
     };
     console.log(registro);
   }

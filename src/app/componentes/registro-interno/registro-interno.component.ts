@@ -1,25 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {  Choferes, Transportes } from '@app/data';
-import {  resetFormRegistroInterno } from '@app/helpers/formModel';
+import { Choferes, Transportes } from '@app/data';
+import { resetFormRegistroInterno } from '@app/helpers/formModel';
 import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
 
-
 @Component({
   selector: 'app-registro-interno',
   standalone: true,
-  imports: [PrimeNgModule, ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent, AutocompleteComponent],
+  imports: [PrimeNgModule,ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent, AutocompleteComponent],
   templateUrl: './registro-interno.component.html',
   styleUrl: './registro-interno.component.css',
 
 })
-export class RegistroInternoComponent implements OnInit {
+export class RegistroInternoComponent implements OnInit, AfterViewInit {
+
   @Input() formGroup!: FormGroup;
-fb= inject(FormBuilder);
+  fb = inject(FormBuilder);
   formRegistro!: FormGroup;
   fechaSalida: string = '';
   today = new Date();
@@ -47,33 +47,29 @@ fb= inject(FormBuilder);
     });
   }
 
-
-  
-
   resetForm() {
-  
     this.formRegistro.get('ops')!.setValue([]);
     resetFormRegistroInterno(this.formRegistro);
   }
-  onSelectOP(op: string) {    
-    const opsCurrent = this.formRegistro.get('ops')!.value;      
-    const opExiste = opsCurrent.find((opActual: string) => opActual === op);    
+  onSelectOP(op: string) {
+    const opsCurrent = this.formRegistro.get('ops')!.value;
+    const opExiste = opsCurrent.find((opActual: string) => opActual === op);
     if (opExiste) {
       return;
     }
     this.opsArray.push(this.fb.control(op));
   }
 
-private  get opsArray(): FormArray {
+  private get opsArray(): FormArray {
     return this.formRegistro.get('ops') as FormArray;
   }
 
 
-  onRemoverOP(op: string) {    
-    const opsCurrent = this.formRegistro.get('ops')!.value;                
-    const index= opsCurrent.findIndex((opActual: string) => opActual === op);
+  onRemoverOP(op: string) {
+    const opsCurrent = this.formRegistro.get('ops')!.value;
+    const index = opsCurrent.findIndex((opActual: string) => opActual === op);
     this.opsArray.removeAt(index);
-    
+
   }
 
   incrementar(valor: number, nombre: string) {
@@ -110,9 +106,6 @@ private  get opsArray(): FormArray {
     }
     return false;
   }
-
-
-
 
   unirFechaHora(date: Date, hora: string): Date {
     if (date == null) {
