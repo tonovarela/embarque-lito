@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder,  ReactiveFormsModule, } from '@angular/forms';
 import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder } from '@app/helpers/formModel';
-import { RegistroInternoComponent } from '../../componentes/registro-interno/registro-interno.component';
+
 import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
+import { RegistroInternoComponent } from '@app/componentes/registro-interno/registro-interno.component';
 
 @Component({
   selector: 'app-nueva',
