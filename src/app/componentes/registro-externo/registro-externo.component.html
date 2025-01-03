@@ -1,67 +1,70 @@
-<div id="wrapper" class="flex justify-center  ">
-    <div
-        class="font-roboto w-[32rem] mx-4 mt-1  px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-white">
-        <div class="grid gap-2 ">
-            <app-autocomplete (onSelect)="onSelectOP($event)"></app-autocomplete>
-            <div class="flex items-start justify-start flex-wrap gap-2 w-full ">
-                @for (op of formRegistro.get('ops')!.value;track op){
-                <p-chip
-                    styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
-                    label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
-                }
-            </div>
-
-        </div>
-        <form class="space-y-3" [formGroup]="formRegistro">
-            <div class="w-full">
-                <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
-                    [ngClass]="{'input-invalido': tieneError('chofer'), 'input': !tieneError('chofer') }">
-                    <option value='0'>SELECCIONE UN CHOFER</option>s
-                    @for (chofer of choferes;track chofer.id){
-                    <option value="{{chofer.id}}">{{chofer.nombre}}</option>
+<div class="">
+    <div id="wrapper" class="flex justify-center   ">
+        <div
+            class="font-roboto w-[32rem] mx-4 mt-1  px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-white">
+            <div class="grid gap-2 ">
+                <app-autocomplete (onSelect)="onSelectOP($event)"></app-autocomplete>
+                <div class="flex items-start justify-start flex-wrap gap-2 w-full ">
+                    @for (op of formRegistro.get('ops')!.value;track op){
+                    <p-chip
+                        styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
+                        label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
                     }
-                </select>
-            </div>
-            <div class="w-full">
-                <select id="transporte" formControlName="transporte"                    
-                    aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
-                    [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
-                    <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
-                    @for (transporte of transportes;track transporte.id_transporte){
-                    <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
-                        {{transporte.placas}}
-                    </option>
-                    }
-                </select>
-            </div>
-          
-            <div class="w-full">
-                <input name="destino" placeholder="Destino" formControlName="destino"
-                    class="text-sm  dark:placeholder:text-white bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-            </div>
-            <div class="full">
-                <div class="relative ">
-
-                    <div
-                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <app-calendar />
-                    </div>
-                    <input id="fecha_registro" (changeDate)="actualizarFecha($event,'fecha_registro')"
-                        name="fecha_registro" datepicker datepicker-autohide
-                        datepicker-format="dd-mm-yyyy" type="text" tabindex="1"
-                        class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Fecha de registro" />
                 </div>
-                
+    
             </div>
-
-            <div class="w-full">
-                <textarea id="observaciones" rows="4" formControlName="observaciones"
-                    class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Escribe tus observaciones aqui..."></textarea>
-
-            </div>
-        </form>
-        
+            <form class="space-y-3" [formGroup]="formRegistro">
+                <div class="w-full">
+                    <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
+                        [ngClass]="{'input-invalido': tieneError('chofer'), 'input': !tieneError('chofer') }">
+                        <option value='0'>SELECCIONE UN CHOFER</option>s
+                        @for (chofer of choferes;track chofer.id){
+                        <option value="{{chofer.id}}">{{chofer.nombre}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="w-full">
+                    <select id="transporte" formControlName="transporte"                    
+                        aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
+                        [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
+                        <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
+                        @for (transporte of transportes;track transporte.id_transporte){
+                        <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
+                            {{transporte.placas}}
+                        </option>
+                        }
+                    </select>
+                </div>
+              
+                <div class="w-full">
+                    <input name="destino" placeholder="Destino" formControlName="destino"
+                        class="text-sm  dark:placeholder:text-white bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <div class="full">
+                    <div class="relative ">
+    
+                        <div
+                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <app-calendar />
+                        </div>
+                        <input id="fecha_registro" (changeDate)="actualizarFecha($event,'fecha_registro')"
+                            name="fecha_registro" datepicker datepicker-autohide
+                            datepicker-format="dd-mm-yyyy" type="text" tabindex="1"
+                            class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Fecha de registro" />
+                    </div>
+                    
+                </div>
+    
+                <div class="w-full">
+                    <textarea id="observaciones" rows="4" formControlName="observaciones"
+                        class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Escribe tus observaciones aqui..."></textarea>
+    
+                </div>
+            </form>
+            
+        </div>
     </div>
 </div>
+
