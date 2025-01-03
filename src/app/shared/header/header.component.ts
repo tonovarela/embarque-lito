@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { UiService } from '@app/services/services/ui.service';
 
 @Component({
   selector: 'app-header',
@@ -9,8 +10,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent  implements OnInit {
    esDark = false;
+   uiService = inject(UiService);
   ngOnInit(): void {
-
+    
+    
     if(!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches){
       localStorage.setItem('color-theme', 'light');
     }

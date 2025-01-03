@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder,  ReactiveFormsModule, } from '@angular/forms';
 import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder } from '@app/helpers/formModel';
 
 import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
 import { RegistroInternoComponent } from '@app/componentes/registro-interno/registro-interno.component';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-nueva',
@@ -13,8 +14,12 @@ import { RegistroInternoComponent } from '@app/componentes/registro-interno/regi
   templateUrl: './nueva.component.html',
   styleUrl: './nueva.component.css'
 })
-export class NuevaComponent {
-
+export class NuevaComponent implements OnInit {
+  ngOnInit(): void {
+    initFlowbite();   
+    this.changeDetectorRef.detectChanges(); 
+  }
+   changeDetectorRef = inject(ChangeDetectorRef);
   fb = inject(FormBuilder);
   registroInterno = signal<boolean>(true);
   formRegistro = this.fb.group({

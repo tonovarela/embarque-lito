@@ -10,6 +10,6 @@ import { FabbuttonComponent } from '@app/shared/fabbutton/fabbutton.component';
 })
 export class ListadoComponent implements OnInit {
   ngOnInit(): void {
-    console.log('SesionComponent initialized');
+    
   }
 }
