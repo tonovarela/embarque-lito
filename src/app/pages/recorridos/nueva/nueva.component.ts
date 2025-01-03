@@ -15,11 +15,12 @@ import { initFlowbite } from 'flowbite';
   styleUrl: './nueva.component.css'
 })
 export class NuevaComponent implements OnInit {
+  changeDetectorRef = inject(ChangeDetectorRef);
   ngOnInit(): void {
     initFlowbite();   
     this.changeDetectorRef.detectChanges(); 
   }
-   changeDetectorRef = inject(ChangeDetectorRef);
+   
   fb = inject(FormBuilder);
   registroInterno = signal<boolean>(true);
   formRegistro = this.fb.group({
@@ -28,12 +29,15 @@ export class NuevaComponent implements OnInit {
   })
 
   guardarRegistro() {
+  
     this.registroInterno() ? this.guardarRegistroInterno() : this.guardarRegistroExterno();
   }
+
+
   private guardarRegistroInterno() {
     this.formRegistro.get("registroInterno")!.markAllAsTouched();
     const registroInterno = this.formRegistro.get("registroInterno")!;
-    //console.log(registroInterno.valid);
+  console.log(registroInterno.valid);
     if (registroInterno.invalid) {
       return;
     }

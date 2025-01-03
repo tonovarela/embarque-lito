@@ -40,10 +40,10 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.resetForm();
     this.formRegistro.valueChanges.subscribe((form) => {
-      const { hora_regreso, hora_salida, fecha_salida, fecha_regreso } = form;
+      const { hora_regreso, hora_salida, fecha_salida, fecha_regreso,transporte } = form;
       const fecha_salidaTime = this.unirFechaHora(fecha_salida, hora_salida);
       const fecha_regresoTime = this.unirFechaHora(fecha_regreso, hora_regreso);
-      this.diferenciaTiempo = this.obtenerDiferenciaHoras(fecha_salidaTime, fecha_regresoTime);
+      this.diferenciaTiempo = this.obtenerDiferenciaHoras(fecha_salidaTime, fecha_regresoTime);      
     });
   }
 
@@ -51,6 +51,9 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     this.formRegistro.get('ops')!.setValue([]);
     resetFormRegistroInterno(this.formRegistro);
   }
+
+
+  
   onSelectOP(op: string) {
     const opsCurrent = this.formRegistro.get('ops')!.value;
     const opExiste = opsCurrent.find((opActual: string) => opActual === op);
@@ -81,9 +84,9 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     this.formRegistro.get(nombre)!.setValue(nuevoValor);
   }
 
-  actualizarKilometrajeInicial(element: any | null) {
-    const id_transporte = element?.value || "0";
-    //console.log(id_transporte);
+  public  actualizarKilometrajeInicial() {  
+    const id_transporte = this.formRegistro.get('transporte')!.value; 
+    console.log(id_transporte); 
     if (id_transporte == "0") {
       this.formRegistro.get('kilometraje_inicial')!.setValue(0);
       this.formRegistro.get('kilometraje_inicial')!.disable();
@@ -91,8 +94,8 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
       this.formRegistro.get('kilometraje_final')!.disable();
       return;
     }
-    // Todo obtener el kilometraje inicial del transporte seleccionado por api y si tiene kilometraje final setearlo como inicial y deshabilitar el campo en caso contrario habilitar los 2 campos    
-    this.formRegistro.get('kilometraje_inicial')!.disable();
+    //TODO: obtener el kilometraje inicial del transporte seleccionado por api y si tiene kilometraje final setearlo como inicial y deshabilitar el campo en caso contrario habilitar los 2 campos    
+    this.formRegistro.get('kilometraje_inicial')?.disable();
     this.formRegistro.get('kilometraje_inicial')!.setValue(50);
     this.formRegistro.get('kilometraje_final')!.enable();
     this.formRegistro.get('kilometraje_final')!.setValue(0);

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Choferes, ChoferesExternos, Transportes, TransportesExternos } from '@app/data';
-import { resetFormRegistroExterno, resetFormRegistroInterno } from '@app/helpers/formModel';
+import {  ChoferesExternos,  TransportesExternos } from '@app/data';
+import { resetFormRegistroExterno } from '@app/helpers/formModel';
 import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
