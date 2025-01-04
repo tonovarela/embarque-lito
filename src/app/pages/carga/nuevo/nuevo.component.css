@@ -5,3 +5,17 @@
  .input{
    @apply text-xs  bg-gray-50 border  border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
  }
+
+
+ 
+
+
+ .input-icon-invalido {
+  @apply p-2.5 w-full z-20 ps-10 text-sm placeholder:text-red-500 border-red-500 bg-red-50  border  rounded-md  dark:bg-gray-700 dark:border-e-gray-700   dark:placeholder-red-500 dark:text-red-500 dark:border-red-500  
+   
+ }
+
+
+ .input-icon {
+  @apply p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-md  border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-e-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500
+ }
