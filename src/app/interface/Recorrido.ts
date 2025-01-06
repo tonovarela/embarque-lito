@@ -1,8 +1,11 @@
 export interface Recorrido {    
 id_recorrido: number;
 id_transporte: number;
+descripcion_transporte?: string; 
+
 tipo: 'interno'| 'externo' 
-chofer:number;
+id_chofer:number;
+descripcion_chofer?: string;    
 fecha_registro?:Date;
 kilometraje_inicial: number;
 kilometraje_final: number;

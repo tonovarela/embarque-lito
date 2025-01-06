@@ -1,6 +1,6 @@
 export interface CargaGasolina {
     id_cargaGasolina: number;
-    transporte: number;
+    id_transporte: number;
     totalLitros: string;
     importeCarga: string;
     observaciones: string;
