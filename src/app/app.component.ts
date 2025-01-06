@@ -2,7 +2,7 @@ import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { initFlowbite } from 'flowbite';
-import { UiService } from './services/services/ui.service';
+import { UiService } from './services/ui.service';
 import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 

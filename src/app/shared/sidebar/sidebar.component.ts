@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { UiService } from '@app/services/services/ui.service';
+import { UiService } from '@app/services/ui.service';
 
 @Component({
   selector: 'app-sidebar',
