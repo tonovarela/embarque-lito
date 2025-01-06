@@ -1,17 +1,18 @@
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 
-// export const diferenteDeCeroValidator = (): ValidatorFn => {
-//   return (control: AbstractControl): ValidationErrors | null => {
-    
-//     return `${control.value}` !== '0' ? null : { diferenteDeCero: true };
-//   };
-// }
+
+export const obtenerValorNumerico = (valor: string): number => {
+  const numeroValor:string = `${valor}`.replace(/\,/g, '').replace(/\$/g, '');
+  return Number(numeroValor);
+}
 
 export const MayorACeroValidator = (): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors | null => {    
-    const valor:string = `${control.value}`.replace(/\,/g, '').replace(/\$/g, '')        
-    return Number(valor) > 0 ? null : { MayorACero: true,mensaje:"El valor debe ser mayor a cero"};
+    //const valor:string = `${control.value}`.replace(/\,/g, '').replace(/\$/g, '')        
+    const valor = control.value;
+    const nuevoValor= obtenerValorNumerico(valor);
+    return Number(nuevoValor) > 0 ? null : { MayorACero: true,mensaje:"El valor debe ser mayor a cero"};
   };
 }
 

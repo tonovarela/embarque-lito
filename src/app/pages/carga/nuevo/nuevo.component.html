@@ -32,7 +32,9 @@
                                 <input 
                             
                                   type="text"                                                                    
-                                    name="totalLitros"   maxlength="13" (input)="onInput($event,'','totalLitros')" (keypress)="onValidateNumber($event)"  
+                                    name="totalLitros"
+                                    id="totalLitros"
+                                       maxlength="13" (input)="onInput($event,'','totalLitros')" (keypress)="onValidateNumber($event)"  
                                   [ngClass]="{'input-icon-invalido': tieneError('totalLitros'), 'input-icon': !tieneError('totalLitros') }"
                                  placeholder="Total de litros" required />
                             </div>
@@ -47,8 +49,9 @@
                                 </svg>
                                 </div>
                                 <input name="importeCarga"  
+                                id="importeCarga"
                                 [ngClass]="{'input-icon-invalido': tieneError('importeCarga'), 'input-icon': !tieneError('importeCarga') }"
-                                type="text" maxlength="13" (input)="onInput($event,'$','importeCarga')" (keypress)="onValidateNumber($event)"  id="currency-input" placeholder="Importe de recarga" required />
+                                type="text" maxlength="13" (input)="onInput($event,'$','importeCarga')" (keypress)="onValidateNumber($event)"  placeholder="Importe de recarga" required />
                             </div>
                         </div>
                         <div class="max-w-[32rem]">
@@ -132,12 +135,7 @@
                                 placeholder="Escribe tus observaciones aqui..."></textarea>
 
                         </div>
-
-                        <button (click)="registro()">Registro</button>
-                        <pre>
-                            {{formRegistro.value | json}}
-                            {{tieneError('totalLitros')}}
-                        </pre>
+                        <button  type="submit" >Registro</button>                        
                     </form>
 
                 </div>

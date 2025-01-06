@@ -51,6 +51,15 @@ export const createFormRegistroCargaBuilder = (fb: FormBuilder) => {
 
 
 
+ const actualizarInputPorID=(id:string,valor:string)=>{
+    const input = document.getElementById(id) as HTMLInputElement;
+    if (input) {
+      input.value = valor;
+    }
+
+ }
+
+
 
 export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
   const today = new Date();
@@ -63,6 +72,9 @@ export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
   const $datepickerEl = document.getElementById('fecha_registro');
   const options: DatepickerOptions = {format: 'dd-mm-yyyy',};
   const datepicker1 = new Datepicker($datepickerEl,options);
+  actualizarInputPorID("totalLitros","");
+  actualizarInputPorID("importeCarga","");
+  
   datepicker1.init();
   datepicker1.setDate(today);
   translateCalendar();

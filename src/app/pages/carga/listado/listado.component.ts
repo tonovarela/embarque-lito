@@ -16,7 +16,7 @@ export class ListadoComponent extends BaseGridComponent implements OnInit {
 
   public dataService= inject(DataService);
   ngOnInit(): void {
-    this.autoFitColumns = false;    
+    this.autoFitColumns = true;    
     this.iniciarResizeGrid(this.minusHeight);
 
     

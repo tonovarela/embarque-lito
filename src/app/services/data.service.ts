@@ -87,12 +87,12 @@ export class DataService {
     },
     {
       id_cargaGasolina: 4,
-      id_transporte: 4,
+      id_transporte: 1,
       totalLitros: '200',
       importeCarga: '2000',
       observaciones: 'observaciones',
-      kilometraje_inicial: 4000,
-      kilometraje_final: 5000,
+      kilometraje_inicial: 2000,
+      kilometraje_final: 2500,
       fecha_registro: new Date()
     }
 
@@ -100,20 +100,20 @@ export class DataService {
 
   constructor() { }
 
-
-  //RecorridosInternos = computed(() => this.recorridos().filter((recorrido: Recorrido) => recorrido.tipo === 'interno'));
-  //RecorridosExternos = computed(() => this.recorridos().filter((recorrido: Recorrido) => recorrido.tipo === 'externo'));
   Recorridos = computed(() => this.recorridos().map((recorrido: Recorrido) => {
     return {
       ...recorrido,
       descripcion_chofer: Choferes.find(chofer => chofer.id === recorrido.id_chofer)?.nombre,
-      descripcion_transporte: Transportes.find(transporte=> transporte.id_transporte === recorrido.id_transporte)?.descripcion
+      descripcion_transporte: Transportes.find(transporte => transporte.id_transporte === recorrido.id_transporte)?.descripcion
     }
   }));
-  CargasGasolina = computed(() => this.cargasGasolina());
+
+  CargasGasolina = computed(() => this.cargasGasolina().map((cargaGasolina: CargaGasolina) => {
+    return { ...cargaGasolina, descripcion_transporte: Transportes.find(transporte => transporte.id_transporte === cargaGasolina.id_transporte)?.descripcion }
+  }));
 
 
- 
+
 
   agregarRecorrido(recorrido: Recorrido) {
     this.recorridos.set([...this.recorridos(), recorrido]);
@@ -122,5 +122,20 @@ export class DataService {
   agregarCargaGasolina(cargaGasolina: CargaGasolina) {
     this.cargasGasolina.set([...this.cargasGasolina(), cargaGasolina]);
   }
+
+  traerUltimoKilometrajeRecorrido(id_transporte: number) {
+    const recorridos = this.Recorridos().filter(recorrido => recorrido.id_transporte === +id_transporte);
+    const kilometraje = recorridos[recorridos.length - 1]?.kilometraje_final || 0;
+    return kilometraje;
+
+  }
+
+  traerUltimoKilometrajeCargaGasolina(id_transporte: number) {
+    const cargas = this.CargasGasolina().filter(cargaGasolina => cargaGasolina.id_transporte === +id_transporte).sort((a, b) => a.id_cargaGasolina - b.id_cargaGasolina);
+    
+    const kilometraje = cargas[cargas.length-1]?.kilometraje_final || 0;
+    return kilometraje
+  }
+
 
 }
