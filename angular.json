@@ -10,9 +10,10 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
-        "build": {
+        "build": {          
           "builder": "@angular-devkit/build-angular:application",
-          "options": {
+          "options": {            
+            
             "outputPath": "dist/embarques",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -20,14 +21,38 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
+            
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ],
+            ],                      
             "styles": [
-              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "src/styles.css"
+              {
+                "input":"node_modules/primeng/resources/primeng.min.css",                
+                "inject": true,
+                "bundleName": "primeng"
+              },
+              {
+                "bundleName": "theme-prime",
+                "input": "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+                "inject": true
+              },
+              {
+                "bundleName": "syncfusion-light",
+                "input": "src/syncfusion-light.css",
+                "inject": true
+              },
+              {
+                "bundleName": "syncfusion-dark",
+                "input": "src/syncfusion-dark.css",
+                "inject": true
+              },
+              {
+                "bundleName": "principal",
+                "input": "src/styles.css",
+                "inject": true
+              }
+              
             ],
             "scripts": []
           },
