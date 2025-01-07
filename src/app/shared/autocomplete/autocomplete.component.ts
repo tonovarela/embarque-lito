@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { delay, of, Subject, switchMap, tap } from 'rxjs';
@@ -19,6 +19,7 @@ export class AutocompleteComponent {
   public cargandoBusqueda = signal(false);
   public OPsBusqueda = signal<any[]>([]);
   filteredResults: string[] = [];
+  @Input() hasError: boolean =false;
   @Output() onSelect = new EventEmitter<string>();
 
   async _onSelect({ value }: any) {    

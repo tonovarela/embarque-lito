@@ -14,8 +14,8 @@ export const Transportes: Transporte[] = [
     },
     {
         id_transporte: 3,
-        descripcion: 'URVAN 2015',
-        placas: 'NYP1406'
+        descripcion: 'URVAN 2011',
+        placas: 'NYP1466'
     },
     {
         id_transporte: 4,

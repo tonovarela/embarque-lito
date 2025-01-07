@@ -2,8 +2,8 @@
     <div id="wrapper" class="flex justify-center   ">
         <div
             class="font-roboto w-[32rem] mx-4 mt-1  px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-white">
-            <div class="grid gap-2 ">
-                <app-autocomplete (onSelect)="onSelectOP($event)"></app-autocomplete>
+            <div class="grid gap-1 ">
+                <app-autocomplete  [hasError]="tieneError('ops')" (onSelect)="onSelectOP($event)"></app-autocomplete>
                 <div class="flex items-start justify-start flex-wrap gap-2 w-full ">
                     @for (op of formRegistro.get('ops')!.value;track op){
                     <p-chip
@@ -11,6 +11,12 @@
                         label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
                     }
                 </div>
+                @if ( tieneError('ops') )
+                {
+                <div class="text-red-500 text-xs text-center   w-full">
+                    Es necesario seleccionar al menos una orden de producción
+                </div>
+                }
     
             </div>
             <form class="space-y-3" [formGroup]="formRegistro">

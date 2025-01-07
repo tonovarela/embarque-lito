@@ -1,7 +1,8 @@
 <div id="wrapper" class="flex justify-center  ">
-    <div class="font-roboto w-[32rem] mx-4 mt-2 px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-white">
-        <div class="grid gap-2 ">
-            <app-autocomplete (onSelect)="onSelectOP($event)"></app-autocomplete>
+    <div
+        class="font-roboto w-[32rem] mx-4 mt-2 px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-white">
+        <div class="grid gap-1 ">
+            <app-autocomplete [hasError]="tieneError('ops')"  (onSelect)="onSelectOP($event)"></app-autocomplete>
             <div class="flex items-start justify-start flex-wrap gap-2 w-full ">
                 @for (op of formRegistro.get('ops')!.value;track op){
                 <p-chip
@@ -9,8 +10,14 @@
                     label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
                 }
             </div>
-
+            @if ( tieneError('ops') )
+            {
+            <div class="text-red-500 text-xs text-center   w-full">
+                Es necesario seleccionar al menos una orden de producción
+            </div>
+            }
         </div>
+      
         <form class="space-y-3" [formGroup]="formRegistro">
             <div class="w-full">
                 <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
@@ -22,8 +29,7 @@
                 </select>
             </div>
             <div class="w-full">
-                <select id="transporte" formControlName="transporte"     
-                (change)="actualizarKilometrajeInicial()"              
+                <select id="transporte" formControlName="transporte" (change)="actualizarKilometrajeInicial()"
                     aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
                     [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
                     <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
@@ -40,8 +46,7 @@
                 <div class="grid sm:grid-cols-2 grid-cols-1 gap-2">
 
                     <div class="relative flex items-center mb-2">
-                        <button type="button"
-                            [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
+                        <button type="button" [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
                             (click)="incrementar(-1,'kilometraje_inicial')" id="decrement-button"
                             class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
                             <app-minus />
@@ -54,22 +59,19 @@
                             <app-gauge />
                             <span> Inicial</span>
                         </div>
-                        <button type="button"
-                            [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
+                        <button type="button" [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
                             id="increment-button" (click)="incrementar(1,'kilometraje_inicial')"
                             class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
                             <app-plus />
                         </button>
                     </div>
                     <div class="relative flex items-center mb-2">
-                        <button type="button"
-                            [disabled]="formRegistro.get('kilometraje_final')!.disabled"
+                        <button type="button" [disabled]="formRegistro.get('kilometraje_final')!.disabled"
                             (click)="incrementar(-1,'kilometraje_final')" id="decrement-button"
                             class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
                             <app-minus />
-                        </button>                        
-                        <input type="text"                         
-                            formControlName="kilometraje_final"
+                        </button>
+                        <input type="text" formControlName="kilometraje_final"
                             class="bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
                             placeholder="" required />
                         <div
@@ -77,8 +79,7 @@
                             <app-gauge />
                             <span> Final</span>
                         </div>
-                        <button type="button"
-                            [disabled]="formRegistro.get('kilometraje_final')!.disabled"
+                        <button type="button" [disabled]="formRegistro.get('kilometraje_final')!.disabled"
                             id="increment-button" (click)="incrementar(1,'kilometraje_final')"
                             class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
                             <app-plus />
@@ -92,41 +93,35 @@
                 }
             </div>
             <div class="space-y-2">
-                <label for="start-time"
-                    class="block  text-sm font-medium text-gray-900 dark:text-white">Salida</label>
+                <label for="start-time" class="block  text-sm font-medium text-gray-900 dark:text-white">Salida</label>
                 <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
 
                     <div class="relative ">
 
-                        <div
-                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <app-calendar />
                         </div>
                         <input id="fecha_salida" (changeDate)="actualizarFecha($event,'fecha_salida')"
-                            name="fecha_salida" datepicker datepicker-autohide
-                            datepicker-format="dd-mm-yyyy" type="text" tabindex="1"                             
+                            name="fecha_salida" datepicker datepicker-autohide datepicker-format="dd-mm-yyyy"
+                            type="text" tabindex="1"
                             class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Fecha de salida" />
                     </div>
                     <div class="relative">
-                        <div
-                            class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                             <app-time />
                         </div>
-                        <input type="time" id="start-time" tabindex="2" formControlName="hora_salida"
-                            name="hora_salida"
+                        <input type="time" id="start-time" tabindex="2" formControlName="hora_salida" name="hora_salida"
                             class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value="00:00" required />
                     </div>
                 </div>
 
-                <label for="end-time"
-                    class="block   text-sm font-medium text-gray-900 dark:text-white">Regreso</label>
+                <label for="end-time" class="block   text-sm font-medium text-gray-900 dark:text-white">Regreso</label>
                 <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
                     <div>
                         <div class="relative">
-                            <div
-                                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                 <app-calendar />
                             </div>
                             <input id="fecha_regreso" tabindex="3" datepicker datepicker-autohide
@@ -139,8 +134,7 @@
                     </div>
                     <div class="relative">
 
-                        <div
-                            class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                             <app-time />
                         </div>
                         <input type="time" id="start-time" tabindex="2" formControlName="hora_regreso"
@@ -151,8 +145,7 @@
                     </div>
                 </div>
             </div>
-            <div
-                class="max-w-[24rem] mx-auto flex  items-center justify-around text-2xl text-gray-500 dark:text-white">
+            <div class="max-w-[24rem] mx-auto flex  items-center justify-around text-2xl text-gray-500 dark:text-white">
                 @if(diferenciaTiempo.horas> 0){
                 <div>{{diferenciaTiempo.horas}} hora{{diferenciaTiempo.horas>1?'s':''}}</div>
                 }
@@ -178,7 +171,6 @@
 
             </div>
         </form>
-        
+
     </div>
 </div>
-

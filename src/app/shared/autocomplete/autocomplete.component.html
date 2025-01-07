@@ -8,8 +8,8 @@
     [emptyMessage]="cargandoBusqueda()?'Buscando':'No se encontraron resultados'"
     [suggestions]="OPsBusqueda()" 
     (completeMethod)="OnQueryChanged()"
-    scrollHeight="500px"  delay="500"
-    inputStyleClass="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    scrollHeight="500px"  delay="500"    
+    [inputStyleClass]="hasError?'input input-error':'input input-normal' "
     field="op">
     <ng-template let-op pTemplate="item">
       <div class="grid grid-cols-1  h-5 font-roboto justify-center items-center cursor-pointer">

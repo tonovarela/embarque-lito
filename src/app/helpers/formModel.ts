@@ -89,7 +89,7 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue("0");
   formRegistro.get("chofer")!.setValue("0");
-  formRegistro.setControl("ops", new FormArray([]))
+  formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get('destino')!.setValue('');
   formRegistro.get("fecha_registro")!.setValue(today);
   const $datepickerEl = document.getElementById('fecha_registro');
@@ -108,7 +108,7 @@ export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   const horaSalida = new Date(today.getTime() + 60 * 60 * 1000).toTimeString().substring(0, 2);
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue("0");
-  formRegistro.setControl("ops", new FormArray([]))
+  formRegistro.setControl("ops", new FormArray([],Validators.required));
   formRegistro.get("chofer")!.setValue("0");
   formRegistro.get("kilometraje_inicial")!.disable();
   formRegistro.get("kilometraje_final")!.disable();
