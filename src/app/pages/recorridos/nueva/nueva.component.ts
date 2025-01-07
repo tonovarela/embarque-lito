@@ -92,12 +92,32 @@ export class NuevaComponent implements OnInit {
   }
   private guardarRegistroExterno() {
     this.formRegistro.get("registroExterno")!.markAllAsTouched();
-    const registroExterno = this.formRegistro.get("registroExterno")!;
-    console.log(registroExterno.valid);
+    const registroExterno = this.formRegistro.get("registroExterno")!;    
     if (registroExterno.invalid) {
       return;
     }
 
+
+    const {
+      fecha_registro,              
+      ops,
+      transporte,
+      chofer,
+      destino,      
+      observaciones
+    } = registroExterno.getRawValue();
+    const registro:Recorrido ={
+      tipo: 'externo',
+      id_recorrido: this.dataService.Recorridos().length + 1,
+      id_transporte: +transporte,
+      id_chofer: +chofer,
+      fecha_registro,
+      destino,
+      observaciones,      
+      ops,
+    };
+    this.dataService.agregarRecorrido(registro);
+    console.log(registro);
 
 
 

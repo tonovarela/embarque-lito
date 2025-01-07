@@ -1,5 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { Choferes, Transportes, TransportesExternos } from '@app/data';
+import { Choferes, ChoferesExternos, Transportes, TransportesExternos } from '@app/data';
 import { CargaGasolina, Recorrido } from '@app/interface';
 
 
@@ -98,13 +98,14 @@ export class DataService {
 
   ]);
   transportes=[...Transportes, ...TransportesExternos];
+  choferes =[...Choferes,...ChoferesExternos];
 
 
 
   Recorridos = computed(() => this.recorridos().map((recorrido: Recorrido) => {
     return {
       ...recorrido,
-      descripcion_chofer: Choferes.find(chofer => chofer.id === recorrido.id_chofer)?.nombre,
+      descripcion_chofer: this.choferes.find(chofer => chofer.id === recorrido.id_chofer)?.nombre,
       descripcion_transporte: this.transportes.find(transporte => transporte.id_transporte === recorrido.id_transporte)?.descripcion
     }
   }));
