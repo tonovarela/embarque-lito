@@ -49,8 +49,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  resetForm() {
-    this.formRegistro.get('ops')!.setValue([]);
+  resetForm() {    
     resetFormRegistroInterno(this.formRegistro);
   }
 
@@ -97,12 +96,13 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
       return;
     }
     const kilometraje = this.dataService.traerUltimoKilometrajeRecorrido(id_transporte);
-    kilometraje != 0 ? this.formRegistro.get('kilometraje_inicial')?.disable()
-      : this.formRegistro.get('kilometraje_inicial')?.enable();
-
+     kilometraje != 0 ? this.formRegistro.get('kilometraje_inicial')?.disable()
+     : this.formRegistro.get('kilometraje_inicial')?.enable();    
     this.formRegistro.get('kilometraje_inicial')!.setValue(kilometraje);
     this.formRegistro.get('kilometraje_final')!.enable();
-    this.formRegistro.get('kilometraje_final')!.setValue(0);
+    this.formRegistro.get('kilometraje_final')!.setValue(0)
+    
+    
   }
 
 
@@ -115,9 +115,10 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   }
 
   unirFechaHora(date: Date, hora: string): Date {
-    if (date == null) {
+    if (date == null || hora == null) {
       return new Date();
     }
+    
     const dia = (date.getDate());
     const mes = date.getMonth() + 1
     const anio = date.getFullYear();

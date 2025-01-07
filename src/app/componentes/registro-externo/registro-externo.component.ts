@@ -48,8 +48,7 @@ export class RegistroExternoComponent implements OnInit {
 
 
 
-  resetForm() {
-    
+  resetForm() {    
     resetFormRegistroExterno(this.formRegistro);
   }
 

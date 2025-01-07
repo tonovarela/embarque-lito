@@ -99,9 +99,7 @@ export class DataService {
   ]);
   transportes=[...Transportes, ...TransportesExternos];
 
-  constructor() { 
-    console.log(this.transportes);
-  }
+
 
   Recorridos = computed(() => this.recorridos().map((recorrido: Recorrido) => {
     return {
@@ -134,8 +132,7 @@ export class DataService {
   }
 
   traerUltimoKilometrajeCargaGasolina(id_transporte: number) {
-    const cargas = this.CargasGasolina().filter(cargaGasolina => cargaGasolina.id_transporte === +id_transporte).sort((a, b) => a.id_cargaGasolina - b.id_cargaGasolina);
-    
+    const cargas = this.CargasGasolina().filter(cargaGasolina => cargaGasolina.id_transporte === +id_transporte).sort((a, b) => a.id_cargaGasolina - b.id_cargaGasolina);    
     const kilometraje = cargas[cargas.length-1]?.kilometraje_final || 0;
     return kilometraje
   }

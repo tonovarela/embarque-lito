@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { kilometrajeValidator, MayorACeroValidator } from "./validators";
 
 import { Datepicker } from 'flowbite';
@@ -89,7 +89,7 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue("0");
   formRegistro.get("chofer")!.setValue("0");
-  formRegistro.get("ops")!.setValue([]);
+  formRegistro.setControl("ops", new FormArray([]))
   formRegistro.get('destino')!.setValue('');
   formRegistro.get("fecha_registro")!.setValue(today);
   const $datepickerEl = document.getElementById('fecha_registro');
@@ -100,18 +100,21 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   translateCalendar();
 }
 
+
+
 export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   const today = new Date();
-
-
   const horaActual = today.toTimeString().substring(0, 2);
   const horaSalida = new Date(today.getTime() + 60 * 60 * 1000).toTimeString().substring(0, 2);
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue("0");
-  formRegistro.get("ops")!.setValue([]);
+  formRegistro.setControl("ops", new FormArray([]))
   formRegistro.get("chofer")!.setValue("0");
+  formRegistro.get("kilometraje_inicial")!.disable();
+  formRegistro.get("kilometraje_final")!.disable();
   formRegistro.get("kilometraje_inicial")!.setValue(0);
   formRegistro.get("kilometraje_final")!.setValue(0);
+  
   formRegistro.get("fecha_regreso")!.setValue(today);
   formRegistro.get("fecha_salida")!.setValue(today);
   formRegistro.get('destino')!.setValue('');
@@ -131,4 +134,5 @@ export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   datepicker1.setDate(today);
   datepicker2.setDate(today);
   translateCalendar();
+  
 }
