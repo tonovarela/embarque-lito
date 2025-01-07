@@ -1,5 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { Choferes, Transportes } from '@app/data';
+import { Choferes, Transportes, TransportesExternos } from '@app/data';
 import { CargaGasolina, Recorrido } from '@app/interface';
 
 
@@ -25,7 +25,7 @@ export class DataService {
     },
     {
       id_recorrido: 2,
-      id_transporte: 2,
+      id_transporte: 9,
       tipo: 'externo',
       id_chofer: 3142,
       fecha_registro: new Date(),
@@ -97,19 +97,22 @@ export class DataService {
     }
 
   ]);
+  transportes=[...Transportes, ...TransportesExternos];
 
-  constructor() { }
+  constructor() { 
+    console.log(this.transportes);
+  }
 
   Recorridos = computed(() => this.recorridos().map((recorrido: Recorrido) => {
     return {
       ...recorrido,
       descripcion_chofer: Choferes.find(chofer => chofer.id === recorrido.id_chofer)?.nombre,
-      descripcion_transporte: Transportes.find(transporte => transporte.id_transporte === recorrido.id_transporte)?.descripcion
+      descripcion_transporte: this.transportes.find(transporte => transporte.id_transporte === recorrido.id_transporte)?.descripcion
     }
   }));
 
-  CargasGasolina = computed(() => this.cargasGasolina().map((cargaGasolina: CargaGasolina) => {
-    return { ...cargaGasolina, descripcion_transporte: Transportes.find(transporte => transporte.id_transporte === cargaGasolina.id_transporte)?.descripcion }
+  CargasGasolina = computed(() => this.cargasGasolina().map((cargaGasolina: CargaGasolina) => {    
+    return { ...cargaGasolina, descripcion_transporte: this.transportes.find(transporte => transporte.id_transporte === cargaGasolina.id_transporte)?.descripcion }
   }));
 
 

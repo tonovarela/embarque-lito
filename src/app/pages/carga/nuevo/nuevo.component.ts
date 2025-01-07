@@ -11,7 +11,6 @@ import { CalendarComponent } from '@app/shared/svg/calendar/calendar.component';
 import { obtenerValorNumerico } from '../../../helpers/validators';
 
 
-
 @Component({
   selector: 'app-nuevo',
   standalone: true,
@@ -108,7 +107,7 @@ export class NuevoComponent implements OnInit {
   }
 
 
-  registro() {
+  guardarRegistro() {
     this.formRegistro.markAllAsTouched();
 
 
@@ -128,6 +127,7 @@ export class NuevoComponent implements OnInit {
     };
 
     this.dataService.agregarCargaGasolina(nuevoRegistro);
+    
     resetFormRegistroCarga(this.formRegistro);
     
 

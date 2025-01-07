@@ -16,14 +16,14 @@
                     <button class="inline-block p-2 border-b-2 rounded-t-lg" id="profile-styled-tab"
                         data-tabs-target="#registro-interno" type="button" role="tab" aria-controls="profile"
                         (click)="registroInterno.set(true)"    
-                        aria-selected="false">Interno</button>
+                        aria-selected="false">INTERNO</button>
                 </li>
                 <li class="me-2" role="presentation">
                     <button
                     (click)="registroInterno.set(false)"
                         class="inline-block p-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         id="dashboard-styled-tab" data-tabs-target="#registro-externo" type="button" role="tab"
-                        aria-controls="dashboard" aria-selected="false">Externo</button>
+                        aria-controls="dashboard" aria-selected="false">EXTERNO</button>
                 </li>
             </ul>
         </div>
@@ -37,9 +37,7 @@
             </div>
                     
         </div>
-        <pre>            
-            {{formRegistro.value | json}}            
-        </pre>        
+        
     </div>
 </div>
 

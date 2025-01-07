@@ -37,7 +37,7 @@ export class NuevaComponent implements OnInit {
   private guardarRegistroInterno() {
     this.formRegistro.get("registroInterno")!.markAllAsTouched();
     const registroInterno = this.formRegistro.get("registroInterno")!;
-  console.log(registroInterno.valid);
+    console.log(registroInterno.valid);
     if (registroInterno.invalid) {
       return;
     }
@@ -54,6 +54,14 @@ export class NuevaComponent implements OnInit {
 
   private guardarRegistroExterno() {
     this.formRegistro.get("registroExterno")!.markAllAsTouched();
+    const registroExterno = this.formRegistro.get("registroExterno")!;
+    console.log(registroExterno.valid);
+    if (registroExterno.invalid) {
+      return;
+    }
+    
+
+    
 
   }
 
