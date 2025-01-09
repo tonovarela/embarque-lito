@@ -8,6 +8,7 @@ import { RegistroInternoComponent } from '@app/componentes/registro-interno/regi
 import { initFlowbite } from 'flowbite';
 import { Recorrido } from '@app/interface';
 import { DataService } from '@app/services/data.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class NuevaComponent implements OnInit {
   changeDetectorRef = inject(ChangeDetectorRef);
   dataService = inject(DataService);
   fb = inject(FormBuilder);
+  router=inject(Router);
   registroInterno = signal<boolean>(true);
   formRegistro = this.fb.group({
     registroInterno: createFormRegistroInternoBuilder(this.fb),
@@ -83,6 +85,11 @@ export class NuevaComponent implements OnInit {
     this.dataService.agregarRecorrido(registro);
     this.reset();
     
+  }
+
+
+  regresar(){
+    this.router.navigate(['/recorridos']);
   }
 
 

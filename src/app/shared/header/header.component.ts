@@ -35,15 +35,15 @@ export class HeaderComponent  implements OnInit {
   private  setTema(props:{esDark:boolean}) {
     if (props.esDark) {
       document.documentElement.classList.add('dark');
-      this.linksThemeMap.get('light')?.setAttribute('disabled', 'true');
       this.linksThemeMap.get('dark')?.removeAttribute('disabled');
+      this.linksThemeMap.get('light')?.setAttribute('disabled', 'true');      
       localStorage.setItem('color-theme', 'dark');
       this.esDark = true;
     } else {
       document.documentElement.classList.remove('dark');      
       localStorage.setItem('color-theme', 'light');
-      this.linksThemeMap.get('dark')?.setAttribute('disabled', 'true');
       this.linksThemeMap.get('light')?.removeAttribute('disabled');
+      this.linksThemeMap.get('dark')?.setAttribute('disabled', 'true');      
       this.esDark = false;
      
     }

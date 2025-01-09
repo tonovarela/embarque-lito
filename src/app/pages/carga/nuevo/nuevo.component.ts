@@ -9,6 +9,7 @@ import { DataService } from '@app/services/data.service';
 import { GaugeComponent, MinusComponent, PlusComponent } from '@app/shared/svg';
 import { CalendarComponent } from '@app/shared/svg/calendar/calendar.component';
 import { obtenerValorNumerico } from '../../../helpers/validators';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class NuevoComponent implements OnInit {
   transportes: Transporte[] = [];
   fb = inject(FormBuilder);
   dataService = inject(DataService);
-
+  router= inject(Router);
   formRegistro: FormGroup = createFormRegistroCargaBuilder(this.fb);
 
   ngOnInit() {
@@ -105,6 +106,10 @@ export class NuevoComponent implements OnInit {
     this.formRegistro.get(field)!.setValue(newValue);
 
   }
+
+regresar() {
+  this.router.navigate(['/carga']);
+}
 
 
   guardarRegistro() {
