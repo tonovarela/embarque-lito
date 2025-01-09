@@ -12,44 +12,42 @@ import { UiService } from '@app/services/ui.service';
 export class HeaderComponent  implements OnInit {
    esDark = false;
    uiService = inject(UiService);
+   linksThemeMap: Map<string, HTMLLinkElement> = new Map();
 
-   linksMap: Map<string, HTMLLinkElement> = new Map();
-
-  ngOnInit(): void {
-    
+  ngOnInit(): void {    
     const links = Array.from(document.querySelectorAll('link')) as HTMLLinkElement[]; 
-    const _links = links.filter(link => link.getAttribute('rel') === 'stylesheet' && link.getAttribute('href')?.includes('syncfusion') ).map(link => {link.setAttribute('disabled', 'true');return link;});    
-    _links.forEach(link => {      
-         this.linksMap.set(link.getAttribute('href')?.includes('dark')?"dark":'light', link);         
-    });
-        
-    if(!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches){
-      localStorage.setItem('color-theme', 'light');
-      this.linksMap.get('light')?.removeAttribute('disabled');  
-      console.log('prefers-color-scheme: dark');    
-    }
-
-    if (localStorage.getItem('color-theme') === 'dark' ) {
-      document.documentElement.classList.add('dark');         
-      this.linksMap.get('dark')?.removeAttribute('disabled');         
-      this.esDark = true;
-    }
-    console.log(this.linksMap.get('dark'));
-    console.log(this.linksMap.get('light'));
-
+    const _links = links.filter(link => link.getAttribute('rel') === 'stylesheet' && link.getAttribute('href')?.includes('syncfusion') )
+                          .map(link => {link.setAttribute('disabled', 'true');return link;});        
+    _links.forEach(link =>this.linksThemeMap.set(link.getAttribute('href')?.includes('dark')?"dark":'light', link));      
+    if(('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches){      
+      const  esDark= localStorage.getItem('color-theme') === 'dark';
+      this.setTema({esDark});          
+    }else{
+      this.setTema({esDark:false});
+     }
+    
   }
-  cambiarTema() {    
-    if (localStorage.getItem('color-theme') === 'dark' ) {
-      document.documentElement.classList.remove('dark');
-      
-      localStorage.setItem('color-theme', 'light');
-      this.esDark = false;
-    } else {
+
+  cambiarTema() {            
+      this.setTema({esDark:localStorage.getItem('color-theme') !== 'dark'});    
+   }
+
+  private  setTema(props:{esDark:boolean}) {
+    if (props.esDark) {
       document.documentElement.classList.add('dark');
-      
+      this.linksThemeMap.get('light')?.setAttribute('disabled', 'true');
+      this.linksThemeMap.get('dark')?.removeAttribute('disabled');
       localStorage.setItem('color-theme', 'dark');
       this.esDark = true;
+    } else {
+      document.documentElement.classList.remove('dark');      
+      localStorage.setItem('color-theme', 'light');
+      this.linksThemeMap.get('dark')?.setAttribute('disabled', 'true');
+      this.linksThemeMap.get('light')?.removeAttribute('disabled');
+      this.esDark = false;
+     
     }
+
   }
 }
 
