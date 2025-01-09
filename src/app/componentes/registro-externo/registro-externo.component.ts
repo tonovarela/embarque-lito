@@ -39,6 +39,11 @@ export class RegistroExternoComponent implements OnInit {
     this.resetForm();
   }
 
+
+  OnKeyPress(event: KeyboardEvent) { 
+    event.preventDefault();    
+  }
+
   resetForm() {
     resetFormRegistroExterno(this.formRegistro);
   }
@@ -73,7 +78,8 @@ export class RegistroExternoComponent implements OnInit {
   }
 
   actualizarFecha({ detail }: any, nombre: string) {
-    const fecha = detail.date;
+    
+    const fecha = detail.date || null;
     this.formRegistro.get(nombre)!.setValue(fecha);
   }
 

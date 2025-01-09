@@ -142,7 +142,13 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
       this.formRegistro.get('hora_regreso')!.setErrors(null);
     }
     return { horas: diferenciaHoras, minutos: diferenciaMinutos, totalMinutos };
+
+
   }
 
+
+  OnKeyPress(event: KeyboardEvent) { 
+    event.preventDefault();    
+  }
 
 }

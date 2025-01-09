@@ -1,6 +1,6 @@
 <div class="sm:ml-64      py-5 px-2  ">
    <div class="p-4  rounded-lg  h-full  dark:border-gray-700 mt-14 transition-colors duration-30 ">
-      <h1>Listado de recorridos</h1>
+      <h1 class="text-2xl p-2 bg-transparent dark:bg-gray-500 rounded-tr-md rounded-tl-md text-gray-600 dark:text-white">Recorridos</h1>
       <div class="w-full mb-4">
          <ejs-grid #grid [dataSource]='dataService.Recorridos()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
             [allowExcelExport]='true' AutoFitAll="true" [height]="heightGrid" allowReordering='true'

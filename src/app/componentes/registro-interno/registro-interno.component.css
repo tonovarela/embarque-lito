@@ -6,7 +6,7 @@
 
 
 .input-invalido {
-   @apply text-xs  bg-red-50 border border-red-500 text-red-900 placeholder-red-700  rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500
+   @apply text-xs  bg-red-50 border border-red-500 text-red-500  rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500
 }
 
 .input{
