@@ -1,19 +1,21 @@
+
 <div class="relative">
   <button class="fab-button fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" (click)="toggleMenu()">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
     </svg>
   </button>
-  <div *ngIf="menuOpen" class="absolute text-xs bottom-12 sm:-bottom-10 xl:bottom-4 2xl:bottom-3 right-4 flex flex-col space-y-1">
+
+  <div *ngIf="menuOpen" class="fixed text-xs bottom-20 right-4 flex flex-col space-y-1">
     <a routerLink="/recorridos/nuevo"
-     class="fab-item  bg-white border-1 text-gray-800 w-auto hover:bg-gray-200 py-2 px-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition transform duration-300 ease-in-out">
+     class="fab-item  bg-white border-2 text-gray-800 w-auto hover:bg-gray-200 py-2 px-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition transform duration-300 ease-in-out">
       Nuevo recorrido
   </a>
     <a
     routerLink="/carga/nuevo"
-     class="fab-item bg-white border-1 text-gray-800 w-auto hover:bg-gray-200 py-2 px-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition transform duration-300 ease-in-out">
+     class="fab-item bg-white border-2 text-gray-800 w-auto hover:bg-gray-200 py-2 px-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition transform duration-300 ease-in-out">
     Nueva recarga
 </a>
-    
+
   </div>
 </div>

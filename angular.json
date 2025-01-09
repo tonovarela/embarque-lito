@@ -26,7 +26,7 @@
               "src/favicon.ico",
               "src/assets"
             ],                      
-            "styles": [
+            "styles": [              
               {
                 "input":"node_modules/primeng/resources/primeng.min.css",                
                 "inject": true,
