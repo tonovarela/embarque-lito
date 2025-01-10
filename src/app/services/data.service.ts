@@ -132,12 +132,7 @@ export class DataService {
     this.cargasGasolina.set([...this.cargasGasolina(), cargaGasolina]);
   }
 
-  traerUltimoKilometrajeRecorrido(id_transporte: number) {
-    const recorridos = this.Recorridos().filter(recorrido => recorrido.id_transporte === +id_transporte);
-    const kilometraje = recorridos[recorridos.length - 1]?.kilometraje_final || 0;
-    return kilometraje;
-
-  }
+ 
 
   traerUltimoRecorrido(id_transporte:number){
     const recorridos = this.Recorridos().filter(recorrido => recorrido.id_transporte === +id_transporte);

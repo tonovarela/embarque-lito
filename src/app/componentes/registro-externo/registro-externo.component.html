@@ -35,6 +35,7 @@
                 <div class="w-full">
                     <select id="transporte" formControlName="tipo_servicio" 
                         aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
+                        
                         [ngClass]="{'input-invalido': tieneError('tipo_servicio'), 'input': !tieneError('tipo_servicio') }">
                         <option value="0">SELECCIONE UN TIPO DE SERVICIO</option>
                         @for (tipo of tipoServicios;track tipo.id){

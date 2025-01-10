@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Choferes, Transportes } from '@app/data';
-import { resetFormRegistroInterno } from '@app/helpers/formModel';
+import { resetFormRegistroInterno, setFechaSalida } from '@app/helpers/formModel';
 import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { DataService } from '@app/services/data.service';
@@ -10,6 +10,7 @@ import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.com
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
 import { tipoServicios } from '../../data/TipoServicio.data';
 import { unirFechaHora } from '@app/helpers/helpers';
+import { Datepicker, DatepickerOptions } from 'flowbite';
 
 @Component({
   selector: 'app-registro-interno',
@@ -52,6 +53,8 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
   resetForm() {
     resetFormRegistroInterno(this.formRegistro);
+    
+    
   }
 
 
@@ -87,6 +90,8 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   }
 
 
+  
+
   public actualizarTransporte() {
     const id_chofer = this.formRegistro.get('chofer')!.value;
     const choferAsignado = this.choferes.find(chofer => chofer.id === +id_chofer);
@@ -98,10 +103,12 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
     const id_transporte = this.formRegistro.get('transporte')!.value;
     if (id_transporte == "0") {
-      this.formRegistro.get('kilometraje_inicial')!.setValue(0);
+      this.formRegistro.get('kilometraje_inicial')!.setValue(0);  
       this.formRegistro.get('kilometraje_inicial')!.disable();
       this.formRegistro.get('kilometraje_final')!.setValue(0);
       this.formRegistro.get('kilometraje_final')!.disable();
+      this.formRegistro.get('fecha_minima_salida')!.setValue(null);
+      setFechaSalida(this.formRegistro, null );
       return;
     }
     const ultimoRecorrido = this.dataService.traerUltimoRecorrido(id_transporte);
@@ -111,19 +118,18 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
       this.formRegistro.get('fecha_minima_salida')!.setValue(null);
       this.formRegistro.get('kilometraje_inicial')!.setValue(0);
       this.formRegistro.get('kilometraje_final')!.setValue(0);
-      
+      setFechaSalida(this.formRegistro, null );
       return;
     }
     const { kilometraje_final } = ultimoRecorrido;
     this.fechaMinimaSalida = ultimoRecorrido.fecha_regreso ?? null;
-    this.formRegistro.get('fecha_minima_salida')!.setValue(this.fechaMinimaSalida);     
-    console.log(this.fechaMinimaSalida);
+    this.formRegistro.get('fecha_minima_salida')!.setValue(this.fechaMinimaSalida);         
     this.formRegistro.get('kilometraje_inicial')!.disable();
     this.formRegistro.get('kilometraje_inicial')!.setValue(kilometraje_final);
     this.formRegistro.get('kilometraje_final')!.enable();
-    this.formRegistro.get('kilometraje_final')!.setValue(0);
-
-
+    this.formRegistro.get('kilometraje_final')!.setValue(0);  
+    console.log(this.fechaMinimaSalida);  
+    setFechaSalida(this.formRegistro, this.fechaMinimaSalida );
 
   }
 

@@ -79,24 +79,23 @@ export class RegistroExternoComponent implements OnInit {
     return false;
   }
 
-  actualizarFecha({ detail }: any, nombre: string) {
-    
+  actualizarFecha({ detail }: any, nombre: string) {    
     const fecha = detail.date || null;
     this.formRegistro.get(nombre)!.setValue(fecha);
   }
 
-  obtenerDiferenciaHoras(fechaInicio: Date, fechaFin: Date) {
-    const diferenciaMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
-    const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60)) || 0;
-    const diferenciaMinutos = Math.floor((diferenciaMilisegundos % (1000 * 60 * 60)) / (1000 * 60)) || 0;
-    const totalMinutos = Math.floor(diferenciaMilisegundos / (1000 * 60));
-    if (isNaN(totalMinutos) || totalMinutos < 60) {
-      this.formRegistro.get('hora_regreso')!.setErrors({ diferenciaInvalida: true });
-    } else {
-      this.formRegistro.get('hora_regreso')!.setErrors(null);
-    }
-    return { horas: diferenciaHoras, minutos: diferenciaMinutos, totalMinutos };
-  }
+  // obtenerDiferenciaHoras(fechaInicio: Date, fechaFin: Date) {
+  //   const diferenciaMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
+  //   const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60)) || 0;
+  //   const diferenciaMinutos = Math.floor((diferenciaMilisegundos % (1000 * 60 * 60)) / (1000 * 60)) || 0;
+  //   const totalMinutos = Math.floor(diferenciaMilisegundos / (1000 * 60));
+  //   if (isNaN(totalMinutos) || totalMinutos < 60) {
+  //     this.formRegistro.get('hora_regreso')!.setErrors({ diferenciaInvalida: true });
+  //   } else {
+  //     this.formRegistro.get('hora_regreso')!.setErrors(null);
+  //   }
+  //   return { horas: diferenciaHoras, minutos: diferenciaMinutos, totalMinutos };
+  // }
 
 }
 
