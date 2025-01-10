@@ -48,7 +48,7 @@ export const createFormRegistroCargaBuilder = (fb: FormBuilder) => {
     observaciones: [''],
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, MayorACeroValidator()],
-    fecha_registro: ['', Validators.required],
+    fecha_carga: ['', Validators.required],
   }, { validators: KilometrajeValidator() });
 }
 
@@ -69,10 +69,10 @@ export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
   formRegistro.reset();
 
   formRegistro.get("transporte")!.setValue(0);
-  formRegistro.get("fecha_registro")!.setValue(today);
+  formRegistro.get("fecha_carga")!.setValue(today);
   formRegistro.get("kilometraje_inicial")!.setValue(0);
   formRegistro.get("kilometraje_final")!.setValue(0);
-  const $datepickerEl = document.getElementById('fecha_registro');
+  const $datepickerEl = document.getElementById('fecha_carga');
   const options: DatepickerOptions = { format: 'dd-mm-yyyy', };
   const datepicker1 = new Datepicker($datepickerEl, options);
   actualizarInputPorID("totalLitros", "");
@@ -150,10 +150,23 @@ export const setFechaSalida = (formRegistro: FormGroup, fecha: Date | null) => {
         format: 'dd-mm-yyyy',
       };      
     const datepicker2: Datepicker = new Datepicker($datepickerEl2, options);
-    datepicker2.setDate(fecha);
-  formRegistro.get("fecha_salida")!.setValue(fecha);
-  formRegistro.get("hora_salida")!.setValue(fecha?.toTimeString().substring(0, 5) ?? '00:00');
+    const newDate= fecha || new Date();
+    datepicker2.setDate(newDate);
+  formRegistro.get("fecha_salida")!.setValue(newDate || new Date());
+  formRegistro.get("hora_salida")!.setValue(newDate?.toTimeString().substring(0, 5) ?? '00:00');
+  translateCalendar();
   
+}
+
+export const setFechaCarga = (formRegistro: FormGroup, fecha: Date | null) => {
+  const $datepickerEl = document.getElementById('fecha_carga');
+  const options: DatepickerOptions = { format: 'dd-mm-yyyy', };
+  const newDate= fecha || new Date();
+  const datepicker1 = new Datepicker($datepickerEl, options);
+  datepicker1.setDate(newDate);
+  formRegistro.get("fecha_carga")!.setValue(newDate);
+  translateCalendar();
+
 }
 
 

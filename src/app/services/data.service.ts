@@ -67,7 +67,7 @@ export class DataService {
       observaciones: 'observaciones',
       kilometraje_inicial: 1500,
       kilometraje_final: 2000,
-      fecha_registro: new Date()
+      fecha_carga: new Date(2025,1,1)
     },
     {
       id_cargaGasolina: 2,
@@ -77,7 +77,7 @@ export class DataService {
       observaciones: 'observaciones1',
       kilometraje_inicial: 2000,
       kilometraje_final: 3000,
-      fecha_registro: new Date()
+      fecha_carga: new Date()
     },
     {
       id_cargaGasolina: 3,
@@ -87,7 +87,7 @@ export class DataService {
       observaciones: 'observaciones',
       kilometraje_inicial: 3000,
       kilometraje_final: 4000,
-      fecha_registro: new Date()
+      fecha_carga: new Date()
     },
     {
       id_cargaGasolina: 4,
@@ -97,7 +97,7 @@ export class DataService {
       observaciones: 'observaciones',
       kilometraje_inicial: 2000,
       kilometraje_final: 2500,
-      fecha_registro: new Date()
+      fecha_carga: new Date(2025,1,11)
     }
 
   ]);
@@ -142,8 +142,8 @@ export class DataService {
 
   traerUltimoKilometrajeCargaGasolina(id_transporte: number) {
     const cargas = this.CargasGasolina().filter(cargaGasolina => cargaGasolina.id_transporte === +id_transporte).sort((a, b) => a.id_cargaGasolina - b.id_cargaGasolina);    
-    const kilometraje = cargas[cargas.length-1]?.kilometraje_final || 0;
-    return kilometraje
+    return cargas[cargas.length - 1] || null
+    
   }
 
  

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Transportes } from '@app/data';
-import { createFormRegistroCargaBuilder, resetFormRegistroCarga } from '@app/helpers/formModel';
+import { createFormRegistroCargaBuilder, resetFormRegistroCarga, setFechaCarga } from '@app/helpers/formModel';
 import { NumberFormatter } from '@app/helpers/validators';
 import { Transporte } from '@app/interface';
 import { DataService } from '@app/services/data.service';
@@ -61,21 +61,25 @@ export class NuevoComponent implements OnInit {
       this.formRegistro.get('kilometraje_inicial')!.disable();
       this.formRegistro.get('kilometraje_final')!.setValue(0);
       this.formRegistro.get('kilometraje_final')!.disable();
+      this.formRegistro.get('fecha_carga')!.setValue(new Date());
+      setFechaCarga(this.formRegistro,new Date());
       return;
     }
-    const kilometraje = this.dataService.traerUltimoKilometrajeCargaGasolina(id_transporte)
+    const ultimaCarga = this.dataService.traerUltimoKilometrajeCargaGasolina(id_transporte)
 
-    if (kilometraje != 0) {
+    if (ultimaCarga != null) {
       this.formRegistro.get('kilometraje_inicial')?.disable()
     } else {
       this.formRegistro.get('kilometraje_inicial')?.enable();
     }
 
-
-
-    this.formRegistro.get('kilometraje_inicial')!.setValue(kilometraje);
+    this.formRegistro.get('kilometraje_inicial')!.setValue(ultimaCarga?.kilometraje_final || 0);
+    
     this.formRegistro.get('kilometraje_final')!.enable();
     this.formRegistro.get('kilometraje_final')!.setValue(0);
+    this.formRegistro.get('fecha_carga')!.setValue(ultimaCarga.fecha_carga);
+    console.log(ultimaCarga.fecha_carga);
+    setFechaCarga(this.formRegistro,ultimaCarga.fecha_carga );
 
 
     //TODO: obtener el kilometraje inicial del transporte seleccionado por api y si tiene kilometraje final setearlo como inicial y deshabilitar el campo en caso contrario habilitar los 2 campos    
@@ -114,8 +118,6 @@ export class NuevoComponent implements OnInit {
 
   guardarRegistro() {
     this.formRegistro.markAllAsTouched();
-
-
     if (this.formRegistro.invalid) {
       return;
     }
@@ -128,7 +130,6 @@ export class NuevoComponent implements OnInit {
       totalLitros: +this.formRegistro.get('totalLitros')?.value,
       kilometraje_inicial: +this.formRegistro.get('kilometraje_inicial')?.value,
       kilometraje_final: +this.formRegistro.get('kilometraje_final')?.value,
-
     };
 
     this.dataService.agregarCargaGasolina(nuevoRegistro);

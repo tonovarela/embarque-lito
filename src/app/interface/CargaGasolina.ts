@@ -6,6 +6,6 @@ export interface CargaGasolina {
     observaciones: string;
     kilometraje_inicial: number;
     kilometraje_final: number;
-    fecha_registro: Date    
+    fecha_carga: Date    
 }
 
