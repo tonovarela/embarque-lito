@@ -8,6 +8,7 @@ import { PrimeNgModule } from '@app/lib/primeng.module';
 import { DataService } from '@app/services/data.service';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
+import { tipoServicios } from '../../data/TipoServicio.data';
 
 @Component({
   selector: 'app-registro-interno',
@@ -28,6 +29,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };
   choferes: Chofer[] = [];
   transportes: Transporte[] = [];
+  tipoServicios = tipoServicios;
 
 
 
@@ -85,7 +87,16 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     this.formRegistro.get(nombre)!.setValue(nuevoValor);
   }
 
+
+  public actualizarTransporte() {    
+     const id_chofer = this.formRegistro.get('chofer')!.value;          
+    const choferAsignado  = this.choferes.find(chofer => chofer.id === +id_chofer);    
+    this.formRegistro.get('transporte')!.setValue( choferAsignado?.id_transporteAsignado ?? 0);    
+    this.actualizarKilometrajeInicial();
+  }
+
   public actualizarKilometrajeInicial() {
+    console.log('---');
     const id_transporte = this.formRegistro.get('transporte')!.value;
     
     if (id_transporte == "0") {

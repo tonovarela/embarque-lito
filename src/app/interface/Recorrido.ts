@@ -13,5 +13,13 @@ fecha_salida?: Date;
 fecha_regreso?: Date;
 observaciones: string;
 ops:string[];
+id_tipo_servicio?:number;
+descripcion_tipo_servicio?:string;
 destino:string;
+}
+
+
+export interface TipoServicio {
+    id: number;
+    descripcion: string;
 }

@@ -12,6 +12,7 @@ export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
   return fb.group({
     transporte: [0, MayorACeroValidator()],
     chofer: [0, MayorACeroValidator()],
+    tipo_servicio: [0, MayorACeroValidator()],
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, MayorACeroValidator()],
     destino: [''],
@@ -114,7 +115,7 @@ export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   formRegistro.get("kilometraje_final")!.disable();
   formRegistro.get("kilometraje_inicial")!.setValue(0);
   formRegistro.get("kilometraje_final")!.setValue(0);
-  
+  formRegistro.get("tipo_servicio")!.setValue(0);    
   formRegistro.get("fecha_regreso")!.setValue(today);
   formRegistro.get("fecha_salida")!.setValue(today);
   formRegistro.get('destino')!.setValue('');

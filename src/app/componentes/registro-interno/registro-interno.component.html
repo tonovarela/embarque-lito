@@ -9,18 +9,12 @@
                     styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
                     label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
                 }
-            </div>
-            <!-- @if ( tieneError('ops') )
-            {
-            <div class="text-red-500 dark:bg-white text-xs text-center rounded  p-1.5 w-full">
-                Es necesario seleccionar al menos una orden de producción
-            </div>
-            } -->
+            </div>         
         </div>
       
         <form class="space-y-3" [formGroup]="formRegistro">
             <div class="w-full">
-                <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
+                <select id="chofer" formControlName="chofer" (change)="actualizarTransporte()" aria-placeholder="Seleccione un chofer"
                     [ngClass]="{'input-invalido': tieneError('chofer'), 'input': !tieneError('chofer') }">
                     <option value='0'>SELECCIONE UN CHOFER</option>s
                     @for (chofer of choferes;track chofer.id){
@@ -37,6 +31,16 @@
                     <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
                         {{transporte.placas}}
                     </option>
+                    }
+                </select>
+            </div>
+            <div class="w-full">
+                <select id="transporte" formControlName="tipo_servicio" 
+                    aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
+                    [ngClass]="{'input-invalido': tieneError('tipo_servicio'), 'input': !tieneError('tipo_servicio') }">
+                    <option value="0">SELECCIONE UNA UN TIPO DE SERVICIO</option>
+                    @for (tipo of tipoServicios;track tipo.id){
+                    <option value="{{tipo.id}}">{{tipo.descripcion}} </option>
                     }
                 </select>
             </div>
@@ -176,3 +180,8 @@
 
     </div>
 </div>
+
+
+<pre>
+    {{formRegistro.value  | json}}
+</pre>

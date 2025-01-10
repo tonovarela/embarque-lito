@@ -31,13 +31,11 @@
                 </div>
                 <div class="w-full">
                     <select id="transporte" formControlName="transporte"                    
-                        aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
+                        aria-placeholder="Seleccione una unidad de transporte" class="uppercase"
                         [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
                         <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
                         @for (transporte of transportes;track transporte.id_transporte){
-                        <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
-                            {{transporte.placas}}
-                        </option>
+                        <option value="{{transporte.id_transporte}}">{{transporte.descripcion }}                           </option>
                         }
                     </select>
                 </div>
