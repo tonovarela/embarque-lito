@@ -3,6 +3,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ChoferesExternos, TransportesExternos } from '@app/data';
+import { tipoServicios } from '@app/data/TipoServicio.data';
 import { resetFormRegistroExterno } from '@app/helpers/formModel';
 import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface';
 import { PrimeNgModule } from '@app/lib/primeng.module';
@@ -27,6 +28,7 @@ export class RegistroExternoComponent implements OnInit {
   diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };
   choferes: Partial<Chofer>[] = [];
   transportes: Partial<Transporte>[] = [];
+  tipoServicios = tipoServicios;
 
 
   ngOnInit(): void {

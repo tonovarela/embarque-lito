@@ -9,6 +9,7 @@ import { DataService } from '@app/services/data.service';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
 import { tipoServicios } from '../../data/TipoServicio.data';
+import { unirFechaHora } from '@app/helpers/helpers';
 
 @Component({
   selector: 'app-registro-interno',
@@ -26,13 +27,11 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   formRegistro!: FormGroup;
   fechaSalida: string = '';
   today = new Date();
+  fechaMinimaSalida: Date | null = null;
   diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };
   choferes: Chofer[] = [];
   transportes: Transporte[] = [];
   tipoServicios = tipoServicios;
-
-
-
 
   ngOnInit(): void {
     this.formRegistro = this.formGroup.get('registroInterno') as FormGroup;
@@ -44,14 +43,14 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.resetForm();
     this.formRegistro.valueChanges.subscribe((form) => {
-      const { hora_regreso, hora_salida, fecha_salida, fecha_regreso, transporte } = form;
-      const fecha_salidaTime = this.unirFechaHora(fecha_salida, hora_salida);
-      const fecha_regresoTime = this.unirFechaHora(fecha_regreso, hora_regreso);
+      const { hora_regreso, hora_salida, fecha_salida, fecha_regreso } = form;
+      const fecha_salidaTime = unirFechaHora(fecha_salida, hora_salida);
+      const fecha_regresoTime = unirFechaHora(fecha_regreso, hora_regreso);
       this.diferenciaTiempo = this.obtenerDiferenciaHoras(fecha_salidaTime, fecha_regresoTime);
     });
   }
 
-  resetForm() {    
+  resetForm() {
     resetFormRegistroInterno(this.formRegistro);
   }
 
@@ -88,17 +87,16 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   }
 
 
-  public actualizarTransporte() {    
-     const id_chofer = this.formRegistro.get('chofer')!.value;          
-    const choferAsignado  = this.choferes.find(chofer => chofer.id === +id_chofer);    
-    this.formRegistro.get('transporte')!.setValue( choferAsignado?.id_transporteAsignado ?? 0);    
+  public actualizarTransporte() {
+    const id_chofer = this.formRegistro.get('chofer')!.value;
+    const choferAsignado = this.choferes.find(chofer => chofer.id === +id_chofer);
+    this.formRegistro.get('transporte')!.setValue(choferAsignado?.id_transporteAsignado ?? 0);
     this.actualizarKilometrajeInicial();
   }
 
   public actualizarKilometrajeInicial() {
-    console.log('---');
+
     const id_transporte = this.formRegistro.get('transporte')!.value;
-    
     if (id_transporte == "0") {
       this.formRegistro.get('kilometraje_inicial')!.setValue(0);
       this.formRegistro.get('kilometraje_inicial')!.disable();
@@ -106,14 +104,27 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
       this.formRegistro.get('kilometraje_final')!.disable();
       return;
     }
-    const kilometraje = this.dataService.traerUltimoKilometrajeRecorrido(id_transporte);
-     kilometraje != 0 ? this.formRegistro.get('kilometraje_inicial')?.disable()
-     : this.formRegistro.get('kilometraje_inicial')?.enable();    
-    this.formRegistro.get('kilometraje_inicial')!.setValue(kilometraje);
+    const ultimoRecorrido = this.dataService.traerUltimoRecorrido(id_transporte);
+    if (ultimoRecorrido == null) {
+      this.formRegistro.get('kilometraje_inicial')!.enable();
+      this.formRegistro.get('kilometraje_final')!.enable();
+      this.formRegistro.get('fecha_minima_salida')!.setValue(null);
+      this.formRegistro.get('kilometraje_inicial')!.setValue(0);
+      this.formRegistro.get('kilometraje_final')!.setValue(0);
+      
+      return;
+    }
+    const { kilometraje_final } = ultimoRecorrido;
+    this.fechaMinimaSalida = ultimoRecorrido.fecha_regreso ?? null;
+    this.formRegistro.get('fecha_minima_salida')!.setValue(this.fechaMinimaSalida);     
+    console.log(this.fechaMinimaSalida);
+    this.formRegistro.get('kilometraje_inicial')!.disable();
+    this.formRegistro.get('kilometraje_inicial')!.setValue(kilometraje_final);
     this.formRegistro.get('kilometraje_final')!.enable();
-    this.formRegistro.get('kilometraje_final')!.setValue(0)
-    
-    
+    this.formRegistro.get('kilometraje_final')!.setValue(0);
+
+
+
   }
 
 
@@ -125,20 +136,9 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  unirFechaHora(date: Date, hora: string): Date {
-    if (date == null || hora == null) {
-      return new Date();
-    }
-    
-    const dia = (date.getDate());
-    const mes = date.getMonth() + 1
-    const anio = date.getFullYear();
-    const [horas, minutos] = hora.split(':').map(Number);
-    return new Date(anio, mes - 1, dia, horas, minutos);
-  }
 
   actualizarFecha({ detail }: any, nombre: string) {
-    const fecha = detail.date;
+    const fecha = detail.date;    
     this.formRegistro.get(nombre)!.setValue(fecha);
   }
 
@@ -158,8 +158,8 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   }
 
 
-  OnKeyPress(event: KeyboardEvent) { 
-    event.preventDefault();    
+  OnKeyPress(event: KeyboardEvent) {
+    event.preventDefault();
   }
 
 }

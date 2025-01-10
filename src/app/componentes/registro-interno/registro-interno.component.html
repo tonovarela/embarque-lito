@@ -48,7 +48,6 @@
                 <label for="end-time"
                     class="block  mb-2 text-sm font-medium text-gray-900 dark:text-white">Kilometraje</label>
                 <div class="grid sm:grid-cols-2 grid-cols-1 gap-2">
-
                     <div class="relative flex items-center mb-2">
                         <button type="button" [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
                             (click)="incrementar(-1,'kilometraje_inicial')" id="decrement-button"
@@ -90,16 +89,17 @@
                         </button>
                     </div>
                 </div>
-                @if(formRegistro.errors ){                    
+                @if(formRegistro.errors  && formRegistro.errors["kilometrajeInvalido"]){                    
                     <div class="text-red-500 dark:bg-white text-xs text-center rounded  p-1.5 w-full">
                     {{formRegistro.errors["mensaje"]}}
+            
                 </div>
                 }
             </div>
+                      
             <div class="space-y-2">
-                <label for="start-time" class="block  text-sm font-medium text-gray-900 dark:text-white">Salida</label>
+                <label for="start-time" class="block  text-xs font-medium text-gray-900 dark:text-white">Salida</label>
                 <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
-
                     <div class="relative ">
 
                         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -121,6 +121,11 @@
                             value="00:00" required />
                     </div>
                 </div>
+                @if (formRegistro.errors && formRegistro.errors["fechaSalidaInvalida"] ){  
+                    <div  class="text-red-500 dark:bg-white text-xs text-center rounded  p-1.5 w-full">
+                        Fecha mínima de salida: {{fechaMinimaSalida | date:'dd-MM-yyyy hh:mm a'}}
+                    </div>
+                }
 
                 <label for="end-time" class="block   text-sm font-medium text-gray-900 dark:text-white">Regreso</label>
                 <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
@@ -145,7 +150,7 @@
                         </div>
                         <input type="time" id="start-time" tabindex="2" formControlName="hora_regreso"
                             name="hora_regreso"
-                            class="bg-gray-50   leading-none border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="bg-gray-50    leading-none border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             value="00:00" required />
 
                     </div>
@@ -164,10 +169,11 @@
             <div class="text-red-500 dark:bg-white text-xs text-center rounded  p-1.5 w-full">
                 La diferencia entre la salida y el regreso debe de ser mayor a 1 hora
             </div>
-            }
+            }            
             <div class="w-full">
                 <input name="destino" placeholder="Destino" formControlName="destino"
-                    class="text-sm  dark:placeholder:text-white bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                [ngClass]="{'input-invalido': tieneError('destino'), 'input': !tieneError('destino') }"
+                     />
             </div>
 
             <div class="w-full">

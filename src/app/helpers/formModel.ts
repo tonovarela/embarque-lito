@@ -1,5 +1,5 @@
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { kilometrajeValidator, MayorACeroValidator } from "./validators";
+import { FechaMinimaSalidaValidator, KilometrajeValidator, MayorACeroValidator } from "./validators";
 
 import { Datepicker } from 'flowbite';
 import type { DatepickerOptions } from "flowbite";
@@ -15,14 +15,15 @@ export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
     tipo_servicio: [0, MayorACeroValidator()],
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, MayorACeroValidator()],
-    destino: [''],
+    destino: [{value:''},Validators.required],
     ops: fb.array([], Validators.required),
     hora_salida: ['00:00'],
     hora_regreso: ['00:00'],
     fecha_salida: [today],
-    fecha_regreso: [today],
+    fecha_regreso: [today],    
+    fecha_minima_salida:[{value:null}],
     observaciones: [''],
-  }, { validators: kilometrajeValidator() });
+  }, { validators: [KilometrajeValidator(),FechaMinimaSalidaValidator()] });
 }
 
 
@@ -33,7 +34,8 @@ export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
     chofer: [0, MayorACeroValidator()],
     transporte: [0, MayorACeroValidator()],
     observaciones: [''],
-    destino: [''],
+    tipo_servicio: [0, MayorACeroValidator()],
+    destino: ['',Validators.required],
     fecha_registro: [new Date(), Validators.required],
   });
 }
@@ -47,7 +49,7 @@ export const createFormRegistroCargaBuilder = (fb: FormBuilder) => {
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, MayorACeroValidator()],
     fecha_registro: ['', Validators.required],
-  },{ validators: kilometrajeValidator() });
+  },{ validators: KilometrajeValidator() });
 }
 
 
@@ -92,6 +94,7 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   formRegistro.get("chofer")!.setValue("0");
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get('destino')!.setValue('');
+  formRegistro.get("tipo_servicio")!.setValue(0);
   formRegistro.get("fecha_registro")!.setValue(today);
   const $datepickerEl = document.getElementById('fecha_registro');
   const options: DatepickerOptions = {format: 'dd-mm-yyyy',};
@@ -126,13 +129,13 @@ export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
 
 
   const options: DatepickerOptions = {
-    format: 'dd-mm-yyyy',
-  };
+    format: 'dd-mm-yyyy',        
+  };  
   const datepicker1: Datepicker = new Datepicker($datepickerEl, options);
   const datepicker2: Datepicker = new Datepicker($datepickerEl2, options);
   datepicker1.init();
   datepicker2.init();
-  datepicker1.setDate(today);
+  datepicker1.setDate(today);  
   datepicker2.setDate(today);
   translateCalendar();
   

@@ -44,10 +44,14 @@ export class NuevaComponent implements OnInit {
 
   private guardarRegistroInterno() {
     this.formRegistro.get("registroInterno")!.markAllAsTouched();
+    this.formRegistro.get("registroInterno")!.updateValueAndValidity();
     const registroInterno = this.formRegistro.get("registroInterno")!;
+    
     if (registroInterno.invalid) {
       return;
     }
+
+    console.log(registroInterno.getRawValue());
 
     const {
       fecha_salida,
@@ -85,8 +89,9 @@ export class NuevaComponent implements OnInit {
       destino
     };
         
-    this.dataService.agregarRecorrido(registro);
-    this.reset();
+    console.log(registro);
+    //this.dataService.agregarRecorrido(registro);
+    //this.reset();
 
   }
 
@@ -137,8 +142,7 @@ export class NuevaComponent implements OnInit {
     const dia = ('0' + date.getDate()).slice(-2);
     const mes = ('0' + (date.getMonth() + 1)).slice(-2);
     const anio = date.getFullYear();
-    const fechaCadena = `${anio}-${mes}-${dia} ${time === null ? '' : time}`;
-    console.log(fechaCadena);
+    const fechaCadena = `${anio}-${mes}-${dia} ${time === null ? '' : time}`;    
     return fechaCadena;
   }
 

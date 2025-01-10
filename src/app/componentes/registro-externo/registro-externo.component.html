@@ -39,6 +39,16 @@
                         }
                     </select>
                 </div>
+                <div class="w-full">
+                    <select id="transporte" formControlName="tipo_servicio" 
+                        aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
+                        [ngClass]="{'input-invalido': tieneError('tipo_servicio'), 'input': !tieneError('tipo_servicio') }">
+                        <option value="0">SELECCIONE UNA UN TIPO DE SERVICIO</option>
+                        @for (tipo of tipoServicios;track tipo.id){
+                        <option value="{{tipo.id}}">{{tipo.descripcion}} </option>
+                        }
+                    </select>
+                </div>
                               
                 <div class="full">
                     <div class="relative ">    
@@ -57,6 +67,7 @@
                 </div>
                 <div class="w-full">
                     <input name="destino" placeholder="Destino" formControlName="destino"
+                    [ngClass]="{'input-invalido': tieneError('destino'), 'input': !tieneError('destino') }"
                         class="text-sm  dark:placeholder:text-white bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                 </div>
     

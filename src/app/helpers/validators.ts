@@ -1,62 +1,67 @@
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { unirFechaHora } from "./helpers";
 
 
 
 export const obtenerValorNumerico = (valor: string): number => {
-  const numeroValor:string = `${valor}`.replace(/\,/g, '').replace(/\$/g, '');
+  const numeroValor: string = `${valor}`.replace(/\,/g, '').replace(/\$/g, '');
   return Number(numeroValor);
 }
 
 export const MayorACeroValidator = (): ValidatorFn => {
-  return (control: AbstractControl): ValidationErrors | null => {    
-    //const valor:string = `${control.value}`.replace(/\,/g, '').replace(/\$/g, '')        
+  return (control: AbstractControl): ValidationErrors | null => {
+    //const valor:string = `${control.value}`.replace(/\,/g, '').replace(/\$/g, '')    
+
     const valor = control.value;
-    const nuevoValor= obtenerValorNumerico(valor);
-    return Number(nuevoValor) > 0 ? null : { MayorACero: true,mensaje:"El valor debe ser mayor a cero"};
+    const nuevoValor = obtenerValorNumerico(valor);
+    return Number(nuevoValor) > 0 ? null : { MayorACero: true, mensaje: "El valor debe ser mayor a cero" };
+  };
+}
+
+export const FechaMinimaSalidaValidator = (): ValidatorFn => {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+
+    const group = formGroup as FormGroup;
+    const fechaSalida = group.get('fecha_salida')?.value;
+    const horaSalida = group.get('hora_salida')?.value;
+    const fechaMinimaSalida = group.get('fecha_minima_salida')?.value;
+  
+    if (fechaMinimaSalida == undefined || fechaMinimaSalida==null) {
+      return null;
+    }    
+    const fechaSalidaConTiempo= unirFechaHora(fechaSalida, horaSalida);
+    if (fechaSalidaConTiempo && fechaMinimaSalida) {               
+      return fechaMinimaSalida <= fechaSalidaConTiempo ? null : { fechaSalidaInvalida: true };
+    }
+    return null;
   };
 }
 
 
-export const kilometrajeValidator = (): ValidatorFn => {
+export const KilometrajeValidator = (): ValidatorFn => {
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const group = formGroup as FormGroup;
     const kilometrajeInicial = group.get('kilometraje_inicial')?.value;
     const kilometrajeFinal = group.get('kilometraje_final')?.value;
+
     if (group.get('kilometraje_inicial')?.disabled && group.get('kilometraje_final')?.disabled) {
       return null;
     }
     if (group.get('kilometraje_inicial')?.disabled && kilometrajeInicial > 0 && kilometrajeFinal === 0) {
-      return { kilometrajeInicialRequerido: true, mensaje: "El kilometraje final es requerido" };
+      return { kilometrajeInvalido: true, mensaje: "El kilometraje final es requerido" };
     }
     if (kilometrajeInicial === 0 && kilometrajeFinal === 0) {
-      return { kilometrajeInicialRequerido: true, mensaje: "El kilometraje inicial y final son requeridos" };
+      return { kilometrajeInvalido: true, mensaje: "El kilometraje inicial y final son requeridos" };
     }
 
     if (kilometrajeInicial == kilometrajeFinal) {
-      return { kilometrajeIgual: true, mensaje: "El kilometraje inicial y final no pueden ser iguales" };
+      return { kilometrajeInvalido: true, mensaje: "El kilometraje inicial y final no pueden ser iguales" };
     }
 
     return kilometrajeFinal > kilometrajeInicial ? null : { kilometrajeInvalido: true, mensaje: "El kilometraje final debe ser mayor al inicial" };
   };
 }
 
-
-
-
-
-// export const NumberValidator = (): ValidatorFn => {
-//   return (control: AbstractControl): ValidationErrors | null => {
-//     const value = control.value;
-//     if (value === null || value === undefined || value === '') {
-//       return null;
-//     }
-//     const valor =value.replace(/\,/g, '').replace(/\$/g, '');  
-//     if (Number(valor)>0) {
-//       return { number: true };
-//     }
-//     return null;
-//   }
-// }
 
 
 export class NumberFormatter {
