@@ -4,20 +4,13 @@
             class="font-roboto w-[32rem] mx-4 mt-1  px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md  dark:bg-gray-900/50 dark:border-white">
             <div class="grid gap-1 ">
                 <app-autocomplete  [hasError]="tieneError('ops')" (onSelect)="onSelectOP($event)"></app-autocomplete>
-                <div class="flex items-start justify-start flex-wrap gap-2 w-full ">
+                <div class="flex items-start justify-start flex-wrap gap-2 mt-2  w-full ">
                     @for (op of formRegistro.get('ops')!.value;track op){
                     <p-chip
                         styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
                         label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
                     }
-                </div>
-                <!-- @if ( tieneError('ops') )
-                {
-                    <div class="text-red-500 dark:bg-white text-xs text-center rounded  p-1.5 w-full">
-                        Es necesario seleccionar al menos una orden de producción
-                    </div>                
-                } -->
-    
+                </div>                
             </div>
             <form class="space-y-3" [formGroup]="formRegistro">
                 <div class="w-full">
@@ -43,7 +36,7 @@
                     <select id="transporte" formControlName="tipo_servicio" 
                         aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
                         [ngClass]="{'input-invalido': tieneError('tipo_servicio'), 'input': !tieneError('tipo_servicio') }">
-                        <option value="0">SELECCIONE UNA UN TIPO DE SERVICIO</option>
+                        <option value="0">SELECCIONE UN TIPO DE SERVICIO</option>
                         @for (tipo of tipoServicios;track tipo.id){
                         <option value="{{tipo.id}}">{{tipo.descripcion}} </option>
                         }
