@@ -22,7 +22,7 @@ export class NuevaComponent implements OnInit {
   changeDetectorRef = inject(ChangeDetectorRef);
   dataService = inject(DataService);
   fb = inject(FormBuilder);
-  router=inject(Router);
+  router = inject(Router);
   registroInterno = signal<boolean>(true);
   formRegistro = this.fb.group({
     registroInterno: createFormRegistroInternoBuilder(this.fb),
@@ -62,16 +62,18 @@ export class NuevaComponent implements OnInit {
       kilometraje_inicial,
       observaciones
     } = registroInterno.getRawValue();
-    //const fechaSalida = this.formatDate(fecha_salida!, hora_salida!);
-    //const fechaRegreso = this.formatDate(fecha_regreso!, hora_regreso!);
-    //const fecha_salida=new Date(2025, 0, 1, 12, 0, 0);
-    //const fecha_regreso=new Date(2025, 0, 1, 12, 0, 0);
 
+
+
+    
+    const fechaSalida = this.formatDate(fecha_salida!, null);
+    const fechaRegreso = this.formatDate(fecha_regreso!, null);
+
+
+    
     const registro: Recorrido = {
-      //fechaSalida,
-      //fechaRegreso,
-      fecha_regreso: new Date(2025, 0, 1, 12, 0, 0),
-      fecha_salida: new Date(2025, 0, 1, 12, 0, 0),
+      fecha_regreso: this.convertirACadenaFecha(fechaRegreso, hora_regreso!),
+      fecha_salida: this.convertirACadenaFecha(fechaSalida, hora_salida!),
       id_transporte: +transporte,
       id_chofer: +chofer,
       observaciones,
@@ -79,48 +81,48 @@ export class NuevaComponent implements OnInit {
       kilometraje_inicial: +kilometraje_inicial!,
       kilometraje_final: +kilometraje_final!,
       id_recorrido: this.dataService.Recorridos().length + 1,
-      tipo: 'interno',      
+      tipo: 'interno',
       destino
-    };     
+    };
+        
     this.dataService.agregarRecorrido(registro);
     this.reset();
-    
+
   }
 
 
-  regresar(){
+  regresar() {
     this.router.navigate(['/recorridos']);
   }
 
 
   private reset() {
     this.registroInterno() ? resetFormRegistroInterno(this.formRegistro.get('registroInterno') as FormGroup)
-      : resetFormRegistroExterno(this.formRegistro.get('registroExterno') as FormGroup);    
+      : resetFormRegistroExterno(this.formRegistro.get('registroExterno') as FormGroup);
   }
   private guardarRegistroExterno() {
     this.formRegistro.get("registroExterno")!.markAllAsTouched();
-    const registroExterno = this.formRegistro.get("registroExterno")!;    
+    const registroExterno = this.formRegistro.get("registroExterno")!;
     if (registroExterno.invalid) {
       return;
     }
 
-
     const {
-      fecha_registro,              
+      fecha_registro,
       ops,
       transporte,
       chofer,
-      destino,      
+      destino,
       observaciones
     } = registroExterno.getRawValue();
-    const registro:Recorrido ={
+    const registro: Recorrido = {
       tipo: 'externo',
       id_recorrido: this.dataService.Recorridos().length + 1,
       id_transporte: +transporte,
       id_chofer: +chofer,
       fecha_registro,
       destino,
-      observaciones,      
+      observaciones,
       ops,
     };
     this.dataService.agregarRecorrido(registro);
@@ -131,12 +133,23 @@ export class NuevaComponent implements OnInit {
   }
 
 
-  private formatDate(date: Date, time: string) {
+  private formatDate(date: Date, time: string | null): string {
     const dia = ('0' + date.getDate()).slice(-2);
     const mes = ('0' + (date.getMonth() + 1)).slice(-2);
     const anio = date.getFullYear();
-    const fechaCadena = `${anio}-${mes}-${dia} ${time}`;
+    const fechaCadena = `${anio}-${mes}-${dia} ${time === null ? '' : time}`;
+    console.log(fechaCadena);
     return fechaCadena;
+  }
+
+
+
+
+  private convertirACadenaFecha(fecha: string, hora: string): Date {
+    
+    const [year, month, day] = fecha.split('-').map(Number);
+    const [hours, minutes] = hora.split(':').map(Number);
+    return new Date(year, month - 1, day, hours, minutes);
   }
 
 

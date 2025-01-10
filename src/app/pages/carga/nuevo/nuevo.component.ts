@@ -27,7 +27,7 @@ export class NuevoComponent implements OnInit {
   transportes: Transporte[] = [];
   fb = inject(FormBuilder);
   dataService = inject(DataService);
-  router= inject(Router);
+  router = inject(Router);
   formRegistro: FormGroup = createFormRegistroCargaBuilder(this.fb);
 
   ngOnInit() {
@@ -107,9 +107,9 @@ export class NuevoComponent implements OnInit {
 
   }
 
-regresar() {
-  this.router.navigate(['/carga']);
-}
+  regresar() {
+    this.router.navigate(['/carga']);
+  }
 
 
   guardarRegistro() {
@@ -119,8 +119,8 @@ regresar() {
     if (this.formRegistro.invalid) {
       return;
     }
-    const { transporte,...rest } = this.formRegistro.value;
-    const nuevoRegistro = {      
+    const { transporte, ...rest } = this.formRegistro.value;
+    const nuevoRegistro = {
       ...rest,
       id_transporte: +transporte,
       id_cargaGasolina: this.dataService.CargasGasolina().length + 1,
@@ -128,13 +128,13 @@ regresar() {
       totalLitros: +this.formRegistro.get('totalLitros')?.value,
       kilometraje_inicial: +this.formRegistro.get('kilometraje_inicial')?.value,
       kilometraje_final: +this.formRegistro.get('kilometraje_final')?.value,
-      
+
     };
 
     this.dataService.agregarCargaGasolina(nuevoRegistro);
-    
+
     resetFormRegistroCarga(this.formRegistro);
-    
+
 
 
   }
