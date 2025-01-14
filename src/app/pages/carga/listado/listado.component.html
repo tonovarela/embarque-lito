@@ -15,6 +15,11 @@
             <e-column field='observaciones' headerText="Observaciones" ></e-column>
             <e-column field='kilometraje_inicial' headerText="Kilometraje inicial" ></e-column>
             <e-column field='kilometraje_final' headerText="Kilometraje final" ></e-column>
+            <e-column field='fecha_carga' headerText="fecha_carga" >
+               <ng-template #template let-data>
+                  {{data.fecha_carga | date: 'dd-MM-yyyy'}}
+               </ng-template>
+            </e-column>
          </e-columns>
       </ejs-grid>      
 </div>

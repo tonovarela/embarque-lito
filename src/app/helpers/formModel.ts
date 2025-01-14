@@ -1,8 +1,9 @@
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { FechaMinimaSalidaValidator, KilometrajeValidator, MayorACeroValidator } from "./validators";
-
+import { FechaMinimaCargaValidator, FechaMinimaSalidaValidator, KilometrajeValidator, MayorACeroValidator } from "./validators";
 import { Datepicker } from 'flowbite';
 import type { DatepickerOptions } from "flowbite";
+
+
 
 declare var translateCalendar: any;
 
@@ -27,7 +28,6 @@ export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
 }
 
 
-
 export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
   return fb.group({
     ops: fb.array([], Validators.required),
@@ -40,6 +40,7 @@ export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
   });
 }
 
+
 export const createFormRegistroCargaBuilder = (fb: FormBuilder) => {
   return fb.group({
     transporte: [0, MayorACeroValidator()],
@@ -49,9 +50,9 @@ export const createFormRegistroCargaBuilder = (fb: FormBuilder) => {
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, MayorACeroValidator()],
     fecha_carga: ['', Validators.required],
-  }, { validators: KilometrajeValidator() });
+    fecha_minima_carga: [{ value: null }],
+  }, { validators: [KilometrajeValidator(),FechaMinimaCargaValidator()] });
 }
-
 
 
 const actualizarInputPorID = (id: string, valor: string) => {
@@ -61,7 +62,6 @@ const actualizarInputPorID = (id: string, valor: string) => {
   }
 
 }
-
 
 
 export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
@@ -85,7 +85,6 @@ export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
 
 }
 
-
 export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   const today = new Date();
 
@@ -103,8 +102,6 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   datepicker1.setDate(today);
   translateCalendar();
 }
-
-
 
 export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   const today = new Date();

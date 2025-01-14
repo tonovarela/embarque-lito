@@ -38,6 +38,23 @@ export const FechaMinimaSalidaValidator = (): ValidatorFn => {
 }
 
 
+export const FechaMinimaCargaValidator = (): ValidatorFn => {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const group = formGroup as FormGroup;
+    const fechaCarga = group.get('fecha_carga')?.value;
+    const fechaMinimaCarga = group.get('fecha_minima_carga')?.value;
+
+    if (fechaMinimaCarga == undefined || fechaMinimaCarga==null) {
+      return null;
+    }
+    if (fechaCarga && fechaMinimaCarga) {
+      return fechaMinimaCarga <= fechaCarga ? null : { fechaCargaInvalida: true };
+    }
+    return null;
+  };
+}
+
+
 export const KilometrajeValidator = (): ValidatorFn => {
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const group = formGroup as FormGroup;

@@ -62,27 +62,27 @@ export class NuevoComponent implements OnInit {
       this.formRegistro.get('kilometraje_final')!.setValue(0);
       this.formRegistro.get('kilometraje_final')!.disable();
       this.formRegistro.get('fecha_carga')!.setValue(new Date());
+      this.formRegistro.get('fecha_minima_carga')!.setValue(null);
       setFechaCarga(this.formRegistro,new Date());
       return;
     }
     const ultimaCarga = this.dataService.traerUltimoKilometrajeCargaGasolina(id_transporte)
-
-    if (ultimaCarga != null) {
+    
+    if (ultimaCarga != null) {            
       this.formRegistro.get('kilometraje_inicial')?.disable()
     } else {
       this.formRegistro.get('kilometraje_inicial')?.enable();
+      
     }
-
     this.formRegistro.get('kilometraje_inicial')!.setValue(ultimaCarga?.kilometraje_final || 0);
     
     this.formRegistro.get('kilometraje_final')!.enable();
-    this.formRegistro.get('kilometraje_final')!.setValue(0);
-    this.formRegistro.get('fecha_carga')!.setValue(ultimaCarga.fecha_carga);
-    console.log(ultimaCarga.fecha_carga);
-    setFechaCarga(this.formRegistro,ultimaCarga.fecha_carga );
+    this.formRegistro.get('kilometraje_final')!.setValue(0)
+    const fechaMinimaCarga=ultimaCarga?.fecha_carga ?? new Date();
+    this.formRegistro.get('fecha_carga')!.setValue(fechaMinimaCarga);
+    this.formRegistro.get('fecha_minima_carga')!.setValue(ultimaCarga?.fecha_carga ?? null);    
+    setFechaCarga(this.formRegistro,fechaMinimaCarga);
 
-
-    //TODO: obtener el kilometraje inicial del transporte seleccionado por api y si tiene kilometraje final setearlo como inicial y deshabilitar el campo en caso contrario habilitar los 2 campos    
 
   }
 
@@ -139,5 +139,12 @@ export class NuevoComponent implements OnInit {
 
 
   }
+
+
+  tieneErrorFechaCarga(): boolean {
+    return this.formRegistro.errors  && this.formRegistro.errors['fechaCargaInvalida'] ;;
+  }
+
+
 
 }

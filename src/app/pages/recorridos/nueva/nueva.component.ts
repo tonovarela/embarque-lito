@@ -156,5 +156,12 @@ export class NuevaComponent implements OnInit {
     return new Date(year, month - 1, day, hours, minutes);
   }
 
+  tieneError(controlName: string): boolean {
+    const control = this.formRegistro.get(controlName);
+    if (control && control.errors && (control.dirty || control.touched)) {
+      return true;
+    }
+    return false;
+  }
 
 }

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { SynfusionModule } from '@app/lib/synfusion.module';
@@ -7,7 +8,7 @@ import { FabbuttonComponent } from '@app/shared/fabbutton/fabbutton.component';
 
 @Component({  
   standalone: true,
-  imports: [SynfusionModule,FabbuttonComponent],
+  imports: [SynfusionModule,FabbuttonComponent,CommonModule],
   
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css'

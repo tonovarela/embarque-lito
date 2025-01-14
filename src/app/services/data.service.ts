@@ -77,7 +77,7 @@ export class DataService {
       observaciones: 'observaciones1',
       kilometraje_inicial: 2000,
       kilometraje_final: 3000,
-      fecha_carga: new Date()
+      fecha_carga: new Date(2025, 0, 1, 15, 0, 0)
     },
     {
       id_cargaGasolina: 3,
@@ -87,7 +87,7 @@ export class DataService {
       observaciones: 'observaciones',
       kilometraje_inicial: 3000,
       kilometraje_final: 4000,
-      fecha_carga: new Date()
+      fecha_carga:  new Date(2025, 0, 2, 15, 0, 0)
     },
     {
       id_cargaGasolina: 4,
@@ -97,7 +97,7 @@ export class DataService {
       observaciones: 'observaciones',
       kilometraje_inicial: 2000,
       kilometraje_final: 2500,
-      fecha_carga: new Date(2025,1,11)
+      fecha_carga: new Date(2024,11,11)
     }
 
   ]);

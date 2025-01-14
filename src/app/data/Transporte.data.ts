@@ -4,7 +4,7 @@ import { Transporte } from "@app/interface/Transporte";
 export const Transportes: Transporte[] = [
     {
         id_transporte: 1,
-        descripcion: 'URVAN 2015',
+        descripcion: '  ',
         placas: 'NYP1406'
     },
     {
