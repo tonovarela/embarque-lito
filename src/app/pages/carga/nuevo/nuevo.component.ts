@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Transportes } from '@app/data';
 import { createFormRegistroCargaBuilder, resetFormRegistroCarga, setFechaCarga } from '@app/helpers/formModel';
 import { NumberFormatter } from '@app/helpers/validators';
 import { Transporte } from '@app/interface';
@@ -10,6 +9,7 @@ import { GaugeComponent, MinusComponent, PlusComponent } from '@app/shared/svg';
 import { CalendarComponent } from '@app/shared/svg/calendar/calendar.component';
 import { obtenerValorNumerico } from '../../../helpers/validators';
 import { Router } from '@angular/router';
+import { TransporteService } from '@app/services/transporte.service';
 
 
 @Component({
@@ -23,17 +23,20 @@ import { Router } from '@angular/router';
 export class NuevoComponent implements OnInit {
 
   constructor() { }
-
-  transportes: Transporte[] = [];
+transporteService = inject(TransporteService);
+  //transportes: Transporte[] = [];
   fb = inject(FormBuilder);
   dataService = inject(DataService);
   router = inject(Router);
   formRegistro: FormGroup = createFormRegistroCargaBuilder(this.fb);
+  
 
   ngOnInit() {
     resetFormRegistroCarga(this.formRegistro);
-    this.transportes = Transportes;
+    //this.transportes = Transportes;
   }
+
+  transportes= computed(() => this.transporteService.transportes().internos);
 
 
   incrementar(valor: number, nombre: string) {

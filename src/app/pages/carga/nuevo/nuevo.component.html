@@ -21,7 +21,7 @@
                             [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }"
                                 class="capitalize ">
                                 <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
-                                @for (transporte of transportes;track transporte.id_transporte){
+                                @for (transporte of transportes();track transporte.id_transporte){
                                 <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
                                     {{transporte.placas}}
                                 </option>

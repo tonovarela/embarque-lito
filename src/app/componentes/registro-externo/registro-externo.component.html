@@ -17,7 +17,7 @@
                     <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
                         [ngClass]="{'input-invalido': tieneError('chofer'), 'input': !tieneError('chofer') }">
                         <option value='0'>SELECCIONE UN CHOFER</option>s
-                        @for (chofer of choferes;track chofer.id){
+                        @for (chofer of choferes();track chofer.id){
                         <option value="{{chofer.id}}">{{chofer.nombre}}</option>
                         }
                     </select>
@@ -27,7 +27,7 @@
                         aria-placeholder="Seleccione una unidad de transporte" class="uppercase"
                         [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
                         <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
-                        @for (transporte of transportes;track transporte.id_transporte){
+                        @for (transporte of transportes();track transporte.id_transporte){
                         <option value="{{transporte.id_transporte}}">{{transporte.descripcion }}                           </option>
                         }
                     </select>
@@ -38,7 +38,7 @@
                         
                         [ngClass]="{'input-invalido': tieneError('tipo_servicio'), 'input': !tieneError('tipo_servicio') }">
                         <option value="0">SELECCIONE UN TIPO DE SERVICIO</option>
-                        @for (tipo of tipoServicios;track tipo.id){
+                        @for (tipo of tipoServicios();track tipo.id){
                         <option value="{{tipo.id}}">{{tipo.descripcion}} </option>
                         }
                     </select>

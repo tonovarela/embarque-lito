@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PrimeNgModule } from '@app/lib/primeng.module';
-import { delay, of, Subject, switchMap, tap } from 'rxjs';
+import { delay, Subject, switchMap, tap } from 'rxjs';
 import { SearchComponent } from '../svg';
-import { opsBusqueda } from '@app/data/Orden.data';
+import { MetricsService } from '@app/services/metrics.service';
+import { OrdenMetrics } from '@app/interface/ResponseOrdenMetrics';
 
 @Component({
   selector: 'app-autocomplete',
@@ -16,8 +17,9 @@ export class AutocompleteComponent {
 
   public valorQuery: string = "";
   private valorQuerySubject: Subject<string> = new Subject<string>();  
+  metricsService = inject(MetricsService);
   public cargandoBusqueda = signal(false);
-  public OPsBusqueda = signal<any[]>([]);
+  public OPsBusqueda = signal<OrdenMetrics[]>([]);
   filteredResults: string[] = [];
   @Input() hasError: boolean =false;
   @Output() onSelect = new EventEmitter<string>();
@@ -30,10 +32,12 @@ export class AutocompleteComponent {
   constructor() {   
 
     this.valorQuerySubject.pipe(
-      tap(() => this.cargandoBusqueda.set(true)),
+      tap(async() => {        
+        this.cargandoBusqueda.set(true);
+      }),
       delay(1100),
-      switchMap(query => { return of({ ordenes: opsBusqueda() }) })
-    ).subscribe((response) => {
+      switchMap(query =>  this.metricsService.buscar(query))
+    ).subscribe((response) => {    
       this.cargandoBusqueda.set(false);
       this.OPsBusqueda.set(response.ordenes);
     })

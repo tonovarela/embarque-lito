@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ChoferesExternos, TransportesExternos } from '@app/data';
-import { tipoServicios } from '@app/data/TipoServicio.data';
+//import { ChoferesExternos, TransportesExternos } from '@app/data';
+//import { tipoServicios } from '@app/data/TipoServicio.data';
 import { resetFormRegistroExterno } from '@app/helpers/formModel';
 import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface';
 import { PrimeNgModule } from '@app/lib/primeng.module';
+import { ChoferService } from '@app/services/chofer.service';
+import { TransporteService } from '@app/services/transporte.service';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
 
@@ -25,16 +27,20 @@ export class RegistroExternoComponent implements OnInit {
   formRegistro!: FormGroup;
   fechaSalida: string = '';
   today = new Date();
+  choferService = inject(ChoferService);  
+  transporteService = inject(TransporteService);  
   diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };
-  choferes: Partial<Chofer>[] = [];
-  transportes: Partial<Transporte>[] = [];
-  tipoServicios = tipoServicios;
+  
+  
 
+  choferes= computed(() => this.choferService.choferes().externos);
+  transportes= computed(() => this.transporteService.transportes().externos);
+  tipoServicios = computed(() => this.transporteService.transportes().tipoServicios);
+  
 
   ngOnInit(): void {
-    this.formRegistro = this.formGroup.get('registroExterno') as FormGroup;
-    this.choferes = ChoferesExternos;
-    this.transportes = TransportesExternos;
+    this.formRegistro = this.formGroup.get('registroExterno') as FormGroup;  
+    
   }
 
   ngAfterViewInit(): void {

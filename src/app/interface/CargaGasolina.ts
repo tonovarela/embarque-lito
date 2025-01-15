@@ -1,8 +1,8 @@
 export interface CargaGasolina {
-    id_cargaGasolina: number;
+    id_carga_gasolina: number;
     id_transporte: number;
-    totalLitros: string;
-    importeCarga: string;
+    total_litros: string;
+    importe_carga: string;
     observaciones: string;
     kilometraje_inicial: number;
     kilometraje_final: number;

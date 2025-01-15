@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Choferes, Transportes } from '@app/data';
 import { resetFormRegistroInterno, setFechaSalida } from '@app/helpers/formModel';
-import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface';
+import { DiferenciaTiempo } from '@app/interface';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { DataService } from '@app/services/data.service';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
-import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
-import { tipoServicios } from '../../data/TipoServicio.data';
 import { unirFechaHora } from '@app/helpers/helpers';
-import { Datepicker, DatepickerOptions } from 'flowbite';
+import { ChoferService } from '@app/services/chofer.service';
+import { TransporteService } from '@app/services/transporte.service';
+
+import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
+
+
 
 @Component({
   selector: 'app-registro-interno',
@@ -23,22 +25,29 @@ import { Datepicker, DatepickerOptions } from 'flowbite';
 export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
   @Input() formGroup!: FormGroup;
+
+
   fb = inject(FormBuilder);
   dataService = inject(DataService);
+  choferService = inject(ChoferService);
+  transporteService = inject(TransporteService);
+  
+
   formRegistro!: FormGroup;
   fechaSalida: string = '';
   today = new Date();
   fechaMinimaSalida: Date | null = null;
-  diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };
-  choferes: Chofer[] = [];
-  transportes: Transporte[] = [];
-  tipoServicios = tipoServicios;
+  diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };    
+
+  transportes = computed(() => this.transporteService.transportes().internos);
+  choferes= computed(() => this.choferService.choferes().internos);
+  tipoServicios = computed(() => this.transporteService.transportes().tipoServicios); 
 
   ngOnInit(): void {
-    this.formRegistro = this.formGroup.get('registroInterno') as FormGroup;
-    this.choferes = Choferes;
-    this.transportes = Transportes;
+    this.formRegistro = this.formGroup.get('registroInterno') as FormGroup;            
   }
+
+  
 
 
   ngAfterViewInit(): void {
@@ -94,7 +103,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
   public actualizarTransporte() {
     const id_chofer = this.formRegistro.get('chofer')!.value;
-    const choferAsignado = this.choferes.find(chofer => chofer.id === +id_chofer);
+    const choferAsignado = this.choferes().find(chofer => chofer.id === id_chofer);    
     this.formRegistro.get('transporte')!.setValue(choferAsignado?.id_transporteAsignado ?? 0);
     this.actualizarKilometrajeInicial();
   }
