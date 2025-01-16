@@ -2,15 +2,17 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, computed, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { resetFormRegistroInterno, setFechaSalida } from '@app/helpers/formModel';
-import { DiferenciaTiempo } from '@app/interface';
+import { DiferenciaTiempo } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
-import { DataService } from '@app/services/data.service';
+
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 import { unirFechaHora } from '@app/helpers/helpers';
 import { ChoferService } from '@app/services/chofer.service';
 import { TransporteService } from '@app/services/transporte.service';
 
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
+import { RecorridoService } from '@app/services/recorrido.service';
+import { firstValueFrom } from 'rxjs';
 
 
 
@@ -28,7 +30,8 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
 
   fb = inject(FormBuilder);
-  dataService = inject(DataService);
+  //dataService = inject(DataService);
+  recorridoService = inject(RecorridoService);
   choferService = inject(ChoferService);
   transporteService = inject(TransporteService);
   
@@ -108,7 +111,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     this.actualizarKilometrajeInicial();
   }
 
-  public actualizarKilometrajeInicial() {
+  public async actualizarKilometrajeInicial() {
 
     const id_transporte = this.formRegistro.get('transporte')!.value;
     if (id_transporte == "0") {
@@ -120,7 +123,9 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
       setFechaSalida(this.formRegistro, null );
       return;
     }
-    const ultimoRecorrido = this.dataService.traerUltimoRecorrido(id_transporte);
+    const responseRecorrido = await firstValueFrom(this.recorridoService.ultimo(id_transporte));
+    const ultimoRecorrido = responseRecorrido.recorrido;
+    
     if (ultimoRecorrido == null) {
       this.formRegistro.get('kilometraje_inicial')!.enable();
       this.formRegistro.get('kilometraje_final')!.enable();
@@ -137,7 +142,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     this.formRegistro.get('kilometraje_inicial')!.setValue(kilometraje_final);
     this.formRegistro.get('kilometraje_final')!.enable();
     this.formRegistro.get('kilometraje_final')!.setValue(0);  
-    console.log(this.fechaMinimaSalida);  
+    console.log(this.fechaMinimaSalida);
     setFechaSalida(this.formRegistro, this.fechaMinimaSalida );
 
   }
@@ -153,7 +158,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
 
   actualizarFecha({ detail }: any, nombre: string) {
-    const fecha = detail.date;    
+    const fecha = detail.date;        
     this.formRegistro.get(nombre)!.setValue(fecha);
   }
 

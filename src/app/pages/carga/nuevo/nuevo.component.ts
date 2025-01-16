@@ -3,7 +3,7 @@ import { Component, computed, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { createFormRegistroCargaBuilder, resetFormRegistroCarga, setFechaCarga } from '@app/helpers/formModel';
 import { NumberFormatter } from '@app/helpers/validators';
-import { Transporte } from '@app/interface';
+import { Transporte } from '@app/interface/models';
 import { DataService } from '@app/services/data.service';
 import { GaugeComponent, MinusComponent, PlusComponent } from '@app/shared/svg';
 import { CalendarComponent } from '@app/shared/svg/calendar/calendar.component';

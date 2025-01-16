@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 
-import { Transportes } from '@app/interface/Catalogos';
+import { Transportes } from '@app/interface/models/Catalogos';
 import { environment } from '@environments/environment.development';
 import { firstValueFrom } from 'rxjs';
 

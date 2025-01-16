@@ -1,63 +1,12 @@
 import { computed, Injectable, signal } from '@angular/core';
-//import { Choferes, ChoferesExternos, Transportes, TransportesExternos } from '@app/data';
-import { CargaGasolina, Recorrido } from '@app/interface';
-//import { tipoServicios } from '../data/TipoServicio.data';
-
+import { CargaGasolina, Recorrido } from '@app/interface/models';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private recorridos = signal<Recorrido[]>([
-    {
-      id_recorrido: 1,
-      id_transporte: 1,
-      tipo: 'interno',
-      id_chofer: 3141,
-      fecha_registro: new Date(),
-      kilometraje_inicial: 1500,
-      kilometraje_final: 2000,
-      fecha_salida: new Date(2025, 0, 1, 12, 0, 0),
-      fecha_regreso: new Date(2025, 0, 1, 15, 0, 0),
-      observaciones: 'observaciones',
-      id_tipo_servicio: 1,
-      ops: ['L4582'],
-      destino: 'destino 1'
-    },
-    {
-      id_recorrido: 2,
-      id_transporte: 9,
-      tipo: 'externo',
-      id_chofer: 3142,
-      fecha_registro: new Date(),
-      kilometraje_inicial: 2000,
-      kilometraje_final: 3000,
-      fecha_salida: new Date(2024, 11, 1, 12, 0, 0),
-      fecha_regreso: new Date(2024, 11, 1, 18, 0, 0),
-      observaciones: 'observaciones1',
-      id_tipo_servicio: 2,
-      ops: ['64255'],
-      destino: 'destino 2'
-    },
-    {
-      id_recorrido: 3,
-      id_transporte: 3,
-      tipo: 'interno',
-      id_chofer: 3141,
-      fecha_registro: new Date(),
-      kilometraje_inicial: 3000,
-      kilometraje_final: 4000,
-      fecha_salida: new Date(2024, 11, 2, 10, 0, 0),
-      fecha_regreso: new Date(2024, 11, 2, 19, 0, 0),
-      observaciones: 'observaciones',
-      id_tipo_servicio: 3,
-      ops: ['L31469'],
-      destino: 'destino 3'
-    }
-  ]);
-
-
+  
   private cargasGasolina = signal<CargaGasolina[]>([
     {
       id_carga_gasolina: 1,
@@ -92,32 +41,17 @@ export class DataService {
     
   ]);
 
-  //transportes=[...Transportes, ...TransportesExternos];
-  //choferes =[...Choferes,...ChoferesExternos];
-  //tipoServicios = tipoServicios;
 
-
-
-  Recorridos = computed(() => this.recorridos().map((recorrido: Recorrido) => {
-    return {
-      ...recorrido,
-      //descripcion_chofer: this.choferes.find(chofer => chofer.id === recorrido.id_chofer)?.nombre,
-      //descripcion_tipo_servicio:this.tipoServicios.find(tipoServicio => tipoServicio.id === recorrido.id_tipo_servicio)?.descripcion,      
-      //descripcion_transporte: this.transportes.find(transporte => transporte.id_transporte === recorrido.id_transporte)?.descripcion
-    }
-  }));
 
   CargasGasolina = computed(() => this.cargasGasolina().map((cargaGasolina: CargaGasolina) => {    
-    return { ...cargaGasolina, 
-      //descripcion_transporte: this.transportes.find(transporte => transporte.id_transporte === cargaGasolina.id_transporte)?.descripcion 
-      }
+    return { ...cargaGasolina}
   }));
 
 
 
 
   agregarRecorrido(recorrido: Recorrido) {
-    this.recorridos.set([...this.recorridos(), recorrido]);
+    //this.recorridos.set([...this.recorridos(), recorrido]);
   }
 
   agregarCargaGasolina(cargaGasolina: CargaGasolina) {
@@ -127,8 +61,8 @@ export class DataService {
  
 
   traerUltimoRecorrido(id_transporte:number){
-    const recorridos = this.Recorridos().filter(recorrido => recorrido.id_transporte === +id_transporte);
-    return recorridos[recorridos.length - 1];
+    //const recorridos = this.Recorridos().filter(recorrido => recorrido.id_transporte === +id_transporte);
+    //return recorridos[recorridos.length - 1];
 
   }
 

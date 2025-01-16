@@ -5,7 +5,7 @@ import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } f
 //import { ChoferesExternos, TransportesExternos } from '@app/data';
 //import { tipoServicios } from '@app/data/TipoServicio.data';
 import { resetFormRegistroExterno } from '@app/helpers/formModel';
-import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface';
+import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { ChoferService } from '@app/services/chofer.service';
 import { TransporteService } from '@app/services/transporte.service';

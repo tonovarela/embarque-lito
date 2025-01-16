@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { ResponseOrdenMetrics } from '@app/interface/ResponseOrdenMetrics';
+import { ResponseOrdenMetrics } from '@app/interface/responses/ResponseOrdenMetrics';
 import { environment } from '@environments/environment.development';
 
 

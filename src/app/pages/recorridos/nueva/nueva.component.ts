@@ -6,9 +6,11 @@ import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder, res
 import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
 import { RegistroInternoComponent } from '@app/componentes/registro-interno/registro-interno.component';
 import { initFlowbite } from 'flowbite';
-import { Recorrido } from '@app/interface';
+import { Recorrido } from '@app/interface/models';
 import { DataService } from '@app/services/data.service';
 import { Router } from '@angular/router';
+import { RecorridoService } from '@app/services/recorrido.service';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -21,6 +23,7 @@ import { Router } from '@angular/router';
 export class NuevaComponent implements OnInit {
   changeDetectorRef = inject(ChangeDetectorRef);
   dataService = inject(DataService);
+  recorridoService = inject(RecorridoService);
   fb = inject(FormBuilder);
   router = inject(Router);
   registroInterno = signal<boolean>(true);
@@ -42,16 +45,16 @@ export class NuevaComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  private guardarRegistroInterno() {
+  private async guardarRegistroInterno() {
     this.formRegistro.get("registroInterno")!.markAllAsTouched();
     this.formRegistro.get("registroInterno")!.updateValueAndValidity();
     const registroInterno = this.formRegistro.get("registroInterno")!;
-    
+
     if (registroInterno.invalid) {
       return;
     }
 
-    console.log(registroInterno.getRawValue());
+
 
     const {
       fecha_salida,
@@ -60,6 +63,7 @@ export class NuevaComponent implements OnInit {
       hora_regreso,
       ops,
       transporte,
+      tipo_servicio,
       chofer,
       kilometraje_final,
       destino,
@@ -67,31 +71,25 @@ export class NuevaComponent implements OnInit {
       observaciones
     } = registroInterno.getRawValue();
 
-
-
-    
-    const fechaSalida = this.formatDate(fecha_salida!, null);
-    const fechaRegreso = this.formatDate(fecha_regreso!, null);
-
-
-    
     const registro: Recorrido = {
-      fecha_regreso: this.convertirACadenaFecha(fechaRegreso, hora_regreso!),
-      fecha_salida: this.convertirACadenaFecha(fechaSalida, hora_salida!),
+      id_tipo_servicio: tipo_servicio,
+      observaciones,
+      fecha_salida: this.formatDate(new Date(fecha_salida!), hora_salida!),
+      fecha_regreso: this.formatDate(new Date(fecha_regreso!), hora_regreso!),
       id_transporte: +transporte,
       id_chofer: +chofer,
-      observaciones,
       ops,
       kilometraje_inicial: +kilometraje_inicial!,
       kilometraje_final: +kilometraje_final!,
-      id_recorrido: this.dataService.Recorridos().length + 1,
       tipo: 'interno',
       destino
     };
-        
     console.log(registro);
+
+
+    await firstValueFrom(this.recorridoService.registrar(registro))
     //this.dataService.agregarRecorrido(registro);
-    //this.reset();
+    this.reset();
 
   }
 
@@ -122,7 +120,7 @@ export class NuevaComponent implements OnInit {
     } = registroExterno.getRawValue();
     const registro: Recorrido = {
       tipo: 'externo',
-      id_recorrido: this.dataService.Recorridos().length + 1,
+      id_recorrido: 0,//this.dataService.Recorridos().length + 1,
       id_transporte: +transporte,
       id_chofer: +chofer,
       fecha_registro,
@@ -135,6 +133,9 @@ export class NuevaComponent implements OnInit {
 
 
 
+    
+
+
   }
 
 
@@ -142,15 +143,17 @@ export class NuevaComponent implements OnInit {
     const dia = ('0' + date.getDate()).slice(-2);
     const mes = ('0' + (date.getMonth() + 1)).slice(-2);
     const anio = date.getFullYear();
-    const fechaCadena = `${anio}-${mes}-${dia} ${time === null ? '' : time}`;    
+    const fechaCadena = `${anio}-${dia}-${mes} ${time === null ? '' : time}`;
     return fechaCadena;
   }
 
 
 
 
+
+
   private convertirACadenaFecha(fecha: string, hora: string): Date {
-    
+
     const [year, month, day] = fecha.split('-').map(Number);
     const [hours, minutes] = hora.split(':').map(Number);
     return new Date(year, month - 1, day, hours, minutes);

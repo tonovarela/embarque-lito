@@ -17,7 +17,7 @@ export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, MayorACeroValidator()],
     destino: [{ value: '' }, Validators.required],
-    ops: fb.array([], Validators.required),
+    ops: fb.array([''], Validators.required),
     hora_salida: ['00:00'],
     hora_regreso: ['00:00'],
     fecha_salida: [today],

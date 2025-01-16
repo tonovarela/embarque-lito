@@ -2,7 +2,6 @@ export const  unirFechaHora=(date: Date, hora: string): Date=> {
     if (date == null || hora == null) {
       return new Date();
     }
-
     const dia = (date.getDate());
     const mes = date.getMonth() + 1
     const anio = date.getFullYear();

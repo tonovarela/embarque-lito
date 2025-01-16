@@ -1,8 +1,8 @@
 export interface ResponseOrdenMetrics {
-    ordenes:OrdenMetrics[];
+    ordenes: OrdenMetrics[];
 }
 
 export interface OrdenMetrics {
-op: string;
-descripcion: string;
+    op: string;
+    descripcion: string;
 }

@@ -4,7 +4,7 @@ import { PrimeNgModule } from '@app/lib/primeng.module';
 import { delay, Subject, switchMap, tap } from 'rxjs';
 import { SearchComponent } from '../svg';
 import { MetricsService } from '@app/services/metrics.service';
-import { OrdenMetrics } from '@app/interface/ResponseOrdenMetrics';
+import { OrdenMetrics } from '@app/interface/responses/ResponseOrdenMetrics';
 
 @Component({
   selector: 'app-autocomplete',
