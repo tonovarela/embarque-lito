@@ -16,6 +16,7 @@ import { firstValueFrom } from 'rxjs';
 
 
 
+
 @Component({
   selector: 'app-registro-interno',
   standalone: true,
@@ -67,6 +68,22 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     resetFormRegistroInterno(this.formRegistro);
     
     
+  }
+
+  onInputNumber(event: any,field:string){
+    const target = event.target as HTMLInputElement;
+     let newValue = target.value;         
+     target.value =!isNaN(+newValue)?newValue:"";               
+    this.formRegistro.get(field)!.setValue(target.value);
+  }
+
+  onFocusNumber(event: any,field:string){
+    const target = event.target as HTMLInputElement;
+     let newValue = target.value;         
+     if (newValue == "0") {
+       target.value = "";
+     }
+     this.formRegistro.get(field)!.setValue(target.value);
   }
 
 

@@ -56,7 +56,9 @@
                             <app-minus />
                         </button>
                         <input type="text" formControlName="kilometraje_inicial"
-                            class=" bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
+                        (input)="onInputNumber($event,'kilometraje_inicial')"
+                        (focus)="onFocusNumber($event,'kilometraje_inicial')"
+                        class=" bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
                             placeholder="" required />
                         <div
                             class="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse">
@@ -76,6 +78,8 @@
                             <app-minus />
                         </button>
                         <input type="text" formControlName="kilometraje_final"
+                        (input)="onInputNumber($event,'kilometraje_final')"
+                        (focus)="onFocusNumber($event,'kilometraje_final')"
                             class="bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
                             placeholder="" required />
                         <div

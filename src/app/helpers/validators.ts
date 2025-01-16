@@ -99,7 +99,7 @@ export class NumberFormatter {
     const parts = this.value.split('.');
     if (parts.length > 1 && parts[1].length > decimals) {
       return this.format(this.value.slice(0, -1));
-    }
+    }    
     return this.format(this.value);
 
   }
