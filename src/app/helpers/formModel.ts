@@ -38,7 +38,7 @@ export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
     observaciones: [''],
     tipo_servicio: [0, MayorACeroValidator()],
     destino: ['', Validators.required],
-    fecha_registro: [new Date(), Validators.required],
+    fecha_salida: [new Date(), Validators.required],
   });
 }
 
@@ -70,7 +70,6 @@ const actualizarInputPorID = (id: string, valor: string) => {
 export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
   const today = new Date();
   formRegistro.reset();
-
   formRegistro.get("transporte")!.setValue(0);
   formRegistro.get("fecha_carga")!.setValue(today);
   formRegistro.get("kilometraje_inicial")!.setValue(0);
@@ -97,8 +96,8 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get('destino')!.setValue('');
   formRegistro.get("tipo_servicio")!.setValue(0);
-  formRegistro.get("fecha_registro")!.setValue(today);
-  const $datepickerEl = document.getElementById('fecha_registro');
+  formRegistro.get("fecha_salida")!.setValue(today);
+  const $datepickerEl = document.getElementById('fecha_salida');
   const options: DatepickerOptions = { format: 'dd-mm-yyyy', };
   const datepicker1 = new Datepicker($datepickerEl, options);
   datepicker1.init();

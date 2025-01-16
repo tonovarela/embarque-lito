@@ -10,6 +10,7 @@ import { CalendarComponent } from '@app/shared/svg/calendar/calendar.component';
 import { obtenerValorNumerico } from '../../../helpers/validators';
 import { Router } from '@angular/router';
 import { TransporteService } from '@app/services/transporte.service';
+import { tieneErrorForm } from '@app/helpers/helpers';
 
 
 @Component({
@@ -23,20 +24,20 @@ import { TransporteService } from '@app/services/transporte.service';
 export class NuevoComponent implements OnInit {
 
   constructor() { }
-transporteService = inject(TransporteService);
+  transporteService = inject(TransporteService);
   //transportes: Transporte[] = [];
   fb = inject(FormBuilder);
   dataService = inject(DataService);
   router = inject(Router);
   formRegistro: FormGroup = createFormRegistroCargaBuilder(this.fb);
-  
+
 
   ngOnInit() {
     resetFormRegistroCarga(this.formRegistro);
     //this.transportes = Transportes;
   }
 
-  transportes= computed(() => this.transporteService.transportes().internos);
+  transportes = computed(() => this.transporteService.transportes().internos);
 
 
   incrementar(valor: number, nombre: string) {
@@ -48,13 +49,7 @@ transporteService = inject(TransporteService);
     this.formRegistro.get(nombre)!.setValue(nuevoValor);
   }
 
-  tieneError(controlName: string): boolean {
-    const control = this.formRegistro.get(controlName);
-    if (control && control.errors && (control.dirty || control.touched)) {
-      return true;
-    }
-    return false;
-  }
+ 
 
   public actualizarKilometrajeInicial() {
     const id_transporte = this.formRegistro.get('transporte')!.value;
@@ -66,25 +61,25 @@ transporteService = inject(TransporteService);
       this.formRegistro.get('kilometraje_final')!.disable();
       this.formRegistro.get('fecha_carga')!.setValue(new Date());
       this.formRegistro.get('fecha_minima_carga')!.setValue(null);
-      setFechaCarga(this.formRegistro,new Date());
+      setFechaCarga(this.formRegistro, new Date());
       return;
     }
     const ultimaCarga = this.dataService.traerUltimoKilometrajeCargaGasolina(id_transporte)
-    
-    if (ultimaCarga != null) {            
+
+    if (ultimaCarga != null) {
       this.formRegistro.get('kilometraje_inicial')?.disable()
     } else {
       this.formRegistro.get('kilometraje_inicial')?.enable();
-      
+
     }
     this.formRegistro.get('kilometraje_inicial')!.setValue(ultimaCarga?.kilometraje_final || 0);
-    
+
     this.formRegistro.get('kilometraje_final')!.enable();
     this.formRegistro.get('kilometraje_final')!.setValue(0)
-    const fechaMinimaCarga=ultimaCarga?.fecha_carga ?? new Date();
+    const fechaMinimaCarga = ultimaCarga?.fecha_carga ?? new Date();
     this.formRegistro.get('fecha_carga')!.setValue(fechaMinimaCarga);
-    this.formRegistro.get('fecha_minima_carga')!.setValue(ultimaCarga?.fecha_carga ?? null);    
-    setFechaCarga(this.formRegistro,fechaMinimaCarga);
+    this.formRegistro.get('fecha_minima_carga')!.setValue(ultimaCarga?.fecha_carga ?? null);
+    setFechaCarga(this.formRegistro, fechaMinimaCarga);
 
 
   }
@@ -144,8 +139,12 @@ transporteService = inject(TransporteService);
   }
 
 
+  tieneError(controlName: string): boolean {
+    return tieneErrorForm(controlName, this.formRegistro);
+  }
+
   tieneErrorFechaCarga(): boolean {
-    return this.formRegistro.errors  && this.formRegistro.errors['fechaCargaInvalida'] ;;
+    return this.formRegistro.errors && this.formRegistro.errors['fechaCargaInvalida'];;
   }
 
 

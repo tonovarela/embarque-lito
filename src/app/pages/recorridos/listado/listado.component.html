@@ -8,7 +8,12 @@
             [pageSettings]='pageSettings'>
             <e-columns>
                <e-column field='id_recorrido'   headerText='recorrido'  width='150'></e-column> 
-               <e-column field='tipo'   ></e-column> 
+               <e-column field='tipo'   >
+                  <ng-template #template let-data>
+                     {{data.tipo | uppercase}}
+
+                  </ng-template>
+               </e-column> 
                <e-column field='descripcion_tipo_servicio'  headerText="Tipo servicio" ></e-column> 
                <e-column field='nombre_chofer'   headerText='chofer'  width='150'></e-column> 
                <e-column field='descripcion_transporte'   headerText='transporte'  width='150'></e-column> 
@@ -23,13 +28,17 @@
                   </ng-template>
                </e-column> 
                <e-column field='fecha_salida'     width='150'>
-                  <ng-template #template let-data>                     
-                       {{data.fecha_salida ? (data.fecha_salida  | date: 'dd-MM-yyyy hh:mm a'):'N/A'   }}                                          
+                  <ng-template #template let-data>          
+                     @if(data.tipo=='interno'){
+                        {{data.fecha_salida ? (data.fecha_salida  | date: 'dd-MM-yyyy hh:mm a'):'N/A'   }}                                          
+                     }@else{
+                        {{data.fecha_salida ? (data.fecha_salida  | date: 'dd-MM-yyyy'):'N/A'   }}                                          
+                     }          
                   </ng-template>
                </e-column>
                <e-column field='fecha_regreso'   width='150'>
-                  <ng-template #template let-data>
-                     {{data.fecha_regreso ? (data.fecha_regreso | date: 'dd-MM-yyyy hh:mm a'):'N/A' }}
+                  <ng-template #template let-data>                     
+                        {{data.fecha_regreso ? (data.fecha_regreso | date: 'dd-MM-yyyy hh:mm a'):'N/A' }}                                          
                   </ng-template>
                </e-column>
                <!-- <e-column field="ops ">
