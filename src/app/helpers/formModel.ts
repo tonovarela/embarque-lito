@@ -72,6 +72,7 @@ export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue(0);
   formRegistro.get("fecha_carga")!.setValue(today);
+  formRegistro.get("id_previo")!.setValue(null);
   formRegistro.get("kilometraje_inicial")!.setValue(0);
   formRegistro.get("kilometraje_final")!.setValue(0);
   const $datepickerEl = document.getElementById('fecha_carga');

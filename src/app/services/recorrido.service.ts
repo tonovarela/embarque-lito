@@ -21,6 +21,7 @@ export class RecorridoService {
   listar(){
     return this.http.get<ResponseListadoRecorrido>(`${this.API_URL}/api/recorrido`);
   }
+  
   ultimo(id_transporte:string){
     return this.http.get<ResponseUltimoRecorrido>(`${this.API_URL}/api/recorrido/ultimo/${id_transporte}`).pipe(      
       map(({recorrido}) =>  {        

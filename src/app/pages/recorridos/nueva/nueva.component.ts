@@ -79,13 +79,14 @@ export class NuevaComponent implements AfterViewInit {
       return;
     }
 
-    const { fecha_salida, ops, transporte, chofer, destino, observaciones, tipo_servicio } = registroExterno.getRawValue();
+    const { fecha_salida, ops, transporte, chofer, destino, observaciones, tipo_servicio,id_previo } = registroExterno.getRawValue();
     const registro: Recorrido = {
       destino,
       observaciones,
       ops,
       id_tipo_servicio: tipo_servicio,
       tipo: 'externo',
+      id_previo: id_previo ?? null,
       id_transporte: +transporte,
       id_chofer: +chofer,
       fecha_salida: formatDate(new Date(`${fecha_salida}`), '00:00'),

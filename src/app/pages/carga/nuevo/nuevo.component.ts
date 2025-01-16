@@ -11,6 +11,8 @@ import { obtenerValorNumerico } from '../../../helpers/validators';
 import { Router } from '@angular/router';
 import { TransporteService } from '@app/services/transporte.service';
 import { tieneErrorForm } from '@app/helpers/helpers';
+import { CargaGasolinaService } from '@app/services/cargaGasolina.service';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -25,16 +27,16 @@ export class NuevoComponent implements OnInit {
 
   constructor() { }
   transporteService = inject(TransporteService);
-  //transportes: Transporte[] = [];
+  
   fb = inject(FormBuilder);
   dataService = inject(DataService);
+  cargaGasolinaService = inject(CargaGasolinaService)
   router = inject(Router);
   formRegistro: FormGroup = createFormRegistroCargaBuilder(this.fb);
 
 
   ngOnInit() {
-    resetFormRegistroCarga(this.formRegistro);
-    //this.transportes = Transportes;
+    resetFormRegistroCarga(this.formRegistro);    
   }
 
   transportes = computed(() => this.transporteService.transportes().internos);
@@ -51,21 +53,24 @@ export class NuevoComponent implements OnInit {
 
  
 
-  public actualizarKilometrajeInicial() {
+  public async actualizarKilometrajeInicial() {
     const id_transporte = this.formRegistro.get('transporte')!.value;
 
     if (id_transporte == "0") {
       this.formRegistro.get('kilometraje_inicial')!.setValue(0);
       this.formRegistro.get('kilometraje_inicial')!.disable();
       this.formRegistro.get('kilometraje_final')!.setValue(0);
+      this.formRegistro.get('id_previo')!.setValue(null);
       this.formRegistro.get('kilometraje_final')!.disable();
       this.formRegistro.get('fecha_carga')!.setValue(new Date());
       this.formRegistro.get('fecha_minima_carga')!.setValue(null);
       setFechaCarga(this.formRegistro, new Date());
       return;
     }
-    const ultimaCarga = this.dataService.traerUltimoKilometrajeCargaGasolina(id_transporte)
-
+    const responseUltimaCarga = firstValueFrom(this.cargaGasolinaService.ultimo(id_transporte));    
+    const ultimaCarga = (await responseUltimaCarga).carga;
+    //this.dataService.traerUltimoKilometrajeCargaGasolina(id_transporte)
+    
     if (ultimaCarga != null) {
       this.formRegistro.get('kilometraje_inicial')?.disable()
     } else {

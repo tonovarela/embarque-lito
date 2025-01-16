@@ -1,2 +1,2 @@
-export * from './ResponseListadoRecorrido';
+export * from './ResponseListados';
 export * from './ResponseOrdenMetrics';
