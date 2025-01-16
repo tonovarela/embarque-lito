@@ -10,8 +10,6 @@ export const obtenerValorNumerico = (valor: string): number => {
 
 export const MayorACeroValidator = (): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors | null => {
-    //const valor:string = `${control.value}`.replace(/\,/g, '').replace(/\$/g, '')    
-
     const valor = control.value;
     const nuevoValor = obtenerValorNumerico(valor);
     return Number(nuevoValor) > 0 ? null : { MayorACero: true, mensaje: "El valor debe ser mayor a cero" };
@@ -58,8 +56,8 @@ export const FechaMinimaCargaValidator = (): ValidatorFn => {
 export const KilometrajeValidator = (): ValidatorFn => {
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const group = formGroup as FormGroup;
-    const kilometrajeInicial = group.get('kilometraje_inicial')?.value;
-    const kilometrajeFinal = group.get('kilometraje_final')?.value;
+    const kilometrajeInicial = +group.get('kilometraje_inicial')?.value;
+    const kilometrajeFinal = +group.get('kilometraje_final')?.value;
 
     if (group.get('kilometraje_inicial')?.disabled && group.get('kilometraje_final')?.disabled) {
       return null;
@@ -75,6 +73,7 @@ export const KilometrajeValidator = (): ValidatorFn => {
       return { kilometrajeInvalido: true, mensaje: "El kilometraje inicial y final no pueden ser iguales" };
     }
 
+  
     return kilometrajeFinal > kilometrajeInicial ? null : { kilometrajeInvalido: true, mensaje: "El kilometraje final debe ser mayor al inicial" };
   };
 }

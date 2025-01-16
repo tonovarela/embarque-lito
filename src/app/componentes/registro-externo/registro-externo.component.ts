@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, Input, OnInit } from '@angular/core';
+import { PrimeNgModule } from '@app/lib/primeng.module';
+
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-//import { ChoferesExternos, TransportesExternos } from '@app/data';
-//import { tipoServicios } from '@app/data/TipoServicio.data';
 import { resetFormRegistroExterno } from '@app/helpers/formModel';
-import { DiferenciaTiempo, Chofer, Transporte } from '@app/interface/models';
-import { PrimeNgModule } from '@app/lib/primeng.module';
+import { DiferenciaTiempo } from '@app/interface/models';
+
 import { ChoferService } from '@app/services/chofer.service';
 import { TransporteService } from '@app/services/transporte.service';
-import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
+
+
+import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 
 @Component({
   selector: 'app-registro-externo',
@@ -89,19 +91,6 @@ export class RegistroExternoComponent implements OnInit {
     const fecha = detail.date || null;
     this.formRegistro.get(nombre)!.setValue(fecha);
   }
-
-  // obtenerDiferenciaHoras(fechaInicio: Date, fechaFin: Date) {
-  //   const diferenciaMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
-  //   const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60)) || 0;
-  //   const diferenciaMinutos = Math.floor((diferenciaMilisegundos % (1000 * 60 * 60)) / (1000 * 60)) || 0;
-  //   const totalMinutos = Math.floor(diferenciaMilisegundos / (1000 * 60));
-  //   if (isNaN(totalMinutos) || totalMinutos < 60) {
-  //     this.formRegistro.get('hora_regreso')!.setErrors({ diferenciaInvalida: true });
-  //   } else {
-  //     this.formRegistro.get('hora_regreso')!.setErrors(null);
-  //   }
-  //   return { horas: diferenciaHoras, minutos: diferenciaMinutos, totalMinutos };
-  // }
 
 }
 

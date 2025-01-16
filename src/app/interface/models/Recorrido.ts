@@ -16,6 +16,7 @@ descripcion_tipo_servicio?:string;
 descripcion_transporte?: string; 
 fecha_registro?:Date;
 ops?:string[];
+id_previo?:number;
 }
 
 

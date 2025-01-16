@@ -14,6 +14,7 @@ export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
     transporte: [0, MayorACeroValidator()],
     chofer: [0, MayorACeroValidator()],
     tipo_servicio: [0, MayorACeroValidator()],
+    id_previo: [null],
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, MayorACeroValidator()],
     destino: [{ value: '' }, Validators.required],
@@ -32,6 +33,7 @@ export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
   return fb.group({
     ops: fb.array([], Validators.required),
     chofer: [0, MayorACeroValidator()],
+    id_previo: [null],
     transporte: [0, MayorACeroValidator()],
     observaciones: [''],
     tipo_servicio: [0, MayorACeroValidator()],
@@ -45,6 +47,7 @@ export const createFormRegistroCargaBuilder = (fb: FormBuilder) => {
   return fb.group({
     transporte: [0, MayorACeroValidator()],
     totalLitros: [{ value: '' }, [Validators.required, MayorACeroValidator()]],
+    id_previo: [null],
     importeCarga: [{ value: '' }, [Validators.required, MayorACeroValidator()]],
     observaciones: [''],
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
@@ -90,7 +93,7 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
 
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue("0");
-  formRegistro.get("chofer")!.setValue("0");
+  formRegistro.get("chofer")!.setValue("0");  
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get('destino')!.setValue('');
   formRegistro.get("tipo_servicio")!.setValue(0);
@@ -112,8 +115,10 @@ export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get("chofer")!.setValue("0");
   formRegistro.get("kilometraje_inicial")!.disable();
+
   formRegistro.get("kilometraje_final")!.disable();
   formRegistro.get("kilometraje_inicial")!.setValue(0);
+  
   formRegistro.get("kilometraje_final")!.setValue(0);
   formRegistro.get("tipo_servicio")!.setValue(0);
   formRegistro.get("fecha_regreso")!.setValue(today);

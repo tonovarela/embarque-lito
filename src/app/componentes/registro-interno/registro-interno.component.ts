@@ -118,33 +118,37 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
       this.formRegistro.get('kilometraje_inicial')!.setValue(0);  
       this.formRegistro.get('kilometraje_inicial')!.disable();
       this.formRegistro.get('kilometraje_final')!.setValue(0);
+      this.formRegistro.get('id_previo')!.setValue(null);
       this.formRegistro.get('kilometraje_final')!.disable();
       this.formRegistro.get('fecha_minima_salida')!.setValue(null);
       setFechaSalida(this.formRegistro, null );
       return;
     }
+
     const responseRecorrido = await firstValueFrom(this.recorridoService.ultimo(id_transporte));
     const ultimoRecorrido = responseRecorrido.recorrido;
     
     if (ultimoRecorrido == null) {
       this.formRegistro.get('kilometraje_inicial')!.enable();
       this.formRegistro.get('kilometraje_final')!.enable();
+      this.formRegistro.get('id_previo')!.setValue(null);
       this.formRegistro.get('fecha_minima_salida')!.setValue(null);
       this.formRegistro.get('kilometraje_inicial')!.setValue(0);
       this.formRegistro.get('kilometraje_final')!.setValue(0);
       setFechaSalida(this.formRegistro, null );
       return;
     }
-    const { kilometraje_final } = ultimoRecorrido;
+
+
+    const { kilometraje_final,id_recorrido } = ultimoRecorrido;
     this.fechaMinimaSalida = ultimoRecorrido.fecha_regreso ?? null;
     this.formRegistro.get('fecha_minima_salida')!.setValue(this.fechaMinimaSalida);         
     this.formRegistro.get('kilometraje_inicial')!.disable();
+    this.formRegistro.get('id_previo')!.setValue(id_recorrido);
     this.formRegistro.get('kilometraje_inicial')!.setValue(kilometraje_final);
     this.formRegistro.get('kilometraje_final')!.enable();
-    this.formRegistro.get('kilometraje_final')!.setValue(0);  
-    console.log(this.fechaMinimaSalida);
+    this.formRegistro.get('kilometraje_final')!.setValue(0);    
     setFechaSalida(this.formRegistro, this.fechaMinimaSalida );
-
   }
 
 
