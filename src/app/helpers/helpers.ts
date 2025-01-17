@@ -32,3 +32,22 @@ export const  unirFechaHora=(date: Date, hora: string): Date=> {
     const control = form.get(name);
     return (control && control.errors) && (control.dirty || control.touched) ? true : false;
 }
+
+
+
+export const onInputNumberValidate=(event: any,field:string,form:FormGroup)=>{
+  const target = event.target as HTMLInputElement;
+   let newValue = target.value;         
+   target.value =!isNaN(+newValue)?newValue:"";               
+   form.get(field)!.setValue(target.value);
+  
+}
+
+export const onFocusNumberValidate=(event: any,field:string,form:FormGroup)=>{
+  const target = event.target as HTMLInputElement;
+   let newValue = target.value;         
+   if (newValue == "0") {
+     target.value = "";
+   }
+   form.get(field)!.setValue(target.value);
+}

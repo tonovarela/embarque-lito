@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 @if(formRegistro.errors && formRegistro.errors["kilometrajeInvalido"]){
-                <div class="text-red-500 dark:bg-white text-xs text-center rounded  p-1.5 w-full">
+                <div class="text-red-500 dark:bg-white  dark:text-pink-500  text-xs text-center rounded  p-1.5 w-full">
                     {{formRegistro.errors["mensaje"]}}
 
                 </div>
@@ -127,7 +127,7 @@
                 </div>
                 @if (formRegistro.errors && formRegistro.errors["fechaSalidaInvalida"] ){
                 <div
-                    class="text-red-500 dark:bg-white text-xs flex  sm:flex-row flex-col  justify-between rounded  p-1.5 w-full">
+                    class="text-red-500 dark:bg-white dark:text-pink-500 text-xs flex  sm:flex-row flex-col  justify-between rounded  p-1.5 w-full">
                     <p>Fecha mínima : {{fechaMinimaSalida | date:'dd-MM-yyyy hh:mm a'}} </p>                  
                 </div>
                 }
@@ -170,7 +170,7 @@
             </div>
             @if ( tieneError('hora_regreso') )
             {
-            <div class="text-red-500 dark:bg-white text-xs text-center rounded  p-1.5 w-full">
+            <div class="text-red-500 dark:text-pink-500  dark:bg-white text-xs text-center rounded  p-1.5 w-full">
                 La diferencia entre la salida y el regreso debe de ser mayor a 1 hora
             </div>
             }

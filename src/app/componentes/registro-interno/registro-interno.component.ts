@@ -6,7 +6,7 @@ import { DiferenciaTiempo } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
-import { unirFechaHora } from '@app/helpers/helpers';
+import { onFocusNumberValidate, onInputNumberValidate, unirFechaHora } from '@app/helpers/helpers';
 import { ChoferService } from '@app/services/chofer.service';
 import { TransporteService } from '@app/services/transporte.service';
 
@@ -71,19 +71,12 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   }
 
   onInputNumber(event: any,field:string){
-    const target = event.target as HTMLInputElement;
-     let newValue = target.value;         
-     target.value =!isNaN(+newValue)?newValue:"";               
-    this.formRegistro.get(field)!.setValue(target.value);
+    onInputNumberValidate(event,field,this.formRegistro);    
   }
 
   onFocusNumber(event: any,field:string){
-    const target = event.target as HTMLInputElement;
-     let newValue = target.value;         
-     if (newValue == "0") {
-       target.value = "";
-     }
-     this.formRegistro.get(field)!.setValue(target.value);
+    onFocusNumberValidate(event,field,this.formRegistro);
+    
   }
 
 

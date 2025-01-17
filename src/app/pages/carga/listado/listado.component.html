@@ -11,15 +11,20 @@
             <e-column field='id_carga_gasolina' headerText='ID' width='100' ></e-column>
             <e-column field='descripcion_transporte' headerText="transporte" ></e-column>
             <e-column field='total_litros' headerText="total de litros" ></e-column>
-            <e-column field='importe_carga' headerText="Importe Carga" ></e-column>
-            <e-column field='observaciones' headerText="Observaciones" ></e-column>
-            <e-column field='kilometraje_inicial' headerText="Kilometraje inicial" ></e-column>
+            <e-column field='importe_carga'  headerText="Importe Carga" >
+               <ng-template #template let-data>
+                  {{data.importe_carga | currency}}
+               </ng-template>
+            </e-column>
+           
+            <e-column field='kilometraje_inicial'  headerText="Kilometraje inicial" ></e-column>
             <e-column field='kilometraje_final' headerText="Kilometraje final" ></e-column>
             <e-column field='fecha_carga' headerText="fecha_carga" >
                <ng-template #template let-data>
                   {{data.fecha_carga | date: 'dd-MM-yyyy'}}
                </ng-template>
             </e-column>
+            <e-column field='observaciones' headerText="Observaciones" ></e-column>
          </e-columns>
       </ejs-grid>      
 </div>

@@ -1,8 +1,6 @@
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from "@angular/forms";
 import { unirFechaHora } from "./helpers";
 
-
-
 export const obtenerValorNumerico = (valor: string): number => {
   const numeroValor: string = `${valor}`.replace(/\,/g, '').replace(/\$/g, '');
   return Number(numeroValor);
@@ -35,23 +33,22 @@ export const FechaMinimaSalidaValidator = (): ValidatorFn => {
   };
 }
 
-
 export const FechaMinimaCargaValidator = (): ValidatorFn => {
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const group = formGroup as FormGroup;
     const fechaCarga = group.get('fecha_carga')?.value;
     const fechaMinimaCarga = group.get('fecha_minima_carga')?.value;
-
-    if (fechaMinimaCarga == undefined || fechaMinimaCarga==null) {
+    
+    if (fechaMinimaCarga == null || fechaMinimaCarga==null) {
       return null;
-    }
+    }    
+  
     if (fechaCarga && fechaMinimaCarga) {
       return fechaMinimaCarga <= fechaCarga ? null : { fechaCargaInvalida: true };
     }
     return null;
   };
 }
-
 
 export const KilometrajeValidator = (): ValidatorFn => {
   return (formGroup: AbstractControl): ValidationErrors | null => {
@@ -77,6 +74,7 @@ export const KilometrajeValidator = (): ValidatorFn => {
     return kilometrajeFinal > kilometrajeInicial ? null : { kilometrajeInvalido: true, mensaje: "El kilometraje final debe ser mayor al inicial" };
   };
 }
+
 
 
 

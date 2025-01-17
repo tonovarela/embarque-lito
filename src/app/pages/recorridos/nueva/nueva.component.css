@@ -3,5 +3,5 @@
   }
   
   .input-calendar-invalido{
-    @apply bg-red-50 border w-full border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-red-500 dark:placeholder-red-500 dark:text-red-500 dark:focus:ring-red-500 dark:focus:border-red-500
+    @apply bg-red-50 border w-full border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-pink-500 dark:placeholder-pink-500 dark:text-pink-500 dark:focus:ring-pink-500 dark:focus:border-pink-500
   }

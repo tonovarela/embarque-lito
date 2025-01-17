@@ -11,7 +11,7 @@ import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder, res
 import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
 import { RegistroInternoComponent } from '@app/componentes/registro-interno/registro-interno.component';
 
-import { DataService } from '@app/services/data.service';
+
 import { RecorridoService } from '@app/services/recorrido.service';
 
 import { Recorrido } from '@app/interface/models';
@@ -37,7 +37,7 @@ export class NuevaComponent implements AfterViewInit {
 
   changeDetectorRef = inject(ChangeDetectorRef);
 
-  dataService = inject(DataService);
+  
   recorridoService = inject(RecorridoService);
   uiService = inject(UiService);
 

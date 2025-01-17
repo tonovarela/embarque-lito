@@ -5,6 +5,7 @@ import type { DatepickerOptions } from "flowbite";
 
 
 
+
 declare var translateCalendar: any;
 
 
@@ -68,13 +69,17 @@ const actualizarInputPorID = (id: string, valor: string) => {
 
 
 export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
-  const today = new Date();
+  const today = new Date();  
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue(0);
-  formRegistro.get("fecha_carga")!.setValue(today);
+  
   formRegistro.get("id_previo")!.setValue(null);
   formRegistro.get("kilometraje_inicial")!.setValue(0);
   formRegistro.get("kilometraje_final")!.setValue(0);
+  
+  formRegistro.get("kilometraje_inicial")!.disable();
+  formRegistro.get("kilometraje_final")!.disable();
+  
   const $datepickerEl = document.getElementById('fecha_carga');
   const options: DatepickerOptions = { format: 'dd-mm-yyyy', };
   const datepicker1 = new Datepicker($datepickerEl, options);
@@ -83,6 +88,7 @@ export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
 
   datepicker1.init();
   datepicker1.setDate(today);
+  formRegistro.get("fecha_carga")!.setValue(today);
   translateCalendar();
 
 

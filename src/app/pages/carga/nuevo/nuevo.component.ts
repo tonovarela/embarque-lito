@@ -1,18 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { createFormRegistroCargaBuilder, resetFormRegistroCarga, setFechaCarga } from '@app/helpers/formModel';
 import { NumberFormatter } from '@app/helpers/validators';
-import { Transporte } from '@app/interface/models';
-import { DataService } from '@app/services/data.service';
+import { CargaGasolina } from '@app/interface/models';
+
 import { GaugeComponent, MinusComponent, PlusComponent } from '@app/shared/svg';
 import { CalendarComponent } from '@app/shared/svg/calendar/calendar.component';
 import { obtenerValorNumerico } from '../../../helpers/validators';
 import { Router } from '@angular/router';
 import { TransporteService } from '@app/services/transporte.service';
-import { tieneErrorForm } from '@app/helpers/helpers';
+import { onFocusNumberValidate, onInputNumberValidate, tieneErrorForm } from '@app/helpers/helpers';
 import { CargaGasolinaService } from '@app/services/cargaGasolina.service';
 import { firstValueFrom } from 'rxjs';
+import { formatDate } from '../../../helpers/helpers';
+import { UiService } from '@app/services/ui.service';
 
 
 @Component({
@@ -27,16 +29,19 @@ export class NuevoComponent implements OnInit {
 
   constructor() { }
   transporteService = inject(TransporteService);
-  
+
   fb = inject(FormBuilder);
-  dataService = inject(DataService);
-  cargaGasolinaService = inject(CargaGasolinaService)
+  
+  cargaGasolinaService = inject(CargaGasolinaService);
+  uiService = inject(UiService);
+
   router = inject(Router);
   formRegistro: FormGroup = createFormRegistroCargaBuilder(this.fb);
+  guardandoCarga = signal(false);
 
 
   ngOnInit() {
-    resetFormRegistroCarga(this.formRegistro);    
+    resetFormRegistroCarga(this.formRegistro);
   }
 
   transportes = computed(() => this.transporteService.transportes().internos);
@@ -51,7 +56,7 @@ export class NuevoComponent implements OnInit {
     this.formRegistro.get(nombre)!.setValue(nuevoValor);
   }
 
- 
+
 
   public async actualizarKilometrajeInicial() {
     const id_transporte = this.formRegistro.get('transporte')!.value;
@@ -67,11 +72,9 @@ export class NuevoComponent implements OnInit {
       setFechaCarga(this.formRegistro, new Date());
       return;
     }
-    const responseUltimaCarga = firstValueFrom(this.cargaGasolinaService.ultimo(id_transporte));    
+    const responseUltimaCarga = firstValueFrom(this.cargaGasolinaService.ultimo(id_transporte));
     const ultimaCarga = (await responseUltimaCarga).carga;
-    //this.dataService.traerUltimoKilometrajeCargaGasolina(id_transporte)
-    
-    if (ultimaCarga != null) {
+    if (ultimaCarga != null) {      
       this.formRegistro.get('kilometraje_inicial')?.disable()
     } else {
       this.formRegistro.get('kilometraje_inicial')?.enable();
@@ -81,10 +84,13 @@ export class NuevoComponent implements OnInit {
 
     this.formRegistro.get('kilometraje_final')!.enable();
     this.formRegistro.get('kilometraje_final')!.setValue(0)
-    const fechaMinimaCarga = ultimaCarga?.fecha_carga ?? new Date();
-    this.formRegistro.get('fecha_carga')!.setValue(fechaMinimaCarga);
-    this.formRegistro.get('fecha_minima_carga')!.setValue(ultimaCarga?.fecha_carga ?? null);
-    setFechaCarga(this.formRegistro, fechaMinimaCarga);
+    const today= new Date();    
+    const fechaCargaActual=ultimaCarga?new Date(`${ultimaCarga?.fecha_carga}`):today;
+    const fechaMinimoCarga = ultimaCarga?new Date(`${ultimaCarga?.fecha_carga}`):null;
+    this.formRegistro.get('id_previo')?.setValue(ultimaCarga?.id_carga_gasolina??null);
+    this.formRegistro.get('fecha_carga')!.setValue(fechaCargaActual);
+    this.formRegistro.get('fecha_minima_carga')!.setValue( fechaMinimoCarga);
+    setFechaCarga(this.formRegistro, fechaCargaActual);
 
 
   }
@@ -115,34 +121,53 @@ export class NuevoComponent implements OnInit {
   }
 
   regresar() {
+    if (this.guardandoCarga()){
+      return;
+    }
     this.router.navigate(['/carga']);
   }
 
 
-  guardarRegistro() {
+  async guardarRegistro() {
     this.formRegistro.markAllAsTouched();
-    if (this.formRegistro.invalid) {
+    if (this.formRegistro.invalid || this.guardandoCarga()) {
       return;
     }
-    const { transporte, ...rest } = this.formRegistro.value;
-    const nuevoRegistro = {
-      ...rest,
+    const { transporte, chofer, observaciones, id_previo, ...rest } = this.formRegistro.getRawValue();        
+    const nuevoRegistro: CargaGasolina = {
+      observaciones,
+      id_previo,
       id_transporte: +transporte,
-      id_cargaGasolina: this.dataService.CargasGasolina().length + 1,
-      importeCarga: obtenerValorNumerico(this.formRegistro.get('importeCarga')?.value),
-      totalLitros: +this.formRegistro.get('totalLitros')?.value,
+      total_litros: this.formRegistro.get('totalLitros')?.value,
+      importe_carga: obtenerValorNumerico(this.formRegistro.get('importeCarga')?.value),
       kilometraje_inicial: +this.formRegistro.get('kilometraje_inicial')?.value,
       kilometraje_final: +this.formRegistro.get('kilometraje_final')?.value,
+      fecha_carga: formatDate(this.formRegistro.get('fecha_carga')?.value, '00:00')
     };
-
-    this.dataService.agregarCargaGasolina(nuevoRegistro);
-
-    resetFormRegistroCarga(this.formRegistro);
-
-
+    this.guardandoCarga.set(true);
+    try {
+      await firstValueFrom(this.cargaGasolinaService.registrar(nuevoRegistro));      
+      this.uiService.mostrarAlertaSuccess('Embarques', 'Carga de gasolina registrada correctamente');
+      resetFormRegistroCarga(this.formRegistro);
+      
+    } catch (ex) {
+      this.uiService.mostrarAlertaError('Embarques', 'Error al registrar la carga de gasolina');
+    }
+    finally {
+      this.guardandoCarga.set(false);
+      resetFormRegistroCarga(this.formRegistro);
+    }
 
   }
 
+
+ onInputNumber(event: any,field:string){
+    onInputNumberValidate(event,field,this.formRegistro);    
+  }
+
+  onFocusNumber(event: any,field:string){
+    onFocusNumberValidate(event,field,this.formRegistro); 
+  }
 
   tieneError(controlName: string): boolean {
     return tieneErrorForm(controlName, this.formRegistro);

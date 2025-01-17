@@ -10,5 +10,5 @@
        @apply text-gray-900 border-gray-300  focus:ring-blue-500 focus:border-blue-500  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:border-gray-600
     }
     ::ng-deep  .input-error{
-        @apply bg-red-50 text-red-500   placeholder:text-red-500 dark:border-red-500 border-red-500
+        @apply bg-red-50 text-red-500   placeholder:text-red-500 border-red-500   dark:border-pink-500 dark:placeholder-pink-500
     }
