@@ -34,8 +34,7 @@ export class AutocompleteComponent {
     this.valorQuerySubject.pipe(
       tap(async() => {        
         this.cargandoBusqueda.set(true);
-      }),
-      delay(1100),
+      }),      
       switchMap(query =>  this.metricsService.buscar(query))
     ).subscribe((response) => {    
       this.cargandoBusqueda.set(false);

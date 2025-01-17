@@ -12,3 +12,8 @@
     ::ng-deep  .input-error{
         @apply bg-red-50 text-red-500   placeholder:text-red-500 border-red-500   dark:border-pink-500 dark:placeholder-pink-500
     }
+
+
+    ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item{
+        @apply p-2 hover:bg-gray-100 dark:hover:bg-gray-800 capitalize
+    }
