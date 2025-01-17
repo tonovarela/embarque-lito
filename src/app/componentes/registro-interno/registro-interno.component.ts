@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, computed, inject, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { resetFormRegistroInterno, setFechaSalida } from '@app/helpers/formModel';
+import { resetFormRecorridoInterno, setFechaSalida } from '@app/helpers/formModel';
 import { DiferenciaTiempo } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 
@@ -65,7 +65,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   }
 
   resetForm() {
-    resetFormRegistroInterno(this.formRegistro);
+    resetFormRecorridoInterno(this.formRegistro);
     
     
   }

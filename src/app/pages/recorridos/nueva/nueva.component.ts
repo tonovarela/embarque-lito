@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { initFlowbite } from 'flowbite';
 
-import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder, resetFormRegistroExterno, resetFormRegistroInterno } from '@app/helpers/formModel';
+import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder, resetFormRecorridoExterno, resetFormRecorridoInterno } from '@app/helpers/formModel';
 
 import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
 import { RegistroInternoComponent } from '@app/componentes/registro-interno/registro-interno.component';
@@ -143,8 +143,8 @@ export class NuevaComponent implements AfterViewInit {
   }
 
   private reset() {    
-    this.registroInterno() ? resetFormRegistroInterno(this.formRegistro.get('registroInterno') as FormGroup)
-      : resetFormRegistroExterno(this.formRegistro.get('registroExterno') as FormGroup);
+    this.registroInterno() ? resetFormRecorridoInterno(this.formRegistro.get('registroInterno') as FormGroup)
+      : resetFormRecorridoExterno(this.formRegistro.get('registroExterno') as FormGroup);
       initFlowbite();   
     this.changeDetectorRef.detectChanges();  
 

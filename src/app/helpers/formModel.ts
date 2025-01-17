@@ -68,7 +68,7 @@ const actualizarInputPorID = (id: string, valor: string) => {
 }
 
 
-export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
+export const resetFormCarga = (formRegistro: FormGroup) => {
   const today = new Date();  
   formRegistro.reset();
   formRegistro.get("transporte")!.setValue(0);
@@ -94,7 +94,7 @@ export const resetFormRegistroCarga = (formRegistro: FormGroup) => {
 
 }
 
-export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
+export const resetFormRecorridoExterno = (formRegistro: FormGroup) => {
   const today = new Date();
 
   formRegistro.reset();
@@ -104,15 +104,19 @@ export const resetFormRegistroExterno = (formRegistro: FormGroup) => {
   formRegistro.get('destino')!.setValue('');
   formRegistro.get("tipo_servicio")!.setValue(0);
   formRegistro.get("fecha_salida")!.setValue(today);
-  const $datepickerEl = document.getElementById('fecha_salida');
+  const $datepickerEl = document.getElementById('fecha_salidaExt');
+  console.log($datepickerEl);
   const options: DatepickerOptions = { format: 'dd-mm-yyyy', };
   const datepicker1 = new Datepicker($datepickerEl, options);
   datepicker1.init();
-  datepicker1.setDate(today);
-  translateCalendar();
+    
+    datepicker1.setDate(today);
+    console.log(today);
+    translateCalendar();  
+  
 }
 
-export const resetFormRegistroInterno = (formRegistro: FormGroup) => {
+export const resetFormRecorridoInterno = (formRegistro: FormGroup) => {
   const today = new Date();
   const horaActual = today.toTimeString().substring(0, 2);
   const horaSalida = new Date(today.getTime() + 60 * 60 * 1000).toTimeString().substring(0, 2);

@@ -19,14 +19,16 @@ private cargaGasolinaService = inject(CargaGasolinaService);
 
 private _cargas = signal<CargaGasolina[]>([]);  
   ngOnInit(): void {
-    this.autoFitColumns = true;    
+    this.autoFitColumns = false;    
     this.cargaGasolinaService.listar().subscribe(response => this._cargas.set(response.cargas))
+    
+    
     this.iniciarResizeGrid(this.minusHeight);
 
     
   }
   cargasGasolina= computed(()=>this._cargas());
-  protected minusHeight = 0;
+  protected minusHeight = 0.27;
   constructor() {
     super();
   }

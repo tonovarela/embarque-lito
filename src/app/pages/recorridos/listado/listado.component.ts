@@ -26,7 +26,7 @@ export class ListadoComponent extends BaseGridComponent implements OnInit {
     });
   }
   Recorridos = computed(() => this._recorridos());
-  protected minusHeight = 0;
+  protected minusHeight = 0.27;
   constructor() {
     super();
   }

@@ -50,10 +50,12 @@
                             class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <app-calendar />
                         </div>
-                        <input id="fecha_salida" (changeDate)="actualizarFecha($event,'fecha_salida')"
+                        <input id="fecha_salidaExt" 
+                        type="text"
+                        (changeDate)="actualizarFecha($event,'fecha_salida')"
                             name="fecha_salida" datepicker datepicker-autohide
                             (keypress)="OnKeyPress($event)"
-                            datepicker-format="dd-mm-yyyy" type="text" tabindex="1"
+                            datepicker-format="dd-mm-yyyy"  tabindex="1"
                             [class]="{'input-calendar-invalido': tieneError('fecha_salida'), 'input-calendar': !tieneError('fecha_salida') }"
                             placeholder="Fecha de registro" />
                     </div>
@@ -70,7 +72,7 @@
                         class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Escribe tus observaciones aqui..."></textarea>    
                 </div>
-            </form>                    
+            </form>               
         </div>
     </div>
 </div>

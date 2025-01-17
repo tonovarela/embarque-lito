@@ -1,4 +1,4 @@
-<div class="relative sm:ml-64    dark:text-white">
+<div class="relative sm:ml-52    dark:text-white">
     <div class="rounded-lg  h-full  dark:border-gray-700 mt-14 transition-colors duration-30 ">
         <div class="w-full bg-white dark:bg-gray-500 h-14 flex items-center justify-between pt-2  px-4">
             <svg (click)="regresar()"
@@ -47,11 +47,14 @@
             </ul>
         </div>
         <div id="default-styled-tab-content">
-            <div class="hidden  " id="registro-interno" role="tabpanel" aria-labelledby="profile-tab">
-                <app-registro-interno [formGroup]="formRegistro"></app-registro-interno>
+            <div class="hidden  " id="registro-interno" role="tabpanel" aria-labelledby="profile-tab">                
+                    <app-registro-interno [formGroup]="formRegistro"></app-registro-interno>                
+                
             </div>
             <div class="hidden" id="registro-externo" role="tabpanel" aria-labelledby="dashboard-tab">
+                
                 <app-registro-externo [formGroup]="formRegistro"></app-registro-externo>
+                
             </div>
         </div>
         

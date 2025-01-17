@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, Input, OnInit } from '@angular/core';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { resetFormRegistroExterno } from '@app/helpers/formModel';
+import { resetFormRecorridoExterno } from '@app/helpers/formModel';
 import { DiferenciaTiempo } from '@app/interface/models';
 
 import { ChoferService } from '@app/services/chofer.service';
@@ -39,14 +39,9 @@ export class RegistroExternoComponent implements OnInit {
   transportes= computed(() => this.transporteService.transportes().externos);
   tipoServicios = computed(() => this.transporteService.transportes().tipoServicios);
   
-
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.formRegistro = this.formGroup.get('registroExterno') as FormGroup;  
-    
-  }
-
-  ngAfterViewInit(): void {
-    this.resetForm();
+    this.resetForm();    
   }
 
 
@@ -54,9 +49,11 @@ export class RegistroExternoComponent implements OnInit {
     event.preventDefault();    
   }
 
+
   resetForm() {
-    resetFormRegistroExterno(this.formRegistro);
+    resetFormRecorridoExterno(this.formRegistro);
   }
+
 
   onSelectOP(op: string) {
     const opsCurrent = this.formRegistro.get('ops')!.value;
@@ -78,7 +75,6 @@ export class RegistroExternoComponent implements OnInit {
     this.opsArray.removeAt(index);
   }
 
-
   tieneError(controlName: string): boolean {
     const control = this.formRegistro.get(controlName);
     if (control && control.errors && (control.dirty || control.touched)) {
@@ -87,6 +83,7 @@ export class RegistroExternoComponent implements OnInit {
     return false;
   }
 
+  
   actualizarFecha({ detail }: any, nombre: string) {    
     const fecha = detail.date || null;
     this.formRegistro.get(nombre)!.setValue(fecha);

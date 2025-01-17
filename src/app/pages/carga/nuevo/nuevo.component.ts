@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { createFormRegistroCargaBuilder, resetFormRegistroCarga, setFechaCarga } from '@app/helpers/formModel';
+import { createFormRegistroCargaBuilder, resetFormCarga, setFechaCarga } from '@app/helpers/formModel';
 import { NumberFormatter } from '@app/helpers/validators';
 import { CargaGasolina } from '@app/interface/models';
 
@@ -41,7 +41,7 @@ export class NuevoComponent implements OnInit {
 
 
   ngOnInit() {
-    resetFormRegistroCarga(this.formRegistro);
+    resetFormCarga(this.formRegistro);
   }
 
   transportes = computed(() => this.transporteService.transportes().internos);
@@ -148,14 +148,14 @@ export class NuevoComponent implements OnInit {
     try {
       await firstValueFrom(this.cargaGasolinaService.registrar(nuevoRegistro));      
       this.uiService.mostrarAlertaSuccess('Embarques', 'Carga de gasolina registrada correctamente');
-      resetFormRegistroCarga(this.formRegistro);
+      resetFormCarga(this.formRegistro);
       
     } catch (ex) {
       this.uiService.mostrarAlertaError('Embarques', 'Error al registrar la carga de gasolina');
     }
     finally {
       this.guardandoCarga.set(false);
-      resetFormRegistroCarga(this.formRegistro);
+      resetFormCarga(this.formRegistro);
     }
 
   }
