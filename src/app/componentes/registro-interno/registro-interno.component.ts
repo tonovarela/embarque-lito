@@ -31,7 +31,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
 
   fb = inject(FormBuilder);
-  //dataService = inject(DataService);
+  
   recorridoService = inject(RecorridoService);
   choferService = inject(ChoferService);
   transporteService = inject(TransporteService);
@@ -100,6 +100,26 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     const index = opsCurrent.findIndex((opActual: string) => opActual === op);
     this.opsArray.removeAt(index);
 
+  }
+
+  onAddRemision({value:remision}: any) {
+    
+    const remisiones = this.formRegistro.get('remisiones')?.value;
+    const remisionExiste= remisiones.find((remisionActual: string) => remisionActual === remision);
+    if (remisionExiste) {
+      return;
+    }
+    this.remisionesArray.push(this.fb.control(remision));
+
+  }
+  onRemoveRemision({value:remision}:any){
+    const remisionesCurrent = this.formRegistro.get('remisiones')!.value;
+    const index = remisionesCurrent.findIndex((remisionActual: string) => remisionActual === remision);
+    this.remisionesArray.removeAt(index);
+  }
+
+  private get remisionesArray(): FormArray {
+    return this.formRegistro.get('remisiones') as FormArray;
   }
 
   incrementar(valor: number, nombre: string) {
@@ -181,7 +201,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60)) || 0;
     const diferenciaMinutos = Math.floor((diferenciaMilisegundos % (1000 * 60 * 60)) / (1000 * 60)) || 0;
     const totalMinutos = Math.floor(diferenciaMilisegundos / (1000 * 60));
-    if (isNaN(totalMinutos) || totalMinutos < 60) {
+    if (isNaN(totalMinutos) || totalMinutos < 1) {
       this.formRegistro.get('hora_regreso')!.setErrors({ diferenciaInvalida: true });
     } else {
       this.formRegistro.get('hora_regreso')!.setErrors(null);

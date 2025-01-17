@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 
-import { SpeedDial, SpeedDialModule } from 'primeng/speeddial';
+import {  SpeedDialModule } from 'primeng/speeddial';
+import {ChipsModule} from 'primeng/chips';
 
 
 
@@ -13,6 +14,6 @@ import { ChipModule } from 'primeng/chip';
   imports: [
     CommonModule,    
   ],
-  exports:[AutoCompleteModule,ChipModule,SpeedDialModule]
+  exports:[AutoCompleteModule,ChipModule,SpeedDialModule,ChipsModule]
 })
 export class PrimeNgModule { }

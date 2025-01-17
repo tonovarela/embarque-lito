@@ -15,6 +15,10 @@ export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
     transporte: [0, MayorACeroValidator()],
     chofer: [0, MayorACeroValidator()],
     tipo_servicio: [0, MayorACeroValidator()],
+    factura: ['', Validators.required],
+    importe_factura: [{ value: '' }, [Validators.required, MayorACeroValidator()]],
+    remisiones:fb.array([], Validators.required),
+    
     id_previo: [null],
     kilometraje_inicial: [{ value: 0, disabled: true }, MayorACeroValidator()],
     kilometraje_final: [{ value: 0, disabled: true }, MayorACeroValidator()],

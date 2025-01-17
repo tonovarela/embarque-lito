@@ -16,7 +16,7 @@
             <div class="w-full">
                 <select id="chofer" formControlName="chofer" (change)="actualizarTransporte()"
                     aria-placeholder="Seleccione un chofer"
-                    [ngClass]="{'input-invalido': tieneError('chofer'), 'input': !tieneError('chofer') }">
+                    [ngClass]="{'input-invalido': tieneError('chofer'), 'input ': !tieneError('chofer') }">
                     <option value='0'>SELECCIONE UN CHOFER</option>s
                     @for (chofer of choferes();track chofer.id){
                     <option value="{{chofer.id}}">{{chofer.nombre}}</option>
@@ -171,12 +171,37 @@
             @if ( tieneError('hora_regreso') )
             {
             <div class="text-red-500 dark:text-pink-500  dark:bg-white text-xs text-center rounded  p-1.5 w-full">
-                La diferencia entre la salida y el regreso debe de ser mayor a 1 hora
+                La diferencia entre la salida y el regreso debe de ser mayor a 1 minuto
             </div>
             }
+
+            <div class="w-full">
+                <input name="factura" placeholder="Factura" formControlName="factura"
+                    [ngClass]="{'input-invalido': tieneError('factura'), 'input': !tieneError('factura') }" />
+            </div>
+            <div class="w-full">
+                <input name="importe_factura" placeholder="Importe de factura" formControlName="importe_factura"
+                    [ngClass]="{'input-invalido': tieneError('importe_factura'), 'input': !tieneError('importe_factura') }" />
+            </div>
             <div class="w-full">
                 <input name="destino" placeholder="Destino" formControlName="destino"
-                    [ngClass]="{'input-invalido': tieneError('destino'), 'input': !tieneError('destino') }" />
+                    [ngClass]="{'input-invalido': tieneError('destino'), 'input ': !tieneError('destino') }" />
+            </div>
+
+            <div class="w-full">
+                <p-chips           
+                styleClass="w-full "
+                
+                allowDuplicate="false"
+                (onAdd)="onAddRemision($event)"
+                (onRemove)="onRemoveRemision($event)"
+                separator="," placeholder="Remisión ejemplo: 4661, 6691, 444"
+                [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'input chip-input'"                 
+                >
+                <ng-template let-item pTemplate="item">                   
+                    <p class="text-xs" >{{item}}</p>
+                </ng-template>
+            </p-chips>
             </div>
 
             <div class="w-full">
@@ -185,6 +210,9 @@
                     placeholder="Escribe tus observaciones aqui..."></textarea>
 
             </div>
+            <pre>
+                {{formRegistro.value | json}}
+            </pre>
         </form>
 
     </div>
