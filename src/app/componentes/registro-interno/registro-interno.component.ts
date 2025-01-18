@@ -13,6 +13,7 @@ import { TransporteService } from '@app/services/transporte.service';
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
 import { RecorridoService } from '@app/services/recorrido.service';
 import { firstValueFrom } from 'rxjs';
+import { NumberFormatter } from '@app/helpers/validators';
 
 
 
@@ -29,23 +30,26 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
   @Input() formGroup!: FormGroup;
 
-
+  
   fb = inject(FormBuilder);
   
   recorridoService = inject(RecorridoService);
   choferService = inject(ChoferService);
   transporteService = inject(TransporteService);
   
-
+  
   formRegistro!: FormGroup;
   fechaSalida: string = '';
   today = new Date();
   fechaMinimaSalida: Date | null = null;
   diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };    
-
+  
   transportes = computed(() => this.transporteService.transportes().internos);
   choferes= computed(() => this.choferService.choferes().internos);
   tipoServicios = computed(() => this.transporteService.transportes().tipoServicios); 
+  
+  
+
 
   ngOnInit(): void {
     this.formRegistro = this.formGroup.get('registroInterno') as FormGroup;            
@@ -102,14 +106,15 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
   }
 
-  onAddRemision({value:remision}: any) {
-    
+
+  onAddRemision({value:remision}: any) {    
     const remisiones = this.formRegistro.get('remisiones')?.value;
     const remisionExiste= remisiones.find((remisionActual: string) => remisionActual === remision);
     if (remisionExiste) {
       return;
     }
     this.remisionesArray.push(this.fb.control(remision));
+    
 
   }
   onRemoveRemision({value:remision}:any){
@@ -118,9 +123,23 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
     this.remisionesArray.removeAt(index);
   }
 
-  private get remisionesArray(): FormArray {
+  public onBlurRemision(event: any) {
+      
+    if (event.target.value.trim() == '') {
+      event.target.value = '';
+      return;
+    }
+    
+    this.onAddRemision({ value: event.target.value });    
+    event.target.value ="";
+  }
+
+
+    public get remisionesArray(): FormArray {
     return this.formRegistro.get('remisiones') as FormArray;
   }
+
+
 
   incrementar(valor: number, nombre: string) {
     const valorActual = this.formRegistro.get(nombre)!.value;
@@ -215,5 +234,29 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   OnKeyPress(event: KeyboardEvent) {
     event.preventDefault();
   }
+
+
+
+   public onValidateNumber(event: KeyboardEvent) {
+      const charCode = event.charCode;
+      const charStr = String.fromCharCode(charCode);
+      if (!charStr.match(/^[0-9.]$/)) {
+        event.preventDefault();
+      }
+    }
+
+
+   
+  
+  
+  
+    public onInput(event: any, prefix: string, field: string) {
+      const target = event.target as HTMLInputElement;
+      let value = target.value;
+      const newValue = new NumberFormatter(value, prefix).getFormat(2);
+      target.value = newValue;
+      this.formRegistro.get(field)!.setValue(newValue);
+  
+    }
 
 }

@@ -109,13 +109,11 @@ export const resetFormRecorridoExterno = (formRegistro: FormGroup) => {
   formRegistro.get("tipo_servicio")!.setValue(0);
   formRegistro.get("fecha_salida")!.setValue(today);
   const $datepickerEl = document.getElementById('fecha_salidaExt');
-  console.log($datepickerEl);
+  
   const options: DatepickerOptions = { format: 'dd-mm-yyyy', };
   const datepicker1 = new Datepicker($datepickerEl, options);
-  datepicker1.init();
-    
-    datepicker1.setDate(today);
-    console.log(today);
+  datepicker1.init();    
+    datepicker1.setDate(today);    
     translateCalendar();  
   
 }

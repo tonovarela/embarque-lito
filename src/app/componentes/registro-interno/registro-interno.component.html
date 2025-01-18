@@ -179,29 +179,49 @@
                 <input name="factura" placeholder="Factura" formControlName="factura"
                     [ngClass]="{'input-invalido': tieneError('factura'), 'input': !tieneError('factura') }" />
             </div>
+        
             <div class="w-full">
-                <input name="importe_factura" placeholder="Importe de factura" formControlName="importe_factura"
-                    [ngClass]="{'input-invalido': tieneError('importe_factura'), 'input': !tieneError('importe_factura') }" />
+                <label for="currency-input" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Importe de recarga</label>
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">                                    
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+                    </svg>
+                    </div>
+                    <input name="importeFactura"  
+                    id="importe_factura"
+                    [ngClass]="{'input-icon-invalido': tieneError('importe_factura'), 'input-icon': !tieneError('importe_factura') }"
+                    type="text" maxlength="13"
+                     (input)="onInput($event,'$','importe_factura')" 
+                        (keypress)="onValidateNumber($event)" 
+                       placeholder="Importe de factura" required />
+                </div>
+              
             </div>
+            
+
             <div class="w-full">
-                <input name="destino" placeholder="Destino" formControlName="destino"
-                    [ngClass]="{'input-invalido': tieneError('destino'), 'input ': !tieneError('destino') }" />
+                
+                <p-chips           
+                styleClass="w-full border rounded-md border-gray-300 dark:border-gray-600"                  
+                allowDuplicate="false"
+                [ngModel]="remisionesArray.value"
+                [ngModelOptions]="{standalone: true}"
+                (onAdd)="onAddRemision($event)"
+                (onRemove)="onRemoveRemision($event)"
+                (onBlur)="onBlurRemision($event)"
+                separator="," placeholder="Remisión Ejemplo: 4661 , 6691 , 444"
+                [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'chip-input'"                 
+                >                         
+                <ng-template>
+                    
+                </ng-template>
+            </p-chips>
             </div>
 
             <div class="w-full">
-                <p-chips           
-                styleClass="w-full "
-                
-                allowDuplicate="false"
-                (onAdd)="onAddRemision($event)"
-                (onRemove)="onRemoveRemision($event)"
-                separator="," placeholder="Remisión ejemplo: 4661, 6691, 444"
-                [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'input chip-input'"                 
-                >
-                <ng-template let-item pTemplate="item">                   
-                    <p class="text-xs" >{{item}}</p>
-                </ng-template>
-            </p-chips>
+                <input name="destino" placeholder="Destino" formControlName="destino"
+                    [ngClass]="{'input-invalido': tieneError('destino'), 'input ': !tieneError('destino') }" />
             </div>
 
             <div class="w-full">
@@ -209,12 +229,8 @@
                     class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Escribe tus observaciones aqui..."></textarea>
 
-            </div>
-            <pre>
-                {{formRegistro.value | json}}
-            </pre>
+            </div>                   
         </form>
-
     </div>
 </div>
 
