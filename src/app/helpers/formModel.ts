@@ -40,6 +40,9 @@ export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
     chofer: [0, MayorACeroValidator()],
     id_previo: [null],
     transporte: [0, MayorACeroValidator()],
+    factura: ['', Validators.required],
+    importe_factura: [{ value: '' }, [Validators.required, MayorACeroValidator()]],
+    remisiones: fb.array([], Validators.required),
     observaciones: [''],
     tipo_servicio: [0, MayorACeroValidator()],
     destino: ['', Validators.required],
@@ -106,10 +109,15 @@ export const resetFormRecorridoExterno = (formRegistro: FormGroup) => {
   formRegistro.get("chofer")!.setValue("0");
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get('destino')!.setValue('');
+  formRegistro.get("id_previo")!.setValue(null);
+  formRegistro.get("observaciones")!.setValue('');
+  formRegistro.get("importe_factura")!.setValue('');
+  formRegistro.get("factura")!.setValue('');
+  formRegistro.setControl("remisiones", new FormArray([], Validators.required));
   formRegistro.get("tipo_servicio")!.setValue(0);
   formRegistro.get("fecha_salida")!.setValue(today);
   const $datepickerEl = document.getElementById('fecha_salidaExt');
-
+  actualizarInputPorID("importe_facturaExt", "");
   const options: DatepickerOptions = { format: 'dd-mm-yyyy', };
   const datepicker1 = new Datepicker($datepickerEl, options);
   datepicker1.init();

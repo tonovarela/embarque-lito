@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 
 
 @Injectable()
 export class RegistroRecorridoHook {
 
-    constructor(private fb: FormBuilder) { }
+    fb= inject(FormBuilder);
     
     onSelectOP(op: string, formRegistro: FormGroup) {
         const opsCurrent = formRegistro.get('ops')!.value;

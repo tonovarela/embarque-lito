@@ -80,11 +80,14 @@ export class NuevaComponent implements AfterViewInit {
       return;
     }
 
-    const { fecha_salida, ops, transporte, chofer, destino, observaciones, tipo_servicio,id_previo } = registroExterno.getRawValue();
+    const { fecha_salida, ops, transporte, chofer, destino, observaciones, tipo_servicio,id_previo,factura,importe_factura,remisiones } = registroExterno.getRawValue();
     const registro: Recorrido = {
       destino,
-      observaciones,
+      observaciones,    
       ops,
+      factura,
+      remisiones,
+      importe_factura: obtenerValorNumerico(importe_factura),
       id_tipo_servicio: tipo_servicio,
       tipo: 'externo',
       id_previo: id_previo ?? null,
