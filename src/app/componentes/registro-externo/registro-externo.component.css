@@ -27,20 +27,20 @@
 
 
 ::ng-deep .chips-contenedor-valido {
-  @apply h-10 w-full border rounded-md border-gray-300 dark:border-gray-600
+  @apply  w-full border rounded-md border-gray-300 dark:border-gray-600
 }
 
 ::ng-deep .chips-contenedor-invalido {
-  @apply h-10 w-full border rounded-md border-red-500 dark:border-pink-500
+  @apply  w-full border rounded-md border-red-500 dark:border-pink-500
 }
 
 ::ng-deep .p-chips-multiple-container {
   width: 100%;
-  @apply bg-transparent dark:bg-gray-700 gap-0;
+  @apply bg-transparent dark:bg-gray-700 gap-0
 }
 
 ::ng-deep .p-chips-input-token {
-  @apply h-10 text-xs m-0;
+  @apply  text-xs m-0;
 }
 
 ::ng-deep .p-chips-token {

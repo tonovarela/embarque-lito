@@ -217,10 +217,7 @@
                             [ngModelOptions]="{standalone: true}" (onAdd)="onAddRemision($event)"
                             (onRemove)="onRemoveRemision($event)" (onBlur)="onBlurRemision($event)" separator=","
                             placeholder="Remisión Ejemplo: 4661 , 6691 , 444"
-                            [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'chip-input'">
-                            <ng-template>
-
-                            </ng-template>
+                            [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'chip-input'">                            
                         </p-chips>
                     </div>
                     <div class="w-full">
