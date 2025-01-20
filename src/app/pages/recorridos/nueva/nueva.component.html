@@ -47,18 +47,12 @@
             </ul>
         </div>
         <div id="default-styled-tab-content">
-            <div class="hidden  " id="registro-interno" role="tabpanel" aria-labelledby="profile-tab">                
-                    <app-registro-interno [formGroup]="formRegistro"></app-registro-interno>                
-                
+            <div class="hidden  " id="registro-interno" role="tabpanel" aria-labelledby="profile-tab">                                    
+                <app-registro-interno [formGroup]="formRegistro"></app-registro-interno>                    
             </div>
-            <div class="hidden" id="registro-externo" role="tabpanel" aria-labelledby="dashboard-tab">
-                
-                <app-registro-externo [formGroup]="formRegistro"></app-registro-externo>
-                
+            <div class="hidden" id="registro-externo" role="tabpanel" aria-labelledby="dashboard-tab">                
+                <app-registro-externo [formGroup]="formRegistro"></app-registro-externo>                                
             </div>
         </div>
-        
-
-
     </div>
 </div>

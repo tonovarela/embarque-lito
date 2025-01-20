@@ -1,125 +1,126 @@
 <div class="">
     <div id="wrapper" class="flex justify-center   ">
         <div
-            class="font-roboto w-[32rem] mx-4 mt-1  px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md  dark:bg-gray-900/50 dark:border-white">
-            <div class="grid gap-1 ">
-                <app-autocomplete  [hasError]="tieneError('ops')" (onSelect)="onSelectOP($event)"></app-autocomplete>
-                <div class="flex items-start justify-start flex-wrap gap-2 mt-2  w-full ">
-                    @for (op of formRegistro.get('ops')!.value;track op){
-                    <p-chip
-                        styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
-                        label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
-                    }
-                </div>                
-            </div>
-            <form class="space-y-3" [formGroup]="formRegistro">
-                <div class="w-full">
-                    <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
-                        [ngClass]="{'input-invalido': tieneError('chofer'), 'input': !tieneError('chofer') }">
-                        <option value='0'>SELECCIONE UN CHOFER</option>s
-                        @for (chofer of choferes();track chofer.id){
-                        <option value="{{chofer.id}}">{{chofer.nombre}}</option>
-                        }
-                    </select>
-                </div>
-                <div class="w-full">
-                    <select id="transporte" formControlName="transporte"                    
-                        aria-placeholder="Seleccione una unidad de transporte" class="uppercase"
-                        [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
-                        <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
-                        @for (transporte of transportes();track transporte.id_transporte){
-                        <option value="{{transporte.id_transporte}}">{{transporte.descripcion }}                           </option>
-                        }
-                    </select>
-                </div>
-                <div class="w-full">
-                    <select id="transporte" formControlName="tipo_servicio" 
-                        aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
-                        
-                        [ngClass]="{'input-invalido': tieneError('tipo_servicio'), 'input': !tieneError('tipo_servicio') }">
-                        <option value="0">SELECCIONE UN TIPO DE SERVICIO</option>
-                        @for (tipo of tipoServicios();track tipo.id){
-                        <option value="{{tipo.id}}">{{tipo.descripcion}} </option>
-                        }
-                    </select>
-                </div>
-                              
-                <div class="full">
-                    <div class="relative ">    
-                        <div
-                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <app-calendar />
+            class="font-roboto w-full lg:w-3/4 2xl:w-2/3   mx-1 mt-1 p-5  bg-white  space-y-1 border border-gray-400  rounded-md  dark:bg-gray-900/50 dark:border-white">
+            <form  [formGroup]="formRegistro">
+            <div class="flex sm:flex-row flex-col   gap-2">
+                <div class="sm:w-1/2 w-full space-y-2">
+                    <div class="grid gap-1 ">
+                        <app-autocomplete [hasError]="tieneError('ops')" (onSelect)="onSelectOP($event)"></app-autocomplete>
+                        <div class="flex items-start justify-start flex-wrap gap-2 mt-2  w-full ">
+                            @for (op of formRegistro.get('ops')!.value;track op){
+                            <p-chip
+                                styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
+                                label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
+                            }
                         </div>
-                        <input id="fecha_salidaExt" 
-                        type="text"
-                        (changeDate)="actualizarFecha($event,'fecha_salida')"
-                            name="fecha_salida" datepicker datepicker-autohide
-                            (keypress)="OnKeyPress($event)"
-                            datepicker-format="dd-mm-yyyy"  tabindex="1"
-                            [class]="{'input-calendar-invalido': tieneError('fecha_salida'), 'input-calendar': !tieneError('fecha_salida') }"
-                            placeholder="Fecha de registro" />
                     </div>
-                    
-                </div>
-                <div class="w-full">
-                    <input name="factura" placeholder="Factura" formControlName="factura"
-                        [ngClass]="{'input-invalido': tieneError('factura'), 'input': !tieneError('factura') }" />
-                </div>
-            
-                <div class="w-full">
-                    <label for="currency-input" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Importe de recarga</label>
-                    <div class="relative w-full">
-                        <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">                                    
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
-                        </svg>
+                    <div class="w-full">
+                        <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
+                            [ngClass]="{'input-invalido': tieneError('chofer'), 'input': !tieneError('chofer') }">
+                            <option value='0'>SELECCIONE UN CHOFER</option>s
+                            @for (chofer of choferes();track chofer.id){
+                            <option value="{{chofer.id}}">{{chofer.nombre}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="w-full">
+                        <select id="transporte" formControlName="transporte"
+                            aria-placeholder="Seleccione una unidad de transporte" class="uppercase"
+                            [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
+                            <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
+                            @for (transporte of transportes();track transporte.id_transporte){
+                            <option value="{{transporte.id_transporte}}">{{transporte.descripcion }} </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="w-full">
+                        <select id="transporte" formControlName="tipo_servicio"
+                            aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
+                            [ngClass]="{'input-invalido': tieneError('tipo_servicio'), 'input': !tieneError('tipo_servicio') }">
+                            <option value="0">SELECCIONE UN TIPO DE SERVICIO</option>
+                            @for (tipo of tipoServicios();track tipo.id){
+                            <option value="{{tipo.id}}">{{tipo.descripcion}} </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="full">
+                        <div class="relative ">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <app-calendar />
+                            </div>
+                            <input id="fecha_salidaExt" type="text" (changeDate)="actualizarFecha($event,'fecha_salida')"
+                                name="fecha_salida" datepicker datepicker-autohide (keypress)="OnKeyPress($event)"
+                                datepicker-format="dd-mm-yyyy" tabindex="1"
+                                [class]="{'input-calendar-invalido': tieneError('fecha_salida'), 'input-calendar': !tieneError('fecha_salida') }"
+                                placeholder="Fecha de registro" />
                         </div>
-                        <input name="importeFactura"  
-                        id="importe_facturaExt"
-                        [ngClass]="{'input-icon-invalido': tieneError('importe_factura'), 'input-icon': !tieneError('importe_factura') }"
-                        type="text" maxlength="13"
-                         (input)="onInput($event,'$','importe_factura')" 
-                            (keypress)="onValidateNumber($event)" 
-                           placeholder="Importe de factura" required />
+    
                     </div>
+                </div>
+                <div class="sm:w-1/2 w-full space-y-2">
                   
+                    <div class="w-full">
+                        <input name="factura" placeholder="Factura" formControlName="factura"
+                            [ngClass]="{'input-invalido': tieneError('factura'), 'input': !tieneError('factura') }" />
+                    </div>
+    
+                    <div class="w-full">
+                        <label for="currency-input"
+                            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Importe de
+                            recarga</label>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="1"
+                                        d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                                </svg>
+                            </div>
+                            <input name="importeFactura" id="importe_facturaExt"
+                                [ngClass]="{'input-icon-invalido': tieneError('importe_factura'), 'input-icon': !tieneError('importe_factura') }"
+                                type="text" maxlength="13" (input)="onInput($event,'$','importe_factura')"
+                                (keypress)="onValidateNumber($event)" placeholder="Importe de factura" required />
+                        </div>
+    
+                    </div>
+    
+    
+                    <div class="w-full">
+                        <p-chips variant="filled"
+                            [styleClass]="tieneError('remisiones')?'chips-contenedor-invalido':'chips-contenedor-valido'"
+                            allowDuplicate="false" [ngModel]="remisionesArray.value" [ngModelOptions]="{standalone: true}"
+                            (onAdd)="onAddRemision($event)" (onRemove)="onRemoveRemision($event)"
+                            (onBlur)="onBlurRemision($event)" separator=","
+                            placeholder="Remisión Ejemplo: 4661 , 6691 , 444"
+                            [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'chip-input'">
+                            <ng-template>
+    
+                            </ng-template>
+                        </p-chips>
+                    </div>
+                    <div class="w-full">
+                        <input name="destino" placeholder="Destino" formControlName="destino"
+                            [ngClass]="{'input-invalido': tieneError('destino'), 'input': !tieneError('destino') }"
+                            class="text-sm  dark:placeholder:text-white bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    </div>
+    
+                    <div class="w-full">
+                        <textarea id="observaciones" rows="4" formControlName="observaciones"
+                            class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Escribe tus observaciones aqui..."></textarea>
+                    </div>
                 </div>
+            </div>
+
+
+
+            
+             
+
                 
-    
-                <div class="w-full">                
-                    <p-chips      
-                    variant="filled"     
-                    styleClass="w-full border rounded-md border-gray-300 dark:border-gray-600"                  
-                    allowDuplicate="false"
-                    [ngModel]="remisionesArray.value"
-                    [ngModelOptions]="{standalone: true}"
-                    (onAdd)="onAddRemision($event)"
-                    (onRemove)="onRemoveRemision($event)"
-                    (onBlur)="onBlurRemision($event)"
-                    separator="," placeholder="Remisión Ejemplo: 4661 , 6691 , 444"
-                    [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'chip-input'"                 
-                    >                         
-                    <ng-template>
-                        
-                    </ng-template>
-                </p-chips>
-                </div>
-                <div class="w-full">
-                    <input name="destino" placeholder="Destino" formControlName="destino"
-                    [ngClass]="{'input-invalido': tieneError('destino'), 'input': !tieneError('destino') }"
-                        class="text-sm  dark:placeholder:text-white bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                </div>
-    
-                <div class="w-full">
-                    <textarea id="observaciones" rows="4" formControlName="observaciones"
-                        class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Escribe tus observaciones aqui..."></textarea>    
-                </div>
-            </form>               
+            </form>
         </div>
     </div>
 </div>
-
-
-
-

@@ -1,5 +1,4 @@
-
-<div class=" sm:ml-52      py-5   ">    
+<div class=" sm:ml-52    py-5   ">    
     <div class="w-full bg-white dark:bg-gray-500 h-14 flex items-center justify-between mt-10 px-5">
         <svg  (click)="regresar()"  class="h-7 w-7 hover:fill-blue-600 dark:hover:fill-gray-600 fill-gray-600 dark:fill-white"  viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="current"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="current" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path><path fill="current" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path></g></svg>                
         <button 
@@ -16,11 +15,9 @@
                     }            
         </button>            
     </div>
-    <div class="p-4  rounded-lg  h-full  dark:border-gray-700 mt-2 transition-colors duration-30 ">        
-      
-
+    <div class="  rounded-lg  h-full  dark:border-gray-700  transition-colors duration-30 ">            
             <div id="wrapper" class="flex justify-center   ">
-                <div class="font-roboto w-full sm:w-[32rem] mx-4 mt-1  px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md dark:bg-transparent dark:border-white">
+                <div class="font-roboto w-full sm:w-[32rem] mx-4 mt-1  px-5  py-4  bg-white  space-y-3 border border-gray-400  rounded-md  dark:border-white dark:bg-gray-900/50">
                     <form class="space-y-3" [formGroup]="formRegistro" (ngSubmit)="guardarRegistro()">
                         <div class="w-full">
                             <select id="transporte" formControlName="transporte" name="transporte" 
