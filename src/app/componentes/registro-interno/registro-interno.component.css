@@ -1,63 +1,49 @@
-@import "primeng/resources/themes/lara-light-blue/theme.css";
 .contenedor-chips {
   width: 0px;
   border-radius: 10px;
 }
 
-
-
 .input-invalido {
-   @apply text-xs  bg-red-50 border border-red-500 text-red-500  placeholder:text-red-500 rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-pink-500 dark:placeholder-pink-500 dark:border-pink-500
+  @apply text-xs bg-red-50 border border-red-500 text-red-500 placeholder:text-red-500 rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-pink-500 dark:placeholder-pink-500 dark:border-pink-500
 }
 
-.input{  
-  @apply text-xs bg-gray-50 border  border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+.input {
+  @apply text-xs bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+}
 
+
+
+
+.input-icon-invalido {
+  @apply p-2.5 w-full z-20 ps-10 text-xs placeholder:text-red-500 border-red-500 bg-red-50 border rounded-md dark:bg-gray-700 dark:border-e-gray-700 dark:placeholder-pink-500 dark:text-pink-500 dark:border-pink-500
+}
+
+.input-icon {
+  @apply p-2.5 w-full z-20 ps-10 text-xs text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-e-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500
 }
 
 
 
 
 ::ng-deep .p-chips-multiple-container {
-  width: 100%;
-  
+  width: 100%;  
+  @apply bg-transparent dark:bg-gray-700 gap-0;
 }
 
-::ng-deep  .p-chips-input-token{
-@apply h-10 text-xs
+::ng-deep .p-chips-input-token {
+  @apply h-10 text-xs m-0;
 }
 
-
-::ng-deep .chip-input{
-  padding-inline-start: 10px !important; 
-  @apply text-xs bg-gray-50 border-0 focus:border-0 focus:ring-0 placeholder:text-xs   text-gray-900 rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+::ng-deep .p-chips-token {
+  @apply text-xs  text-blue-600 border border-blue-500 bg-blue-100 dark:bg-blue-600 dark:text-white dark:bg-opacity-20;
 }
 
-
-::ng-deep .chip-input-invalido{
-  padding-inline-start: 10px !important; 
-  @apply text-xs  placeholder:text-xs   border-red-500 text-red-500  placeholder:text-red-500 rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-pink-500 dark:placeholder-pink-500 dark:border-pink-500
+::ng-deep .chip-input {
+  padding-inline-start: 10px !important;
+  @apply text-xs bg-transparent border-0 focus:border-0 focus:ring-0 placeholder:text-xs text-gray-900 rounded-lg block w-full   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
 }
 
-
-
-
-
-.input-icon-invalido {
-  @apply p-2.5 w-full z-20 ps-10 text-xs placeholder:text-red-500 border-red-500 bg-red-50  border  rounded-md  dark:bg-gray-700 dark:border-e-gray-700   dark:placeholder-pink-500 dark:text-pink-500 dark:border-pink-500  
-   
- }
-
-
- .input-icon {
-  @apply p-2.5 w-full z-20 ps-10 text-xs text-gray-900 bg-gray-50 rounded-md  border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-e-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500
- }
-
-
-
-
-
-
-
-
-
+::ng-deep .chip-input-invalido {
+  /* padding-inline-start: 10px !important; */
+  @apply text-xs placeholder:text-xs border-red-500 text-red-500 placeholder:text-red-500 rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full  dark:text-pink-500 dark:placeholder-pink-500 dark:border-pink-500
+}

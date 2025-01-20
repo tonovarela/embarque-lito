@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, computed, inject, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { resetFormRecorridoInterno, setFechaSalida } from '@app/helpers/formModel';
 import { DiferenciaTiempo } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
@@ -14,6 +14,8 @@ import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeC
 import { RecorridoService } from '@app/services/recorrido.service';
 import { firstValueFrom } from 'rxjs';
 import { NumberFormatter } from '@app/helpers/validators';
+import { RegistroRecorridoHook } from '../hooks/useRegistro';
+
 
 
 
@@ -22,6 +24,7 @@ import { NumberFormatter } from '@app/helpers/validators';
   selector: 'app-registro-interno',
   standalone: true,
   imports: [PrimeNgModule, ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent, AutocompleteComponent],
+  providers: [RegistroRecorridoHook],
   templateUrl: './registro-interno.component.html',
   styleUrl: './registro-interno.component.css',
 
@@ -30,32 +33,29 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
   @Input() formGroup!: FormGroup;
 
+
   
-  fb = inject(FormBuilder);
-  
+
   recorridoService = inject(RecorridoService);
   choferService = inject(ChoferService);
   transporteService = inject(TransporteService);
-  
-  
+  recorridoRegistroHook = inject(RegistroRecorridoHook);
+
   formRegistro!: FormGroup;
   fechaSalida: string = '';
   today = new Date();
   fechaMinimaSalida: Date | null = null;
-  diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };    
-  
+  diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };
+
   transportes = computed(() => this.transporteService.transportes().internos);
-  choferes= computed(() => this.choferService.choferes().internos);
-  tipoServicios = computed(() => this.transporteService.transportes().tipoServicios); 
-  
-  
+  choferes = computed(() => this.choferService.choferes().internos);
+  tipoServicios = computed(() => this.transporteService.transportes().tipoServicios);
+
 
 
   ngOnInit(): void {
-    this.formRegistro = this.formGroup.get('registroInterno') as FormGroup;            
+    this.formRegistro = this.formGroup.get('registroInterno') as FormGroup;
   }
-
-  
 
 
   ngAfterViewInit(): void {
@@ -70,73 +70,45 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
   resetForm() {
     resetFormRecorridoInterno(this.formRegistro);
-    
-    
+
+
   }
 
-  onInputNumber(event: any,field:string){
-    onInputNumberValidate(event,field,this.formRegistro);    
+  onInputNumber(event: any, field: string) {
+    onInputNumberValidate(event, field, this.formRegistro);
   }
 
-  onFocusNumber(event: any,field:string){
-    onFocusNumberValidate(event,field,this.formRegistro);
-    
+  onFocusNumber(event: any, field: string) {
+    onFocusNumberValidate(event, field, this.formRegistro);
   }
-
-
 
   onSelectOP(op: string) {
-    const opsCurrent = this.formRegistro.get('ops')!.value;
-    const opExiste = opsCurrent.find((opActual: string) => opActual === op);
-    if (opExiste) {
-      return;
-    }
-    this.opsArray.push(this.fb.control(op));
-  }
-
-  private get opsArray(): FormArray {
-    return this.formRegistro.get('ops') as FormArray;
+    this.recorridoRegistroHook.onSelectOP(op, this.formRegistro);
   }
 
 
   onRemoverOP(op: string) {
-    const opsCurrent = this.formRegistro.get('ops')!.value;
-    const index = opsCurrent.findIndex((opActual: string) => opActual === op);
-    this.opsArray.removeAt(index);
-
+    this.recorridoRegistroHook.onRemoverOP(op, this.formRegistro);
   }
 
-
-  onAddRemision({value:remision}: any) {    
-    const remisiones = this.formRegistro.get('remisiones')?.value;
-    const remisionExiste= remisiones.find((remisionActual: string) => remisionActual === remision);
-    if (remisionExiste) {
-      return;
-    }
-    this.remisionesArray.push(this.fb.control(remision));
-    
-
+  onAddRemision({ value: remision }: any) {
+    this.recorridoRegistroHook.onAddRemision({ value: remision }, this.formRegistro);
   }
-  onRemoveRemision({value:remision}:any){
-    const remisionesCurrent = this.formRegistro.get('remisiones')!.value;
-    const index = remisionesCurrent.findIndex((remisionActual: string) => remisionActual === remision);
-    this.remisionesArray.removeAt(index);
+  onRemoveRemision({ value: remision }: any) {
+    this.recorridoRegistroHook.onRemoveRemision({ value: remision }, this.formRegistro);
   }
 
   public onBlurRemision(event: any) {
-      
-    if (event.target.value.trim() == '') {
-      event.target.value = '';
-      return;
-    }
-    
-    this.onAddRemision({ value: event.target.value });    
-    event.target.value ="";
+    this.recorridoRegistroHook.onBlurRemision(event, this.formRegistro);
   }
 
 
-    public get remisionesArray(): FormArray {
-    return this.formRegistro.get('remisiones') as FormArray;
+  public get remisionesArray(): FormArray {
+    return this.recorridoRegistroHook.remisionesArray(this.formRegistro);
+  }
+
+  tieneError(controlName: string): boolean {
+    return this.recorridoRegistroHook.tieneError(controlName, this.formRegistro);
   }
 
 
@@ -151,11 +123,11 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   }
 
 
-  
+
 
   public actualizarTransporte() {
     const id_chofer = this.formRegistro.get('chofer')!.value;
-    const choferAsignado = this.choferes().find(chofer => chofer.id === id_chofer);    
+    const choferAsignado = this.choferes().find(chofer => chofer.id === id_chofer);
     this.formRegistro.get('transporte')!.setValue(choferAsignado?.id_transporteAsignado ?? 0);
     this.actualizarKilometrajeInicial();
   }
@@ -164,19 +136,19 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
     const id_transporte = this.formRegistro.get('transporte')!.value;
     if (id_transporte == "0") {
-      this.formRegistro.get('kilometraje_inicial')!.setValue(0);  
+      this.formRegistro.get('kilometraje_inicial')!.setValue(0);
       this.formRegistro.get('kilometraje_inicial')!.disable();
       this.formRegistro.get('kilometraje_final')!.setValue(0);
       this.formRegistro.get('id_previo')!.setValue(null);
       this.formRegistro.get('kilometraje_final')!.disable();
       this.formRegistro.get('fecha_minima_salida')!.setValue(null);
-      setFechaSalida(this.formRegistro, null );
+      setFechaSalida(this.formRegistro, null);
       return;
     }
 
     const responseRecorrido = await firstValueFrom(this.recorridoService.ultimo(id_transporte));
     const ultimoRecorrido = responseRecorrido.recorrido;
-    
+
     if (ultimoRecorrido == null) {
       this.formRegistro.get('kilometraje_inicial')!.enable();
       this.formRegistro.get('kilometraje_final')!.enable();
@@ -184,34 +156,28 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
       this.formRegistro.get('fecha_minima_salida')!.setValue(null);
       this.formRegistro.get('kilometraje_inicial')!.setValue(0);
       this.formRegistro.get('kilometraje_final')!.setValue(0);
-      setFechaSalida(this.formRegistro, null );
+      setFechaSalida(this.formRegistro, null);
       return;
     }
 
 
-    const { kilometraje_final,id_recorrido } = ultimoRecorrido;
+    const { kilometraje_final, id_recorrido } = ultimoRecorrido;
     this.fechaMinimaSalida = ultimoRecorrido.fecha_regreso ?? null;
-    this.formRegistro.get('fecha_minima_salida')!.setValue(this.fechaMinimaSalida);         
+    this.formRegistro.get('fecha_minima_salida')!.setValue(this.fechaMinimaSalida);
     this.formRegistro.get('kilometraje_inicial')!.disable();
     this.formRegistro.get('id_previo')!.setValue(id_recorrido);
     this.formRegistro.get('kilometraje_inicial')!.setValue(kilometraje_final);
     this.formRegistro.get('kilometraje_final')!.enable();
-    this.formRegistro.get('kilometraje_final')!.setValue(0);    
-    setFechaSalida(this.formRegistro, this.fechaMinimaSalida );
+    this.formRegistro.get('kilometraje_final')!.setValue(0);
+    setFechaSalida(this.formRegistro, this.fechaMinimaSalida);
   }
 
 
-  tieneError(controlName: string): boolean {
-    const control = this.formRegistro.get(controlName);
-    if (control && control.errors && (control.dirty || control.touched)) {
-      return true;
-    }
-    return false;
-  }
+  
 
 
   actualizarFecha({ detail }: any, nombre: string) {
-    const fecha = detail.date;        
+    const fecha = detail.date;
     this.formRegistro.get(nombre)!.setValue(fecha);
   }
 
@@ -237,26 +203,25 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
 
 
-   public onValidateNumber(event: KeyboardEvent) {
-      const charCode = event.charCode;
-      const charStr = String.fromCharCode(charCode);
-      if (!charStr.match(/^[0-9.]$/)) {
-        event.preventDefault();
-      }
+  public onValidateNumber(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    const charStr = String.fromCharCode(charCode);
+    if (!charStr.match(/^[0-9.]$/)) {
+      event.preventDefault();
     }
+  }
 
 
-   
-  
-  
-  
-    public onInput(event: any, prefix: string, field: string) {
-      const target = event.target as HTMLInputElement;
-      let value = target.value;
-      const newValue = new NumberFormatter(value, prefix).getFormat(2);
-      target.value = newValue;
-      this.formRegistro.get(field)!.setValue(newValue);
-  
-    }
+
+
+
+
+  public onInput(event: any, prefix: string, field: string) {
+    const target = event.target as HTMLInputElement;
+    let value = target.value;
+    const newValue = new NumberFormatter(value, prefix).getFormat(2);
+    target.value = newValue;
+    this.formRegistro.get(field)!.setValue(newValue);
+  }
 
 }

@@ -17,6 +17,7 @@ import { RecorridoService } from '@app/services/recorrido.service';
 import { Recorrido } from '@app/interface/models';
 import { UiService } from '@app/services/ui.service';
 import { formatDate, tieneErrorForm } from '@app/helpers/helpers';
+import { obtenerValorNumerico } from '@app/helpers/validators';
 
 
 
@@ -102,11 +103,14 @@ export class NuevaComponent implements AfterViewInit {
     if (registroInterno.invalid) {
       return;
     }
-    const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo } = registroInterno.getRawValue();
+    const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo,remisiones,importe_factura,factura } = registroInterno.getRawValue();
     const registro: Recorrido = {
       ops,
       observaciones,
-      destino,
+      destino,      
+      remisiones,
+      factura,
+      importe_factura: obtenerValorNumerico(importe_factura),
       id_previo: id_previo ?? null,
       id_tipo_servicio: tipo_servicio,
       fecha_salida: formatDate(new Date(fecha_salida!), hora_salida!),
@@ -116,7 +120,7 @@ export class NuevaComponent implements AfterViewInit {
       kilometraje_inicial: +kilometraje_inicial!,
       kilometraje_final: +kilometraje_final!,
       tipo: 'interno'
-    };
+    };      
     await this.registrarRecorrido(registro);    
   }
 

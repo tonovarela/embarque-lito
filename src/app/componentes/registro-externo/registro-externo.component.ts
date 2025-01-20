@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, computed, inject, Input, OnInit } from '@angular/core';
+import {  Component, computed, inject, Input, OnInit } from '@angular/core';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {  FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { resetFormRecorridoExterno } from '@app/helpers/formModel';
 import { DiferenciaTiempo } from '@app/interface/models';
@@ -13,11 +13,13 @@ import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeC
 
 
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
+import { RegistroRecorridoHook } from '../hooks/useRegistro';
 
 @Component({
   selector: 'app-registro-externo',
   standalone: true,
   imports: [PrimeNgModule, ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent, AutocompleteComponent],
+  providers: [RegistroRecorridoHook],
   templateUrl: './registro-externo.component.html',
   styleUrl: './registro-externo.component.css',
 })
@@ -25,8 +27,10 @@ import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.com
 
 export class RegistroExternoComponent implements OnInit {
   @Input() formGroup!: FormGroup;
-  fb = inject(FormBuilder);
+  
+
   formRegistro!: FormGroup;
+  registroRecorridoHook = inject(RegistroRecorridoHook);
   fechaSalida: string = '';
   today = new Date();
   choferService = inject(ChoferService);  
@@ -56,31 +60,19 @@ export class RegistroExternoComponent implements OnInit {
 
 
   onSelectOP(op: string) {
-    const opsCurrent = this.formRegistro.get('ops')!.value;
-    const opExiste = opsCurrent.find((opActual: string) => opActual === op);
-    if (opExiste) {
-      return;
-    }
-    this.opsArray.push(this.fb.control(op));
+    this.registroRecorridoHook.onSelectOP(op, this.formRegistro); 
+    
   }
 
-  private get opsArray(): FormArray {
-    return this.formRegistro.get('ops') as FormArray;
-  }
+  
 
 
   onRemoverOP(op: string) {
-    const opsCurrent = this.formRegistro.get('ops')!.value;
-    const index = opsCurrent.findIndex((opActual: string) => opActual === op);
-    this.opsArray.removeAt(index);
+    this.registroRecorridoHook.onRemoverOP(op, this.formRegistro);
   }
 
   tieneError(controlName: string): boolean {
-    const control = this.formRegistro.get(controlName);
-    if (control && control.errors && (control.dirty || control.touched)) {
-      return true;
-    }
-    return false;
+    return this.registroRecorridoHook.tieneError(controlName, this.formRegistro);    
   }
 
   
