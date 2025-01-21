@@ -1,6 +1,23 @@
+
+
+@if(estatusLogin()=="ERROR"){
+<div class="flex justify-center items-center  text-3xl text-red-500 bg-red-100 h-screen ">
+    <h1>Usuario sin privilegios de ingreso</h1>
+</div>
+}
+
+
+@if(estatusLogin()=="LOADING"){    
+        <div id="loader" class="flex flex-col justify-center items-center h-screen text-3xl text-blue-500 bg-blue-100 gap-1">
+            <div class="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-blue-500"></div>            
+            <h1>Autenticando</h1>
+          </div>
+        
+
+}
+
+@if(estatusLogin()=="LOGIN"){
 <app-header></app-header>
 <app-sidebar></app-sidebar>
-    <router-outlet></router-outlet>
-
-
-
+<router-outlet></router-outlet>
+}

@@ -1,6 +1,6 @@
 
 <div class="sm:ml-52      py-8 px-2  ">
-   <div class="p-2  rounded-lg  h-full  dark:border-gray-700 mt-6 transition-colors duration-30 ">
+   <div class="p-2  rounded-lg  h-full  dark:border-gray-700 mt-8 transition-colors duration-30 ">
      <h1 class="text-2xl p-2 bg-transparent dark:bg-gray-500 rounded-tr-md rounded-tl-md text-gray-600 dark:text-white">Cargas de gasolina</h1>
      <div class="w-full mb-4">
       <ejs-grid #grid [dataSource]='cargasGasolina()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
@@ -20,6 +20,7 @@
             <e-column field='kilometraje_inicial' width='160'  headerText="Kilometraje inicial" ></e-column>
             <e-column field='kilometraje_final'  width='160'  headerText="Kilometraje final" ></e-column>
             <e-column field='fecha_carga' headerText="fecha_carga" >
+           
                <ng-template #template let-data>
                   {{data.fecha_carga | date: 'dd-MM-yyyy'}}
                </ng-template>

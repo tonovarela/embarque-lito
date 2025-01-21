@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, EffectRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { initFlowbite } from 'flowbite';
@@ -7,6 +7,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { ChoferService } from './services/chofer.service';
 import { TransporteService } from './services/transporte.service';
+import { UsuarioService } from './services/usuario.service';
+import { environment } from '@environments/environment.development';
 
 
 @Component({
@@ -16,27 +18,44 @@ import { TransporteService } from './services/transporte.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit, AfterViewInit {
-  choferService = inject(ChoferService);
-  transporteService = inject(TransporteService);
+export class AppComponent implements OnInit, OnDestroy {
+  private _usuarioService = inject(UsuarioService);
+  public transporteService = inject(TransporteService);
+  public choferService = inject(ChoferService);
+  public uiService = inject(UiService);
+  public estatusLogin = computed(() => this._usuarioService.StatusSesion().estatus);
+  effectLogin: EffectRef;
 
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.uiService.cargarSidebar();
-    }, 1000);
-
+  constructor() {
+    this.effectLogin = effect(() => {
+      if (this.estatusLogin() === 'LOGIN') {
+        setTimeout(() => {
+          this.uiService.cargarSidebar();
+          initFlowbite();
+          this.cargarCatalogos();
+        }, 1000);
+      }      
+      if (this.estatusLogin() === 'LOGOUT') {
+        const esProduccion = environment.production;
+        if (esProduccion) {
+          window.location.href = "/litoapps";
+          localStorage.removeItem("User");
+          localStorage.removeItem("Pass");
+          return;
+        }
+      };
+    });
   }
-  uiService = inject(UiService);
-  ngOnInit(): void {
-    initFlowbite();
-    this.cargarCatalogos();
+  ngOnDestroy(): void {
+    this.effectLogin.destroy();
   }
-
   
+  ngOnInit(): void {
+    this._usuarioService.verificarSesionLitoapps();
+
+  }
   async cargarCatalogos() {
     await this.choferService.cargar();
     await this.transporteService.cargar();
   }
-
 }

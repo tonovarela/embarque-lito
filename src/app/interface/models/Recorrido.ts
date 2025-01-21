@@ -20,6 +20,8 @@ factura?:string;
 importe_factura?:number;
 remisiones?:string[];
 id_previo?:number;
+opsAsignadas?:string;
+remisionesAsignadas?:string;
 }
 
 
