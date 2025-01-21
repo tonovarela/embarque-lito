@@ -31,8 +31,7 @@ export class UsuarioService {
     this._statusSesion.set({ usuario: undefined, estatus: StatutLogin.LOADING });
     try {
       const resp =await firstValueFrom(this.http.post<LoginResponse>(`${this.URL}/auth/login`, { login:{username, password} }).pipe(delay(2000)));
-      this._statusSesion.set({ usuario: resp.usuario, estatus: StatutLogin.LOGIN });
-      console.log(this._statusSesion());
+      this._statusSesion.set({ usuario: resp.usuario, estatus: StatutLogin.LOGIN });      
     } catch (error) {
       this._statusSesion.set({ usuario: undefined, estatus: StatutLogin.ERROR });
     }    
