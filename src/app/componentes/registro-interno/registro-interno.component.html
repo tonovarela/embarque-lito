@@ -186,11 +186,11 @@
                     }
                 </div>
                 <div class="sm:w-1/2 w-full space-y-4">
-                    <div class="w-full">
+                    <!-- <div class="w-full">
                         <input name="factura" placeholder="Factura" formControlName="factura"
                             [ngClass]="{'input-invalido': tieneError('factura'), 'input': !tieneError('factura') }" />
-                    </div>
-                    <div class="w-full">
+                    </div> -->
+                    <!-- <div class="w-full">
                         <label for="currency-input"
                             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Importe de
                             recarga</label>
@@ -209,7 +209,7 @@
                                 (keypress)="onValidateNumber($event)" placeholder="Importe de factura" required />
                         </div>
 
-                    </div>
+                    </div> -->
                     <div class="w-full">
                         <p-chips variant="filled"
                             [styleClass]="tieneError('remisiones')?'chips-contenedor-invalido':'chips-contenedor-valido'"
@@ -225,7 +225,7 @@
                             [ngClass]="{'input-invalido': tieneError('destino'), 'input ': !tieneError('destino') }" />
                     </div>
                     <div class="w-full">
-                        <textarea id="observaciones" rows="4" formControlName="observaciones"
+                        <textarea id="observaciones" rows="15" formControlName="observaciones"
                             class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Escribe tus observaciones aqui..."></textarea>
                     </div>

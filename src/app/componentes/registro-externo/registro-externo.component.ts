@@ -29,7 +29,7 @@ import { NumberFormatter } from '@app/helpers/validators';
 export class RegistroExternoComponent implements OnInit {
   @Input() formGroup!: FormGroup;
 
-
+  
   formRegistro!: FormGroup;
   recorridoRegistroHook = inject(RegistroRecorridoHook);
   fechaSalida: string = '';
@@ -97,6 +97,9 @@ export class RegistroExternoComponent implements OnInit {
     const fecha = detail.date || null;
     this.formRegistro.get(nombre)!.setValue(fecha);
   }
+
+
+  
 
    onValidateNumber(event: KeyboardEvent) {
     const charCode = event.charCode;

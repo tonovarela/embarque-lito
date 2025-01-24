@@ -106,14 +106,14 @@ export class NuevaComponent implements AfterViewInit {
     if (registroInterno.invalid) {
       return;
     }
-    const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo,remisiones,importe_factura,factura } = registroInterno.getRawValue();
+    const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo,remisiones } = registroInterno.getRawValue();
     const registro: Recorrido = {
       ops,
       observaciones,
       destino,      
       remisiones,
-      factura,
-      importe_factura: obtenerValorNumerico(importe_factura),
+      factura:"N/A",
+      importe_factura: 0,
       id_previo: id_previo ?? null,
       id_tipo_servicio: tipo_servicio,
       fecha_salida: formatDate(new Date(fecha_salida!), hora_salida!),

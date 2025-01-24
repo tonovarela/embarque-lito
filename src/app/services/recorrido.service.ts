@@ -34,7 +34,10 @@ export class RecorridoService {
   }
   registrar(recorrido:Recorrido){
     return this.http.post(`${this.API_URL}/api/recorrido`, {recorrido})
+  }
 
+  actualizar(recorrido:Recorrido){
+    return this.http.put(`${this.API_URL}/api/recorrido`, {recorrido})
   }
 
 }

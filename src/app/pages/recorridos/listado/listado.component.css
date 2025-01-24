@@ -5,3 +5,15 @@
     padding: 3px 21px;     
     @apply  font-roboto
 }
+
+ ::ng-deep .p-dialog{    
+    @apply  font-roboto bg-white  dark:bg-slate-800 dark:text-white font-medium border;
+}
+
+::ng-deep .p-dialog-content{
+    @apply  font-roboto bg-white  dark:bg-slate-800 dark:text-white font-medium;
+}
+
+::ng-deep .p-dialog-header{
+    @apply  font-roboto bg-white  dark:bg-slate-800 dark:text-white font-medium;
+}

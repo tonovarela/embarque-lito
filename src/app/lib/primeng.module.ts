@@ -4,6 +4,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import {  SpeedDialModule } from 'primeng/speeddial';
 import {ChipsModule} from 'primeng/chips';
+import { DialogModule } from 'primeng/dialog';
 
 
 
@@ -14,6 +15,6 @@ import { ChipModule } from 'primeng/chip';
   imports: [
     CommonModule,    
   ],
-  exports:[AutoCompleteModule,ChipModule,SpeedDialModule,ChipsModule]
+  exports:[AutoCompleteModule,ChipModule,SpeedDialModule,ChipsModule,DialogModule]
 })
 export class PrimeNgModule { }
