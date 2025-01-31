@@ -34,7 +34,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   @Input() formGroup!: FormGroup;
 
 
-  
+
 
   recorridoService = inject(RecorridoService);
   choferService = inject(ChoferService);
@@ -173,7 +173,9 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   }
 
 
-  
+
+ 
+
 
 
   actualizarFecha({ detail }: any, nombre: string) {
