@@ -11,7 +11,7 @@ import { RecorridoService } from '@app/services/recorrido.service';
 import { FabbuttonComponent } from '@app/shared/fabbutton/fabbutton.component';
 import { EditService } from '@syncfusion/ej2-angular-grids';
 import { firstValueFrom } from 'rxjs';
-
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-listado',
@@ -93,6 +93,25 @@ export class ListadoComponent extends BaseGridComponent implements OnInit {
     let value = target.value;
     const newValue = new NumberFormatter(value, prefix).getFormat(2);
     target.value = newValue;
+  }
+
+
+  async descargarExcel() {
+    let data: Recorrido[];
+    const filtered = await this.grid.getFilteredRecords() as Recorrido[];
+    if (filtered.length === 0) {
+      data = this.Recorridos();
+    } else {
+      data = filtered;
+    }
+
+    const dataforExcel = data.map(({id_previo,...rest}) => rest );
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataforExcel);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Recorridos');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'Recorridos.xlsx');
   }
 
 
