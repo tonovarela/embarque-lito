@@ -8,6 +8,7 @@ import { PrimeNgModule } from '@app/lib/primeng.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 
 import { RecorridoService } from '@app/services/recorrido.service';
+import { UiService } from '@app/services/ui.service';
 import { FabbuttonComponent } from '@app/shared/fabbutton/fabbutton.component';
 import { EditService } from '@syncfusion/ej2-angular-grids';
 import { firstValueFrom } from 'rxjs';
@@ -26,12 +27,22 @@ export class ListadoComponent extends BaseGridComponent implements OnInit {
   private recorridoService = inject(RecorridoService);
   public recorridoActivo: Recorrido | null = null;
 
+  public cargando =signal<boolean>(false);
+
+  private uiService = inject(UiService);
+
+  cargarInformacion() {
+    this.cargando.set(true);
+    this.recorridoService.listar().subscribe(({ recorridos }) => {
+      this._recorridos.set(recorridos);
+      this.cargando.set(false);
+    });
+  }
+
   ngOnInit(): void {
     this.autoFitColumns = true;
     this.iniciarResizeGrid(this.minusHeight);
-    this.recorridoService.listar().subscribe(({ recorridos }) => {
-      this._recorridos.set(recorridos);
-    });
+    this.cargarInformacion();
 
   }
   Recorridos = computed(() => this._recorridos());
@@ -57,8 +68,7 @@ export class ListadoComponent extends BaseGridComponent implements OnInit {
 
   async save() {
 
-    const resp= await firstValueFrom(this.recorridoService.actualizar(this.recorridoActivo!))
-    console.log(resp)
+    const resp = await firstValueFrom(this.recorridoService.actualizar(this.recorridoActivo!))    
     this._recorridos.set(this._recorridos().map((r) => {
       if (r.id_recorrido === this.recorridoActivo!.id_recorrido) {
         this.recorridoActivo!.importe_factura = obtenerValorNumerico(`${this.recorridoActivo?.importe_factura!}`);
@@ -105,13 +115,33 @@ export class ListadoComponent extends BaseGridComponent implements OnInit {
       data = filtered;
     }
 
-    const dataforExcel = data.map(({id_previo,...rest}) => rest );
+    const dataforExcel = data.map(({ id_previo, ...rest }) => rest);
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataforExcel);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Recorridos');
 
     /* save to file */
     XLSX.writeFile(wb, 'Recorridos.xlsx');
+  }
+
+  async eliminarRecorrido(recorrido: Recorrido) {
+    
+    const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion("Recorridos", "¿Está seguro de eliminar el recorrido?", "Si,eliminarlo", "Cancelar");
+    if (!isConfirmed) {
+      return;
+    }
+    const { id_recorrido } = recorrido;
+    this._recorridos.set([]);
+    try {
+      await firstValueFrom(this.recorridoService.eliminar(id_recorrido!));
+    } catch (e) {
+      this.uiService.mostrarAlertaError("Recorridos", "Error al eliminar el recorrido");
+    } finally {
+      this.cargarInformacion();
+    }
+
+
+
   }
 
 

@@ -8,12 +8,35 @@
          </button>
       </div>
      <div class="w-full mb-4">
+      @if (cargando())  {
+         <div>
+            <div class="animate-pulse flex space-x-4">
+               <div class="flex-1 space-y-4 py-1">
+                  <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
+                  <div class="space-y-2">
+                     <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                     <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         
+      }@else{
       <ejs-grid #grid [dataSource]='cargasGasolina()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
          [allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid" allowReordering='true'
          [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
          [pageSettings]='pageSettings'>
          <e-columns>
-            <e-column field='id_carga_gasolina' headerText='ID' width='70' ></e-column>
+            <e-column field='id_carga_gasolina' [allowFiltering]="false" headerText='' width='70' >
+               <ng-template #template let-data>
+                  <div  class="grid grid-cols-2 gap-4">                     
+                     @if(data.esUltimo=='1'){
+                        <svg (click)="eliminarCarga(data)"  class="h-4 w-4 cursor-pointer   fill-current " viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path  d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"></path></g></svg>                           
+                     }
+                  </div>
+                  
+               </ng-template>
+            </e-column>
             <e-column field='descripcion_transporte' headerText="transporte" ></e-column>
             <e-column field='total_litros' headerText="total de litros" width='150' ></e-column>
             <e-column field='importe_carga'  headerText="Importe Carga" width='150'>
@@ -32,7 +55,8 @@
             </e-column>
             <e-column field='observaciones' headerText="Observaciones" ></e-column>
          </e-columns>
-      </ejs-grid>      
+      </ejs-grid>   
+   }   
 </div>
    </div>  
 </div>

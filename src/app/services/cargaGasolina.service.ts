@@ -29,8 +29,11 @@ export class CargaGasolinaService {
          carga == null ? { carga: null } 
                        :{carga: { ...carga, fecha: new Date(`${carga.fecha_carga}`) } } 
       ));
-
   }
+
+  eliminar(id: number) {
+    return this.http.delete(`${this.API_URL}/api/carga/${id}`);
+  }   
 
 
 

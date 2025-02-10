@@ -40,4 +40,8 @@ export class RecorridoService {
     return this.http.put(`${this.API_URL}/api/recorrido`, {recorrido})
   }
 
+  eliminar(id_recorrido:number){
+    return this.http.delete(`${this.API_URL}/api/recorrido/${id_recorrido}`)
+  }
+
 }
