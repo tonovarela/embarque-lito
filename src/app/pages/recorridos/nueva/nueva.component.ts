@@ -32,13 +32,11 @@ import { obtenerValorNumerico } from '@app/helpers/validators';
 export class NuevaComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
-    initFlowbite();   
-    this.changeDetectorRef.detectChanges();  
+    initFlowbite();
+    this.changeDetectorRef.detectChanges();
   }
-
   changeDetectorRef = inject(ChangeDetectorRef);
 
-  
   recorridoService = inject(RecorridoService);
   uiService = inject(UiService);
 
@@ -58,16 +56,16 @@ export class NuevaComponent implements AfterViewInit {
 
 
   guardarRegistro() {
-   if (this.guardandoRecorrido()) {
+    if (this.guardandoRecorrido()) {
       return;
-   }
+    }
     this.registroInterno() ? this.guardarRecorridoInterno() : this.guardarRecorridoExterno();
   }
 
-  regresar() {    
+  regresar() {
     if (this.guardandoRecorrido()) {
       return;
-   }
+    }
     this.router.navigate(['/recorridos']);
   }
 
@@ -75,15 +73,15 @@ export class NuevaComponent implements AfterViewInit {
   private async guardarRecorridoExterno() {
     this.formRegistro.get("registroExterno")!.markAllAsTouched();
     this.formRegistro.get("registroExterno")!.updateValueAndValidity();
-    const registroExterno = this.formRegistro.get("registroExterno")!;    
+    const registroExterno = this.formRegistro.get("registroExterno")!;
     if (registroExterno.invalid) {
       return;
     }
 
-    const { fecha_salida, ops, transporte, chofer, destino, observaciones, tipo_servicio,id_previo,factura,importe_factura,remisiones } = registroExterno.getRawValue();
+    const { fecha_salida, ops, transporte, chofer, destino, observaciones, tipo_servicio, id_previo, factura, importe_factura, remisiones } = registroExterno.getRawValue();
     const registro: Recorrido = {
       destino,
-      observaciones,    
+      observaciones,
       ops,
       factura,
       remisiones,
@@ -106,13 +104,13 @@ export class NuevaComponent implements AfterViewInit {
     if (registroInterno.invalid) {
       return;
     }
-    const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo,remisiones } = registroInterno.getRawValue();
+    const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo, remisiones } = registroInterno.getRawValue();
     const registro: Recorrido = {
       ops,
       observaciones,
-      destino,      
+      destino,
       remisiones,
-      factura:"N/A",
+      factura: "N/A",
       importe_factura: 0,
       id_previo: id_previo ?? null,
       id_tipo_servicio: tipo_servicio,
@@ -123,20 +121,20 @@ export class NuevaComponent implements AfterViewInit {
       kilometraje_inicial: +kilometraje_inicial!,
       kilometraje_final: +kilometraje_final!,
       tipo: 'interno'
-    };      
-    await this.registrarRecorrido(registro);    
+    };
+    await this.registrarRecorrido(registro);
   }
 
 
-  private async registrarRecorrido(recorrido:Recorrido){
+  private async registrarRecorrido(recorrido: Recorrido) {
 
     try {
       this.guardandoRecorrido.set(true);
-      await firstValueFrom(this.recorridoService.registrar(recorrido))      
+      await firstValueFrom(this.recorridoService.registrar(recorrido))
       this.uiService.mostrarAlertaSuccess('Embarques', 'Recorrido registrado');
     } catch (ex: any) {
       this.uiService.mostrarAlertaError("Embarques", `Error al registrar el recorrido ${ex.message}`);
-    }finally{
+    } finally {
       this.guardandoRecorrido.set(false);
       this.reset();
     }
@@ -144,16 +142,16 @@ export class NuevaComponent implements AfterViewInit {
   }
 
 
- 
+
   tieneError(controlName: string): boolean {
-    return tieneErrorForm(controlName, this.formRegistro);    
+    return tieneErrorForm(controlName, this.formRegistro);
   }
 
-  private reset() {    
+  private reset() {
     this.registroInterno() ? resetFormRecorridoInterno(this.formRegistro.get('registroInterno') as FormGroup)
       : resetFormRecorridoExterno(this.formRegistro.get('registroExterno') as FormGroup);
-      initFlowbite();   
-    this.changeDetectorRef.detectChanges();  
+    initFlowbite();
+    this.changeDetectorRef.detectChanges();
 
   }
 

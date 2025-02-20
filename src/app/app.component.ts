@@ -9,6 +9,8 @@ import { ChoferService } from './services/chofer.service';
 import { TransporteService } from './services/transporte.service';
 import { UsuarioService } from './services/usuario.service';
 import { environment } from '@environments/environment.development';
+import { MantenimientoService } from './services';
+
 
 
 @Component({
@@ -22,8 +24,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private _usuarioService = inject(UsuarioService);
   public transporteService = inject(TransporteService);
   public choferService = inject(ChoferService);
+  public mantenimientoService= inject(MantenimientoService);
   public uiService = inject(UiService);
   public estatusLogin = computed(() => this._usuarioService.StatusSesion().estatus);
+  
   effectLogin: EffectRef;
 
   constructor() {
@@ -57,5 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
   async cargarCatalogos() {
     await this.choferService.cargar();
     await this.transporteService.cargar();
+    await this.mantenimientoService.cargarMotivos();
   }
 }

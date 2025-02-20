@@ -135,8 +135,7 @@ export const resetFormRecorridoInterno = (formRegistro: FormGroup) => {
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get("id_previo")!.setValue(null);
   formRegistro.get("observaciones")!.setValue('');
-  //formRegistro.get("importe_factura")!.setValue('');
-  //formRegistro.get("factura")!.setValue('');
+
   formRegistro.setControl("remisiones", new FormArray([], Validators.required));
   formRegistro.get("chofer")!.setValue("0");
   formRegistro.get("kilometraje_inicial")!.disable();

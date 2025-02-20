@@ -14,3 +14,11 @@ export interface Transportes {
     tipoServicios:TipoServicio[]
 }
 
+
+export interface MotivoMantenimiento {
+    id_motivo: number;
+    descripcion: string;
+        
+}
+
+

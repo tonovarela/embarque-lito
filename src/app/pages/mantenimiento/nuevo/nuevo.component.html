@@ -1,0 +1,172 @@
+<div class=" sm:ml-52    py-5   ">
+    <div class="w-full bg-white dark:bg-gray-500 h-14 flex items-center justify-between mt-10 px-5">
+        <svg class="h-7 w-7 cursor-pointer hover:fill-blue-600 dark:hover:fill-gray-600 fill-gray-600 dark:fill-white"
+            (click)="regresar()" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="current">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path fill="current" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path>
+                <path fill="current"
+                    d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z">
+                </path>
+            </g>
+        </svg>
+        <button
+        (click)="guardar()"        
+            class="text-gray-900 disabled:cursor-not-allowed bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-1 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+            
+            @if(guardandoMantenimiento()){
+            <svg aria-hidden="true" role="status"
+                class="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101"
+                fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor" />
+                <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="#1C64F2" />
+            </svg>
+            Guardando ...
+            }@else {
+            Guardar
+            }
+        </button>
+    </div>
+    <div class="rounded-lg  h-full  dark:border-gray-700  transition-colors duration-30 ">
+
+        <div id="wrapper" class="flex justify-center  ">
+            <div
+                class="font-roboto  w-full lg:w-2/4 2xl:w-1/3   mx-1 mt-1 p-5  bg-white  space-y-1 border border-gray-400  rounded-md  dark:border-white dark:bg-gray-900/50">
+
+                <form [formGroup]="formRegistro">
+                    <div class="flex sm:flex-row flex-col  space-x-2">
+                        <div class=" w-full space-y-2">
+
+                            <div class="w-full">
+                                <!-- (change)="actualizarTransporte()" -->
+                                <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
+                                    [ngClass]="{'input-invalido': tieneError('chofer'), 'input ': !tieneError('chofer') }">
+
+                                    <option value='0'>SELECCIONE UN CHOFER</option>s
+                                    @for (chofer of choferes();track chofer.id){
+                                    <option value="{{chofer.id}}">{{chofer.nombre}}</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="w-full">
+                                <!-- (change)="actualizarKilometrajeInicial()" -->
+                                <select id="transporte" formControlName="transporte"
+                                    aria-placeholder="Seleccione una unidad de transporte"
+                                    [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
+
+                                    <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
+                                    @for (transporte of transportes();track transporte.id_transporte){
+                                    <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
+                                        {{transporte.placas}}
+                                    </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="w-full">
+                                <select id="motivo" aria-placeholder="Seleccione motivo" formControlName="motivo"
+                                    [ngClass]="{'input-invalido': tieneError('motivo'), 'input': !tieneError('motivo') }">
+                                    <option value="0">SELECCIONE UN MOTIVO</option>
+                                    @for (motivo of motivosMantenimiento();track motivo.id_motivo){
+                                    <option value="{{motivo.id_motivo}}">{{motivo.descripcion}} </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="max-w-[32rem] mx-auto space-y-2">
+                                <label for="start-time"
+                                    class="block  text-xs font-medium text-gray-900 dark:text-white">Inicio</label>
+                                <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
+                                    <div class="relative ">
+                                        <div
+                                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                            <app-calendar />
+                                        </div>
+                                        <input id="fecha_inicio" (changeDate)="actualizarFecha($event,'fecha_inicio')"
+                                            name="fecha_inicio" datepicker datepicker-autohide
+                                            datepicker-format="dd-mm-yyyy" (keypress)="OnKeyPress($event)" type="text"
+                                            tabindex="1"
+                                            class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Fecha de inicio" />
+                                    </div>
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                            <app-time />
+                                        </div>
+                                        <input type="time" id="start-time" tabindex="2" formControlName="hora_inicio"
+                                            name="hora_inicio"
+                                            class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            value="00:00" required />
+                                    </div>
+                                </div>
+                                
+
+                                <label for="end-time"
+                                    class="block   text-sm font-medium text-gray-900 dark:text-white">Fin</label>
+                                <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
+                                    <div>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                <app-calendar />
+                                            </div>
+                                            <input id="fecha_fin" tabindex="3" datepicker datepicker-autohide
+                                                datepicker-format="dd-mm-yyyy" type="text" readonly name="fecha_fin"
+                                                (keypress)="OnKeyPress($event)"
+                                                (changeDate)="actualizarFecha($event,'fecha_fin')"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="Fecha fin">
+
+                                        </div>
+                                    </div>
+                                    <div class="relative">
+
+                                        <div
+                                            class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                            <app-time />
+                                        </div>
+                                        <input type="time" id="start-time" tabindex="2" formControlName="hora_fin"
+                                            name="hora_fin"
+                                            class="bg-gray-50  leading-none border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            value="00:00" required />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="max-w-[24rem] mx-auto flex  items-center justify-around text-2xl text-gray-500 dark:text-white">
+                                @if(diferenciaTiempo.horas> 0){
+                                <div>{{diferenciaTiempo.horas}} hora{{diferenciaTiempo.horas>1?'s':''}}</div>
+                                }
+                                @if(diferenciaTiempo.minutos > 0){
+                                <div>{{diferenciaTiempo.minutos}} minuto{{diferenciaTiempo.minutos>1?'s':''}} </div>
+                                }
+                            </div>
+                            @if ( tieneError('hora_fin') )
+                            {
+                            <div
+                                class="text-red-500 dark:text-pink-500  dark:bg-white text-xs text-center rounded  p-1.5 w-full">
+                                La diferencia entre la fecha de inicio y fin debe de ser mayor a 1 minuto
+                            </div>
+                            }
+
+                            <div class="w-full">
+                                <textarea id="observaciones" rows="5" formControlName="observaciones"
+                                    class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Escribe tus observaciones aqui..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+      
+            </div>
+        </div>
+
+
+    </div>
+</div>
