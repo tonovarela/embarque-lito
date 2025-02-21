@@ -115,22 +115,31 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
 
     this.guardandoMantenimiento.set(true);
     const { chofer, transporte, motivo, observaciones, fecha_fin, fecha_inicio, hora_fin, hora_inicio } = this.formRegistro.value;
-    
+
     const fecha_inicioTime = formatDate(new Date(fecha_inicio!), hora_inicio!)
     const fecha_finTime = formatDate(new Date(fecha_fin!), hora_fin!)
     const mantenimiento = {
       id_motivo: motivo,
-      id_chofer:chofer,
-      id_transporte:transporte,      
+      id_chofer: chofer,
+      id_transporte: transporte,
       fecha_inicio: fecha_inicioTime,
-      fecha_fin: fecha_finTime,      
+      fecha_fin: fecha_finTime,
       observaciones,
     };
-    await firstValueFrom(this.mantenimientoService.registrar(mantenimiento));
+    try {
+      await firstValueFrom(this.mantenimientoService.registrar(mantenimiento));
+      this.uiService.mostrarAlertaSuccess('Embarques', 'Mantenimiento registrado correctamente');
+      resetFormMantenimiento(this.formRegistro);
+    }
+    catch (e: any) {      
+      this.uiService.mostrarAlertaError('Embarques', e["error"]["mensaje"]);
+    } finally {
+      this.guardandoMantenimiento.set(false);
+      
+    
+    }
 
-    this.uiService.mostrarAlertaSuccess('Embarques', 'Mantenimiento registrado correctamente');
-    resetFormMantenimiento(this.formRegistro);
-    this.guardandoMantenimiento.set(false);
+    
 
 
   }

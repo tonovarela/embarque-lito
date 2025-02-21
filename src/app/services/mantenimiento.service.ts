@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import {  inject, Injectable, signal } from '@angular/core';
 import { MotivoMantenimiento } from '@app/interface/models/Catalogos';
+import { ResponseMantenimiento } from '@app/interface/responses/ResponseMantenimiento';
+import { ResponseMotivosMantenimiento } from '@app/interface/responses/ResponseMotivoMantenimiento';
 import { environment } from '@environments/environment.development';
-
 
 @Injectable({
   providedIn: 'root'
@@ -18,18 +19,23 @@ export class MantenimientoService {
   motivosMantenimiento = signal<MotivoMantenimiento[]>([]);
   
   public cargarMotivos() {
-    this.motivosMantenimiento.set([
-      { id_motivo: 1, descripcion: 'Mantenimiento' },
-      { id_motivo: 2, descripcion: 'Reparación' },
-      { id_motivo: 3, descripcion: 'Cambio de aceite' },
-      { id_motivo: 4, descripcion: 'Cambio de llantas' },
-      { id_motivo: 5, descripcion: 'Cambio de frenos' },
-      { id_motivo: 6, descripcion: 'Cambio de amortiguadores' }]);
+
+   this.http.get<ResponseMotivosMantenimiento>(`${this.API_URL}/api/mantenimiento/motivos`).subscribe(response=>{
+      this.motivosMantenimiento.set(response.motivos);
+   })
   }
 
   public registrar(mantenimiento: any) {
     return this.http.post(`${this.API_URL}/api/mantenimiento`, {mantenimiento});
 
   }
+
+  public listar(){
+    return this.http.get<ResponseMantenimiento>(`${this.API_URL}/api/mantenimiento`);
+  }
+
+  eliminar(id: number) {
+    return this.http.delete(`${this.API_URL}/api/mantenimiento/${id}`);
+  }   
 
 }

@@ -17,3 +17,6 @@
 ::ng-deep .p-dialog-header{
     @apply  font-roboto bg-white  dark:bg-slate-800 dark:text-white font-medium;
 }
+
+
+

@@ -132,11 +132,11 @@ export class NuevaComponent implements AfterViewInit {
       this.guardandoRecorrido.set(true);
       await firstValueFrom(this.recorridoService.registrar(recorrido))
       this.uiService.mostrarAlertaSuccess('Embarques', 'Recorrido registrado');
-    } catch (ex: any) {
-      this.uiService.mostrarAlertaError("Embarques", `Error al registrar el recorrido ${ex.message}`);
-    } finally {
-      this.guardandoRecorrido.set(false);
       this.reset();
+    } catch (ex: any) {
+      this.uiService.mostrarAlertaError("Embarques", `${ex["error"]["mensaje"]}`);
+    } finally {
+      this.guardandoRecorrido.set(false);      
     }
 
   }

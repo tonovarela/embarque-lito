@@ -3,7 +3,7 @@
     <div class="p-2  rounded-lg  h-full  mt-8 transition-colors duration-30 ">
        <div class="flex justify-between items-center w-full p-2 bg-transparent dark:bg-gray-500 rounded-tr-md rounded-tl-md text-gray-600 dark:text-white">
           <h1 class="text-2xl ">Mantenimientos</h1>
-          <button class="text-md rounded-full border p-2 border-black dark:border-white hover:bg-green-500 dark:hover:bg-green-500 hover:text-white ">
+          <button (click)="descargarExcel()" class="text-md rounded-full border p-2 border-black dark:border-white hover:bg-green-500 dark:hover:bg-green-500 hover:text-white ">
              <svg class="fill-current w-5 h-5" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M439.658,91.21L351.435,2.987C349.522,1.075,346.928,0,344.223,0H79.554c-5.633,0-10.199,4.566-10.199,10.199v491.602 c0,5.633,4.566,10.199,10.199,10.199h352.892c5.632,0,10.199-4.566,10.199-10.199V98.422 C442.645,95.717,441.57,93.123,439.658,91.21z M354.422,34.823l53.401,53.4h-53.401V34.823z M422.247,491.602H89.753V20.398 h244.271v78.024c0,5.633,4.567,10.199,10.199,10.199h78.024V491.602z"></path> </g> </g> <g> <g> <path d="M282.012,454.884H119.331c-5.633,0-10.199,4.566-10.199,10.199s4.566,10.199,10.199,10.199h162.681 c5.632,0,10.199-4.566,10.199-10.199S287.644,454.884,282.012,454.884z"></path> </g> </g> <g> <g> <path d="M334.026,454.884h-11.067c-5.632,0-10.199,4.566-10.199,10.199s4.567,10.199,10.199,10.199h11.067 c5.632,0,10.199-4.566,10.199-10.199S339.658,454.884,334.026,454.884z"></path> </g> </g> <g> <g> <path d="M311.6,263.139l75.737-93.534c2.473-3.056,2.972-7.261,1.278-10.809c-1.692-3.549-5.274-5.808-9.205-5.808h-84.952 c-3.078,0-5.99,1.389-7.926,3.781L256,194.475l-30.532-37.706c-1.936-2.392-4.849-3.781-7.926-3.781H132.59 c-3.931,0-7.513,2.259-9.206,5.808c-1.693,3.548-1.194,7.754,1.279,10.809l75.737,93.534l-75.737,93.534 c-2.474,3.056-2.972,7.261-1.279,10.809c1.693,3.548,5.274,5.808,9.206,5.808h84.952c3.077,0,5.99-1.389,7.926-3.781L256,331.804 l30.531,37.706c1.936,2.392,4.849,3.781,7.926,3.781h84.953c3.931,0,7.513-2.259,9.205-5.808 c1.693-3.548,1.195-7.754-1.279-10.809L311.6,263.139z M299.323,173.386h58.706l-59.553,73.545l-29.352-36.25L299.323,173.386z M212.677,352.892h-58.706l59.552-73.545l29.352,36.25L212.677,352.892z M299.323,352.892L153.971,173.386h58.706l145.351,179.506 H299.323z"></path> </g> </g> </g></svg>
           </button>
        </div>
@@ -26,35 +26,43 @@
           [allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid" allowReordering='true'
           [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
           [pageSettings]='pageSettings'>
-          <!-- <e-columns>
-             <e-column field='id_carga_gasolina' [allowFiltering]="false" headerText='' width='70' >
-                <ng-template #template let-data>
-                   <div  class="grid grid-cols-2 gap-4">                     
-                      @if(data.esUltimo=='1'){
-                         <svg  class="h-4 w-4 cursor-pointer   fill-current " viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path  d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"></path></g></svg>                           
-                      }
-                   </div>
-                   
-                </ng-template>
-             </e-column>
-             <e-column field='descripcion_transporte' headerText="transporte" ></e-column>
-             <e-column field='total_litros' headerText="total de litros" width='150' ></e-column>
-             <e-column field='importe_carga'  headerText="Importe Carga" width='150'>
-                <ng-template #template let-data>
-                   {{data.importe_carga | currency}}
-                </ng-template>
-             </e-column>
+          <e-columns>
+            <e-column  [allowFiltering]="false" headerText='' width='70' >
+               <ng-template #template let-data>
+                  <div  class="grid grid-cols-2 gap-4">                     
+                     @if(data.esUltimo=='1'){
+                        <svg (click)="eliminarMantenimiento(data)"  class="h-4 w-4 cursor-pointer   fill-current " viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path  d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"></path></g></svg>                           
+                     }
+                  </div>                  
+               </ng-template>
+            </e-column>
+            <e-column field='id_mantenimiento' headerText="ID" >            
+            </e-column>
+            <e-column field='transporte'>            
+            </e-column>
+            <e-column field='chofer'>            
+            </e-column>
+            <e-column field='motivo'>            
+            </e-column>
             
-             <e-column field='kilometraje_inicial' width='160'  headerText="Kilometraje inicial" ></e-column>
-             <e-column field='kilometraje_final'  width='160'  headerText="Kilometraje final" ></e-column>
-             <e-column field='fecha_carga' headerText="fecha_carga" >
-            
+             <e-column field='fecha_inicio' headerText="inicio" >            
                 <ng-template #template let-data>
-                   {{data.fecha_carga | date: 'dd-MM-yyyy'}}
+                   {{data.fecha_inicio | date: 'dd-MM-yyyy hh:mm a'}}
                 </ng-template>
              </e-column>
+             <e-column field='fecha_fin' headerText="fin" >            
+               <ng-template #template let-data>
+                  
+                  {{data.fecha_fin | date: 'dd-MM-yyyy hh:mm a'}}
+               </ng-template>
+            </e-column>
+            <e-column field='fecha_registro' headerText="registro" >            
+               <ng-template #template let-data>
+                  {{data.fecha_registro | date: 'dd-MM-yyyy hh:mm a'}}
+               </ng-template>
+            </e-column>                          
              <e-column field='observaciones' headerText="Observaciones" ></e-column>
-          </e-columns> -->
+          </e-columns>
        </ejs-grid>   
     }   
  </div>
