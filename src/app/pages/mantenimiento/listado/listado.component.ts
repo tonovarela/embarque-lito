@@ -25,7 +25,7 @@ export default class ListadoComponent extends BaseGridComponent {
   Mantenimientos = computed(() => this._mantenimientos());
   mantenimientoService = inject(MantenimientoService);
 
-  ngOnInit() {  
+  ngOnInit() {
     this.autoFitColumns = true;
     this.cargarMantenimientos();
     this.iniciarResizeGrid(this.minusHeight);
@@ -37,43 +37,37 @@ export default class ListadoComponent extends BaseGridComponent {
     });
   }
 
-
-   async descargarExcel() {
-      let data: Mantenimiento[];
-      const filtered = await this.grid.getFilteredRecords() as Mantenimiento[];
-      if (filtered.length === 0) {
-        data = this.Mantenimientos();
-      } else {
-        data = filtered;
-      }
-  
-      const dataforExcel = data.map(({ ...rest }) => rest);
-      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataforExcel);
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Recorridos');
-  
-      /* save to file */
-      XLSX.writeFile(wb, 'Mantenimientos.xlsx');
+  async descargarExcel() {
+    let data: Mantenimiento[];
+    const filtered = await this.grid.getFilteredRecords() as Mantenimiento[];
+    if (filtered.length === 0) {
+      data = this.Mantenimientos();
+    } else {
+      data = filtered;
     }
 
+    const dataforExcel = data.map(({ ...rest }) => rest);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataforExcel);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Recorridos');
 
+    /* save to file */
+    XLSX.writeFile(wb, 'Mantenimientos.xlsx');
+  }
 
-
-    async eliminarMantenimiento(mantenimiento: Mantenimiento) {
-      
-        const { id_mantenimiento } = mantenimiento    
-        const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion("Mantenimiento", "¿Está seguro de eliminar este Mantenimiento?");
-        if (!isConfirmed) {
-          return;
-        }
-        try {
-          await firstValueFrom(this.mantenimientoService.eliminar(id_mantenimiento!));
-        } catch (_) {
-          this.uiService.mostrarAlertaError("Carga", "No se pudo eliminar la carga de gasolina");
-        } finally {
-          this.cargarMantenimientos();
-        }        
-      }
-
+  async eliminarMantenimiento(mantenimiento: Mantenimiento) {
+    const { id_mantenimiento } = mantenimiento
+    const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion("Mantenimiento", "¿Está seguro de eliminar este Mantenimiento?");
+    if (!isConfirmed) {
+      return;
+    }
+    try {
+      await firstValueFrom(this.mantenimientoService.eliminar(id_mantenimiento!));
+    } catch (_) {
+      this.uiService.mostrarAlertaError("Carga", "No se pudo eliminar la carga de gasolina");
+    } finally {
+      this.cargarMantenimientos();
+    }
+  }
 
 }

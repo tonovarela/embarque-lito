@@ -1,9 +1,23 @@
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from "@angular/forms";
 import { unirFechaHora } from "./helpers";
 
+
+
 export const obtenerValorNumerico = (valor: string): number => {
   const numeroValor: string = `${valor}`.replace(/\,/g, '').replace(/\$/g, '');
   return Number(numeroValor);
+}
+
+export const FechafinValidator = (): ValidatorFn => {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const group = formGroup as FormGroup;
+    const fechaInicio = group.get('fecha_inicio')?.value;
+    const fechaFin = group.get('fecha_fin')?.value;
+    if (fechaInicio && fechaFin) {
+      return fechaInicio <= fechaFin ? null : { fechaInvalida: true };
+    }
+    return null;
+  };
 }
 
 export const MayorACeroValidator = (): ValidatorFn => {

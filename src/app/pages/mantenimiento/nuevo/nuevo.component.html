@@ -42,8 +42,7 @@
                     <div class="flex sm:flex-row flex-col  space-x-2">
                         <div class=" w-full space-y-2">
 
-                            <div class="w-full">
-                                <!-- (change)="actualizarTransporte()" -->
+                            <!-- <div class="w-full">                                
                                 <select id="chofer" formControlName="chofer" aria-placeholder="Seleccione un chofer"
                                     [ngClass]="{'input-invalido': tieneError('chofer'), 'input ': !tieneError('chofer') }">
 
@@ -52,9 +51,9 @@
                                     <option value="{{chofer.id}}">{{chofer.nombre}}</option>
                                     }
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="w-full">
-                                <!-- (change)="actualizarKilometrajeInicial()" -->
+                                
                                 <select id="transporte" formControlName="transporte"
                                     aria-placeholder="Seleccione una unidad de transporte"
                                     [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
@@ -80,7 +79,7 @@
                             <div class="max-w-[32rem] mx-auto space-y-2">
                                 <label for="start-time"
                                     class="block  text-xs font-medium text-gray-900 dark:text-white">Inicio</label>
-                                <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
+                                <div class="w-full grid  sm:grid-cols-1  grid-cols-1 gap-2 ">
                                     <div class="relative ">
                                         <div
                                             class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -93,7 +92,7 @@
                                             class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="Fecha de inicio" />
                                     </div>
-                                    <div class="relative">
+                                    <!-- <div class="relative">
                                         <div
                                             class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                                             <app-time />
@@ -102,13 +101,13 @@
                                             name="hora_inicio"
                                             class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             value="00:00" required />
-                                    </div>
+                                    </div> -->
                                 </div>
                                 
 
                                 <label for="end-time"
                                     class="block   text-sm font-medium text-gray-900 dark:text-white">Fin</label>
-                                <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
+                                <div class="w-full grid  sm:grid-cols-1  grid-cols-1 gap-2 ">
                                     <div>
                                         <div class="relative">
                                             <div
@@ -124,7 +123,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="relative">
+                                    <!-- <div class="relative">
 
                                         <div
                                             class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
@@ -135,23 +134,15 @@
                                             class="bg-gray-50  leading-none border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             value="00:00" required />
 
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
-                            <div
-                                class="max-w-[24rem] mx-auto flex  items-center justify-around text-2xl text-gray-500 dark:text-white">
-                                @if(diferenciaTiempo.horas> 0){
-                                <div>{{diferenciaTiempo.horas}} hora{{diferenciaTiempo.horas>1?'s':''}}</div>
-                                }
-                                @if(diferenciaTiempo.minutos > 0){
-                                <div>{{diferenciaTiempo.minutos}} minuto{{diferenciaTiempo.minutos>1?'s':''}} </div>
-                                }
-                            </div>
-                            @if ( tieneError('hora_fin') )
+                                                    
+                            @if ( formRegistro.errors )
                             {
                             <div
                                 class="text-red-500 dark:text-pink-500  dark:bg-white text-xs text-center rounded  p-1.5 w-full">
-                                La diferencia entre la fecha de inicio y fin debe de ser mayor a 1 minuto
+                                La diferencia entre la fecha de inicio y fin debe de ser de un día
                             </div>
                             }
 

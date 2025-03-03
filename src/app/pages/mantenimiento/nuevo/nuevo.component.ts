@@ -55,13 +55,13 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     resetFormMantenimiento(this.formRegistro);
-    this.formRegistro.valueChanges.subscribe((form) => {
-      const { hora_inicio, hora_fin, fecha_fin, fecha_inicio } = form;
-      const fecha_inicioTime = unirFechaHora(fecha_inicio!, hora_inicio!);
-      const fecha_regresoTime = unirFechaHora(fecha_fin!, hora_fin!);
-      this.diferenciaTiempo = this.obtenerDiferenciaHoras(fecha_inicioTime, fecha_regresoTime);
+    // this.formRegistro.valueChanges.subscribe((form) => {
+    //   const { hora_inicio, hora_fin, fecha_fin, fecha_inicio } = form;
+    //   const fecha_inicioTime = unirFechaHora(fecha_inicio!, hora_inicio!);
+    //   const fecha_regresoTime = unirFechaHora(fecha_fin!, hora_fin!);
+    //   this.diferenciaTiempo = this.obtenerDiferenciaHoras(fecha_inicioTime, fecha_regresoTime);
 
-    });
+    // });
 
   }
 
@@ -93,19 +93,18 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
 
 
 
-  private obtenerDiferenciaHoras(fechaInicio: Date, fechaFin: Date) {
-    const diferenciaMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
-    const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60)) || 0;
-    const diferenciaMinutos = Math.floor((diferenciaMilisegundos % (1000 * 60 * 60)) / (1000 * 60)) || 0;
-    const totalMinutos = Math.floor(diferenciaMilisegundos / (1000 * 60));
-    if (isNaN(totalMinutos) || totalMinutos < 1) {
-      this.formRegistro.get('hora_fin')!.setErrors({ diferenciaInvalida: true });
-    } else {
-      this.formRegistro.get('hora_fin')!.setErrors(null);
-    }
-    return { horas: diferenciaHoras, minutos: diferenciaMinutos, totalMinutos };
-
-  }
+  // private obtenerDiferenciaHoras(fechaInicio: Date, fechaFin: Date) {
+  //   const diferenciaMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
+  //   const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60)) || 0;
+  //   const diferenciaMinutos = Math.floor((diferenciaMilisegundos % (1000 * 60 * 60)) / (1000 * 60)) || 0;
+  //   const totalMinutos = Math.floor(diferenciaMilisegundos / (1000 * 60));
+  //   if (isNaN(totalMinutos) || totalMinutos < 1) {
+  //     this.formRegistro.get('hora_fin')!.setErrors({ diferenciaInvalida: true });
+  //   } else {
+  //     this.formRegistro.get('hora_fin')!.setErrors(null);
+  //   }
+  //   return { horas: diferenciaHoras, minutos: diferenciaMinutos, totalMinutos };
+  // }
 
   async guardar() {
     this.formRegistro.markAllAsTouched();
@@ -114,21 +113,24 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
     }
 
     this.guardandoMantenimiento.set(true);
-    const { chofer, transporte, motivo, observaciones, fecha_fin, fecha_inicio, hora_fin, hora_inicio } = this.formRegistro.value;
+    const {  transporte, motivo, observaciones, fecha_fin, fecha_inicio,
+      // hora_fin, hora_inicio 
+      } = this.formRegistro.value;
 
-    const fecha_inicioTime = formatDate(new Date(fecha_inicio!), hora_inicio!)
-    const fecha_finTime = formatDate(new Date(fecha_fin!), hora_fin!)
+    const fecha_inicioTime = formatDate(new Date(fecha_inicio!), null)
+    const fecha_finTime = formatDate(new Date(fecha_fin!), null)
     const mantenimiento = {
       id_motivo: motivo,
-      id_chofer: chofer,
+      ///id_chofer: chofer,
       id_transporte: transporte,
       fecha_inicio: fecha_inicioTime,
       fecha_fin: fecha_finTime,
       observaciones,
     };
+    
     try {
       await firstValueFrom(this.mantenimientoService.registrar(mantenimiento));
-      this.uiService.mostrarAlertaSuccess('Embarques', 'Mantenimiento registrado correctamente');
+      this.uiService.mostrarAlertaSuccess('Embarques', 'Paro registrado correctamente');
       resetFormMantenimiento(this.formRegistro);
     }
     catch (e: any) {      

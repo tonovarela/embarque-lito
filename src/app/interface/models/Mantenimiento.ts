@@ -7,6 +7,6 @@ export interface Mantenimiento {
     fecha_registro:Date;
     observaciones:string;
     motivo:number;
-    chofer:string
+    //chofer:string
 
 }
