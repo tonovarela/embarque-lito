@@ -34,8 +34,15 @@ export class MantenimientoService {
     return this.http.get<ResponseMantenimiento>(`${this.API_URL}/api/mantenimiento`);
   }
 
-  eliminar(id: number) {
+  public eliminar(id: number) {
     return this.http.delete(`${this.API_URL}/api/mantenimiento/${id}`);
   }   
+
+  public editarFecha(id_mantenimiento: number, fecha_fin: string) {
+    return this.http.put(`${this.API_URL}/api/mantenimiento/${id_mantenimiento}`, {fecha_fin});
+  }
+
+
+
 
 }

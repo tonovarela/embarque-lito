@@ -45,20 +45,24 @@
             <e-column field='motivo'>            
             </e-column>
             
-             <e-column field='fecha_inicio' headerText="inicio" >            
+             <e-column field='fecha_inicio'  textAlign="center" headerText="inicio" >            
                 <ng-template #template let-data>
-                   {{data.fecha_inicio | date: 'dd-MM-yyyy hh:mm a'}}
+                   {{data.fecha_inicio | date: 'dd-MM-yyyy'}}
                 </ng-template>
              </e-column>
-             <e-column field='fecha_fin' headerText="fin" >            
-               <ng-template #template let-data>
+             <e-column field='fecha_fin'  headerText="fin" >            
+               <ng-template #template let-data>                  
+                  <div class="flex justify-between">
+                     {{data.fecha_fin | date: 'dd-MM-yyyy'}}
+                     <svg (click)="editarFecha(data)" class="h-5 w-5 cursor-pointer   stroke-black dark:stroke-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 2V5"  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 2V5"  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3.5 9.08997H20.5" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M19.21 15.77L15.6701 19.31C15.5301 19.45 15.4 19.71 15.37 19.9L15.18 21.25C15.11 21.74 15.45 22.0801 15.94 22.0101L17.29 21.82C17.48 21.79 17.75 21.66 17.88 21.52L21.4201 17.9801C22.0301 17.3701 22.3201 16.6601 21.4201 15.7601C20.5301 14.8701 19.82 15.16 19.21 15.77Z"  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18.7001 16.28C19.0001 17.36 19.8401 18.2 20.9201 18.5"  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5V12"  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11.9955 13.7H12.0045"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.29431 13.7H8.30329"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.29431 16.7H8.30329"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                  </div>
                   
-                  {{data.fecha_fin | date: 'dd-MM-yyyy hh:mm a'}}
                </ng-template>
+
             </e-column>
             <e-column field='fecha_registro' headerText="registro" >            
                <ng-template #template let-data>
-                  {{data.fecha_registro | date: 'dd-MM-yyyy hh:mm a'}}
+                  {{data.fecha_registro | date: 'dd-MM-yyyy hh:mm a'}}                                 
                </ng-template>
             </e-column>                          
              <e-column field='observaciones' headerText="Observaciones" ></e-column>
@@ -68,5 +72,45 @@
  </div>
     </div>  
  </div>
+
+
+ 
+
+ @if (mantenimientoSeleccionado) {
+   <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+       <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+           
+           <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>           
+           <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>           
+           <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+               <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                   <div class="sm:flex sm:items-start">
+                       <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                           <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                               Editar 
+                           </h3>
+                           <div class="mt-2">
+                               <form [formGroup]="formEditarFecha">
+                                   <div class="mb-4 ">
+                                       <label for="fecha_fin" class="block text-gray-700 text-sm font-bold mb-2">Fecha Fin:</label>
+                                       <input type="date" id="fecha_fin" formControlName="fecha_fin" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                   </div>
+                               </form>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                   <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm" (click)="guardarFecha()">
+                       Guardar
+                   </button>
+                   <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" (click)="cerrarModal()">
+                       Cancelar
+                   </button>
+               </div>
+           </div>
+       </div>
+   </div>
+   }
  
  <app-fabbutton></app-fabbutton>

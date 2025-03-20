@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { formatDate } from '@angular/common';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Mantenimiento } from '@app/interface/models/Mantenimiento';
 import { SynfusionModule } from '@app/lib/synfusion.module';
@@ -11,7 +13,7 @@ import * as XLSX from 'xlsx';
 
 @Component({
   standalone: true,
-  imports: [SynfusionModule, FabbuttonComponent, CommonModule],
+  imports: [SynfusionModule, FabbuttonComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,9 +23,17 @@ export default class ListadoComponent extends BaseGridComponent {
   private _mantenimientos = signal<Mantenimiento[]>([]);
   public cargando = signal<boolean>(false);
   protected minusHeight = 0.27;
+  private fb = inject(FormBuilder);
 
+  showModal = false;
   Mantenimientos = computed(() => this._mantenimientos());
   mantenimientoService = inject(MantenimientoService);
+
+
+  public formEditarFecha: FormGroup = this.fb.group({
+    fecha_fin: ['', Validators.required]
+  });
+  mantenimientoSeleccionado: Mantenimiento | null = null;
 
   ngOnInit() {
     this.autoFitColumns = true;
@@ -68,6 +78,45 @@ export default class ListadoComponent extends BaseGridComponent {
     } finally {
       this.cargarMantenimientos();
     }
+  }
+
+
+  cerrarModal(): void {
+
+    this.mantenimientoSeleccionado = null;
+  }
+
+
+  async editarFecha(mantenimiento: Mantenimiento) {
+    const fechaFin = formatDate(mantenimiento.fecha_fin, 'yyyy-MM-dd', 'en-US');
+    this.formEditarFecha.patchValue({
+      fecha_fin: fechaFin
+    });
+    this.mantenimientoSeleccionado = mantenimiento;
+
+  }
+
+  async guardarFecha(): Promise<void> {
+    if (this.formEditarFecha.invalid) {
+      return;
+    }
+    const { fecha_fin } = this.formEditarFecha.value;
+    const fechaFormateada = formatDate(fecha_fin, 'yyyy-dd-MM', 'en-US'); 
+    const { id_mantenimiento } = this.mantenimientoSeleccionado!;
+    try {
+      await firstValueFrom(this.mantenimientoService.editarFecha(id_mantenimiento,fechaFormateada));
+      this.uiService.mostrarAlertaSuccess("Mantenimiento", "Fecha actualizada ");    
+    }catch (error) {
+      this.uiService.mostrarAlertaError("Mantenimiento", "No se pudo actualizar");
+    }finally{
+      this.cargarMantenimientos();      
+      this.mantenimientoSeleccionado = null;
+    }
+    
+    
+    
+    
+
   }
 
 }
