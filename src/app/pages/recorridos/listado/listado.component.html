@@ -52,6 +52,11 @@
                      <input class="e-input" type="text">
                   </ng-template>
                </e-column>
+               <e-column field='costo_viaje' headerText="Costo de envio" >
+                  <ng-template #template let-data>
+                     {{data.costo_viaje| currency}}
+                  </ng-template>
+                  </e-column>                  
                <e-column field='tipo'>
                   <ng-template #template let-data>
                      {{data.tipo | uppercase}}
