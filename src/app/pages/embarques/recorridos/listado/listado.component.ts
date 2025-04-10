@@ -22,7 +22,7 @@ import * as XLSX from 'xlsx';
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css'
 })
-export class ListadoComponent extends BaseGridComponent implements OnInit {
+export default class ListadoComponent extends BaseGridComponent implements OnInit {
   private _recorridos = signal<Recorrido[]>([]);
   private recorridoService = inject(RecorridoService);
   public recorridoActivo: Recorrido | null = null;

@@ -3,6 +3,7 @@ export type Usuario ={
     nombre: string;
     login:string;
     personal?:string;
+    puesto?:string;
     
 }
 

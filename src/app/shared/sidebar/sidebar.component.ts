@@ -1,30 +1,71 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { UiService } from '@app/services/ui.service';
+import { AfterViewInit, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { UiService, UsuarioService } from '@app/services';
 
+
+interface Ruta {
+  nombre: string;
+  icono: string;
+  path: string;
+}
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink,RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent implements OnInit {
-
+export class SidebarComponent implements OnInit,AfterViewInit {
+  ngAfterViewInit(): void {
+    document.querySelectorAll('.pathItem').forEach((element) => {
+      element.addEventListener('click', () => {
+        console.log('click');
+        this.uiService.closeSidebar();
+      });
+    });
+    
+  }
   uiService = inject(UiService);
+  usuarioService = inject(UsuarioService)
   router = inject(Router);
-  ngOnInit(): void {
-   
+  private _rutas = signal<Ruta[]>([]);
+  public rutas = computed(() => this._rutas());
+  private rutasEmbarques: Ruta[] = [{
+    nombre: 'Recorridos',
+    icono: '/assets/img/recorridos.svg',
+    path: '/embarques/recorridos'
+  }, {
+    nombre: 'Carga',
+    icono: '/assets/img/carga.svg',
+    path: '/embarques/carga'
+  },
+  {
+    nombre: 'Paros',
+    icono: '/assets/img/paros.svg',
+    path: '/embarques/mantenimiento'
+  }
+  ];
+
+  private rutasChofer = [
+    {
+      nombre: 'Recorridos',
+      icono: '/assets/img/recorridos.svg',
+      path: 'chofer/recorridos'
+    }
+  ];
+  
+  ngOnInit(): void {    
+    if (this.usuarioService.esChofer()) {
+      this._rutas.set(this.rutasChofer);
+    } else {
+      this._rutas.set(this.rutasEmbarques);
+    }
   }
 
-  irRuta(ruta: string) {
-    this.router.navigate([ruta]);
-    this.uiService.closeSidebar();
 
-
-
-  }
-
+  // irRuta() {
+  //   this.uiService.closeSidebar();
+  // }
 
 
 }

@@ -5,9 +5,6 @@ import { LoginResponse } from '@app/interface/responses/LoginResponse';
 import { environment } from '@environments/environment.development';
 import { delay, firstValueFrom } from 'rxjs';
 
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +22,13 @@ export class UsuarioService {
     return this._statusSesion();
   });
 
-
+  esChofer = computed(() => {
+    const usuario = this._statusSesion().usuario;
+    if (usuario) {
+      return  (usuario.puesto?.trim().toLowerCase() === 'chofer');
+    }
+    return false;
+  });
   
   private async login(username: string, password: string) {
     this._statusSesion.set({ usuario: undefined, estatus: StatutLogin.LOADING });

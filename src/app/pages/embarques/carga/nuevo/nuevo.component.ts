@@ -7,13 +7,13 @@ import { CargaGasolina } from '@app/interface/models';
 
 import { GaugeComponent, MinusComponent, PlusComponent } from '@app/shared/svg';
 import { CalendarComponent } from '@app/shared/svg/calendar/calendar.component';
-import { obtenerValorNumerico } from '../../../helpers/validators';
+import { obtenerValorNumerico } from '../../../../helpers/validators';
 import { Router } from '@angular/router';
 import { TransporteService } from '@app/services/transporte.service';
 import { onFocusNumberValidate, onInputNumberValidate, tieneErrorForm } from '@app/helpers/helpers';
 import { CargaGasolinaService } from '@app/services/cargaGasolina.service';
 import { firstValueFrom } from 'rxjs';
-import { formatDate } from '../../../helpers/helpers';
+import { formatDate } from '../../../../helpers/helpers';
 import { UiService } from '@app/services/ui.service';
 
 
@@ -25,7 +25,7 @@ import { UiService } from '@app/services/ui.service';
   styleUrl: './nuevo.component.css',
 
 })
-export class NuevoComponent implements OnInit {
+export default class NuevoComponent implements OnInit {
 
   constructor() { }
   transporteService = inject(TransporteService);
@@ -124,7 +124,7 @@ export class NuevoComponent implements OnInit {
     if (this.guardandoCarga()){
       return;
     }
-    this.router.navigate(['/carga']);
+    this.router.navigate(['/embarques/carga']);
   }
 
 

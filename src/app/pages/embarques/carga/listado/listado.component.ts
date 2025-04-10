@@ -7,7 +7,8 @@ import { CargaGasolinaService } from '@app/services/cargaGasolina.service';
 import { FabbuttonComponent } from '@app/shared/fabbutton/fabbutton.component';
 import * as XLSX from 'xlsx';
 import { firstValueFrom, tap } from 'rxjs';
-import { UiService } from '../../../services/ui.service';
+import { UiService } from '@app/services';
+
 @Component({
   standalone: true,
   imports: [SynfusionModule, FabbuttonComponent, CommonModule],
@@ -15,7 +16,7 @@ import { UiService } from '../../../services/ui.service';
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css'
 })
-export class ListadoComponent extends BaseGridComponent implements OnInit {
+export default class ListadoComponent extends BaseGridComponent implements OnInit {
 
 
   private cargaGasolinaService = inject(CargaGasolinaService);

@@ -13,7 +13,7 @@ import { TransporteService, ChoferService, MantenimientoService, UiService } fro
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
 import { initFlowbite } from 'flowbite';
 import { createFormMantenimientoBuilder, resetFormMantenimiento } from '../helper/formFactory';
-import { formatDate, unirFechaHora } from '@app/helpers/helpers';
+import { formatDate } from '@app/helpers/helpers';
 import { DiferenciaTiempo } from '@app/interface/models';
 import { firstValueFrom } from 'rxjs';
 
@@ -88,7 +88,7 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
     if (this.guardandoMantenimiento()) {
       return;
     }
-    this.router.navigate(['/mantenimiento']);
+    this.router.navigate(['/embarques/mantenimiento']);
   }
 
 

@@ -1,0 +1,11 @@
+.svg-icon {
+  filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(60%) contrast(100%);
+}
+
+:host-context(.dark) .svg-icon {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+/* .selected .svg-icon {
+  filter: invert(45%) sepia(99%) saturate(1281%) hue-rotate(210deg) brightness(100%) contrast(91%);
+} */

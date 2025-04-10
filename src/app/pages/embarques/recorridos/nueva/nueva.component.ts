@@ -29,7 +29,7 @@ import { obtenerValorNumerico } from '@app/helpers/validators';
   templateUrl: './nueva.component.html',
   styleUrl: './nueva.component.css'
 })
-export class NuevaComponent implements AfterViewInit {
+export  default class  NuevaComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     initFlowbite();
@@ -66,7 +66,7 @@ export class NuevaComponent implements AfterViewInit {
     if (this.guardandoRecorrido()) {
       return;
     }
-    this.router.navigate(['/recorridos']);
+    this.router.navigate(['/embarques/recorridos']);
   }
 
 

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, computed, effect, EffectRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { UiService } from './services/ui.service';
 import { HeaderComponent } from './shared/header/header.component';
@@ -24,6 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private _usuarioService = inject(UsuarioService);
   public transporteService = inject(TransporteService);
   public choferService = inject(ChoferService);
+  public router = inject(Router);
   public mantenimientoService= inject(MantenimientoService);
   public uiService = inject(UiService);
   public estatusLogin = computed(() => this._usuarioService.StatusSesion().estatus);
@@ -33,6 +34,11 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor() {
     this.effectLogin = effect(() => {
       if (this.estatusLogin() === 'LOGIN') {
+        if (this._usuarioService.esChofer()){
+           this.router.navigate(['/chofer']);
+        }else {          
+          this.router.navigate(['/embarques']);
+        }        
         setTimeout(() => {
           this.uiService.cargarSidebar();
           initFlowbite();

@@ -56,6 +56,9 @@ export abstract class BaseGridComponent implements OnDestroy {
         if (!this.autoFitColumns) {
             return;
         }
+        if (this.grid == undefined){
+            return;
+        }
         this.grid.resizeSettings = { mode: 'Auto' }
         this.grid.autoFitColumns();
         if (window.innerWidth < 2000) {
