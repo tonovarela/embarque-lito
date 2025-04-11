@@ -5,6 +5,7 @@
             <form  [formGroup]="formRegistro">
             <div class="flex sm:flex-row flex-col   gap-2">
                 <div class="sm:w-1/2 w-full space-y-2">
+                    
                     <div class="grid gap-1 ">
                         <app-autocomplete [hasError]="tieneError('ops')" (onSelect)="onSelectOP($event)"></app-autocomplete>
                         <div class="flex items-start justify-start flex-wrap gap-2 mt-2  w-full ">

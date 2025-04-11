@@ -3,11 +3,7 @@ import { FechaMinimaCargaValidator, FechaMinimaSalidaValidator, KilometrajeValid
 import { Datepicker } from 'flowbite';
 import type { DatepickerOptions } from "flowbite";
 
-
-
-
 declare var translateCalendar: any;
-
 
 export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
   const today = new Date();
@@ -48,6 +44,19 @@ export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
     destino: ['', Validators.required],
     fecha_salida: [new Date(), Validators.required],
   });
+}
+
+export const createFormRegistroProgramadorBuilder = (fb: FormBuilder) => {
+  return fb.group({
+    transporte: [0, MayorACeroValidator()],
+    chofer: [0, MayorACeroValidator()],
+    tipo_servicio: [0, MayorACeroValidator()],
+    remisiones: fb.array([], Validators.required),  
+    destino: [{ value: '' }, Validators.required],
+    ops: fb.array([''], Validators.required),  
+    observaciones: [''],
+  }
+);
 }
 
 
@@ -123,6 +132,21 @@ export const resetFormRecorridoExterno = (formRegistro: FormGroup) => {
   datepicker1.init();
   datepicker1.setDate(today);
   translateCalendar();
+
+}
+
+
+
+export const resetFormRecorridoProgramado = (formRegistro: FormGroup) => {
+
+  formRegistro.reset();
+  formRegistro.get("transporte")!.setValue("0");
+  formRegistro.setControl("ops", new FormArray([], Validators.required));
+  formRegistro.get("observaciones")!.setValue('');
+  formRegistro.setControl("remisiones", new FormArray([], Validators.required));
+  formRegistro.get("chofer")!.setValue("0");  
+  formRegistro.get("tipo_servicio")!.setValue(0);  
+  formRegistro.get('destino')!.setValue('');
 
 }
 

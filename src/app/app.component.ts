@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this._usuarioService.esChofer()){
            this.router.navigate(['/chofer']);
         }else {          
-          this.router.navigate(['/embarques']);
+          this.router.navigate(['/embarques/recorridos/nuevo']);
         }        
         setTimeout(() => {
           this.uiService.cargarSidebar();

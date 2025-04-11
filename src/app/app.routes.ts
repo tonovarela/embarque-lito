@@ -39,8 +39,8 @@ export const routes: Routes = [
     canActivateChild: [authGuard, choferGuard],
     component: SesionLayoutComponent,    
     children: [
-        { path: 'recorridos', loadComponent:()=> import('./pages/embarques/recorridos/listado/listado.component') },
-        { path: 'recorridos/nuevo', loadComponent:()=> import('./pages/embarques/recorridos/nueva/nueva.component') },
+        { path: 'recorridos', loadComponent:()=> import('./pages/chofer/recorridos/listado/listado.component') },
+        { path: 'recorridos/nuevo', loadComponent:()=> import('./pages/chofer/recorridos/nuevo/nuevo.component') },
          {path: '**', redirectTo: 'recorridos', pathMatch: 'full' }
     ]
 

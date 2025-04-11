@@ -16,7 +16,7 @@ import { RouterLink } from '@angular/router';
 })
 export class FabbuttonComponent implements OnInit {
    
-  menuOpen = false;
+  menuOpen = false;  
   ngOnInit(): void {  }
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

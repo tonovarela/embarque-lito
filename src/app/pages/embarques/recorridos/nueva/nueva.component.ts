@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { initFlowbite } from 'flowbite';
 
-import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder, resetFormRecorridoExterno, resetFormRecorridoInterno } from '@app/helpers/formModel';
+import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder, createFormRegistroProgramadorBuilder, resetFormRecorridoExterno, resetFormRecorridoInterno, resetFormRecorridoProgramado } from '@app/helpers/formModel';
 
 import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
 import { RegistroInternoComponent } from '@app/componentes/registro-interno/registro-interno.component';
@@ -18,6 +18,7 @@ import { Recorrido } from '@app/interface/models';
 import { UiService } from '@app/services/ui.service';
 import { formatDate, tieneErrorForm } from '@app/helpers/helpers';
 import { obtenerValorNumerico } from '@app/helpers/validators';
+import { RegistroProgramadoComponent } from '@app/componentes/registro-programado/registro-programado.component';
 
 
 
@@ -25,44 +26,59 @@ import { obtenerValorNumerico } from '@app/helpers/validators';
 @Component({
   selector: 'app-nueva',
   standalone: true,
-  imports: [RegistroInternoComponent, RegistroExternoComponent, ReactiveFormsModule, CommonModule],
+  imports: [RegistroInternoComponent, RegistroExternoComponent, RegistroProgramadoComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './nueva.component.html',
   styleUrl: './nueva.component.css'
 })
-export  default class  NuevaComponent implements AfterViewInit {
+export default class NuevaComponent implements AfterViewInit {
+
+
 
   ngAfterViewInit(): void {
     initFlowbite();
     this.changeDetectorRef.detectChanges();
   }
-  changeDetectorRef = inject(ChangeDetectorRef);
 
+  changeDetectorRef = inject(ChangeDetectorRef);
   recorridoService = inject(RecorridoService);
   uiService = inject(UiService);
-
-
-
   fb = inject(FormBuilder);
   router = inject(Router);
-
-  registroInterno = signal<boolean>(true);
+  
+  guardandoRecorrido = signal<boolean>(false);
+  registro = signal<'interno' | 'externo' | 'programado'>('interno');
 
   formRegistro = this.fb.group({
     registroInterno: createFormRegistroInternoBuilder(this.fb),
-    registroExterno: createFormRegistroExternoBuilder(this.fb)
+    registroExterno: createFormRegistroExternoBuilder(this.fb),
+    registroProgramado: createFormRegistroProgramadorBuilder(this.fb)
   })
 
-  guardandoRecorrido = signal<boolean>(false);
+  
 
 
-  guardarRegistro() {
+  public guardarRegistro() {
     if (this.guardandoRecorrido()) {
       return;
     }
-    this.registroInterno() ? this.guardarRecorridoInterno() : this.guardarRecorridoExterno();
+    switch (this.registro()) {
+      case 'interno':
+        this.guardarRecorridoInterno();
+        break;
+      case 'externo':
+        this.guardarRecorridoExterno();
+        break;
+      case 'programado':
+        this.guardarRecorridoProgramado();
+        break;
+      default:
+        console.log('No se reconoce el tipo de registro');
+        break;
+    }
+    
   }
 
-  regresar() {
+  public regresar() {
     if (this.guardandoRecorrido()) {
       return;
     }
@@ -125,6 +141,20 @@ export  default class  NuevaComponent implements AfterViewInit {
     await this.registrarRecorrido(registro);
   }
 
+  private async guardarRecorridoProgramado() {
+    const formRegistro = this.formRegistro.get("registroProgramado")!;
+    this.formRegistro.get("registroProgramado")!.markAllAsTouched();
+    this.formRegistro.get("registroProgramado")!.updateValueAndValidity();
+    
+    if (formRegistro.invalid) {
+      return;
+    }
+    this.guardandoRecorrido.set(true);
+    
+    //console.log(formRegistro.value);
+    this.guardandoRecorrido.set(false);
+  }
+
 
   private async registrarRecorrido(recorrido: Recorrido) {
 
@@ -136,10 +166,13 @@ export  default class  NuevaComponent implements AfterViewInit {
     } catch (ex: any) {
       this.uiService.mostrarAlertaError("Embarques", `${ex["error"]["mensaje"]}`);
     } finally {
-      this.guardandoRecorrido.set(false);      
+      this.guardandoRecorrido.set(false);
     }
 
   }
+
+
+
 
 
 
@@ -148,8 +181,23 @@ export  default class  NuevaComponent implements AfterViewInit {
   }
 
   private reset() {
-    this.registroInterno() ? resetFormRecorridoInterno(this.formRegistro.get('registroInterno') as FormGroup)
-      : resetFormRecorridoExterno(this.formRegistro.get('registroExterno') as FormGroup);
+    switch (this.registro()) {
+      case 'interno':
+        resetFormRecorridoInterno(this.formRegistro.get('registroInterno') as FormGroup);
+        break;
+      case 'externo':
+        resetFormRecorridoExterno(this.formRegistro.get('registroExterno') as FormGroup);
+        break;
+      case 'programado':
+        console.log('programado');
+        resetFormRecorridoProgramado(this.formRegistro.get('registroProgramado') as FormGroup);
+        break;
+      default:
+        console.log('No se reconoce el tipo de registro');
+        break;
+    }
+    // this.registroInterno() ? resetFormRecorridoInterno(this.formRegistro.get('registroInterno') as FormGroup)
+    //   : resetFormRecorridoExterno(this.formRegistro.get('registroExterno') as FormGroup);
     initFlowbite();
     this.changeDetectorRef.detectChanges();
 
