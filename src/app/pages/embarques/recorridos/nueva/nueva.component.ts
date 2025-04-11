@@ -150,8 +150,22 @@ export default class NuevaComponent implements AfterViewInit {
       return;
     }
     this.guardandoRecorrido.set(true);
+    const {  ops, transporte, tipo_servicio, chofer,  destino,  observaciones, id_previo, remisiones } = formRegistro.getRawValue();
+    const registro: Recorrido = {
+      ops,
+      observaciones,
+      destino,
+      remisiones,
+      factura: "N/A",
+      importe_factura: 0,
+      id_previo: id_previo ?? null,
+      id_tipo_servicio: tipo_servicio,    
+      id_transporte: +transporte,
+      id_chofer: +chofer,    
+      tipo: 'interno'
+    };
     
-    //console.log(formRegistro.value);
+    await this.registrarRecorrido(registro);      
     this.guardandoRecorrido.set(false);
   }
 

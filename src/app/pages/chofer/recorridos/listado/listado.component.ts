@@ -8,6 +8,8 @@ import { Recorrido } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { RecorridoService, UiService } from '@app/services';
+import { CounterComponent } from '@app/shared/components/counter/counter.component';
+
 
 import { firstValueFrom } from 'rxjs';
 
@@ -15,7 +17,7 @@ import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-listado',
   standalone: true,
-  imports: [SynfusionModule,  CommonModule, PrimeNgModule, FormsModule],
+  imports: [SynfusionModule,  CommonModule, PrimeNgModule, FormsModule,CounterComponent],
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,10 +31,11 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   public cargando =signal<boolean>(false);
 
   private uiService = inject(UiService);
+  today= new Date();
 
   cargarInformacion() {
     this.cargando.set(true);
-    this.recorridoService.listar().subscribe(({ recorridos }) => {
+    this.recorridoService.porChofer("3142",true).subscribe(({ recorridos }) => {
       this._recorridos.set(recorridos);
       this.cargando.set(false);
     });

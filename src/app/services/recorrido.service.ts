@@ -21,6 +21,10 @@ export class RecorridoService {
   listar(){
     return this.http.get<ResponseListadoRecorrido>(`${this.API_URL}/api/recorrido`);
   }
+
+  porChofer(id_chofer:string,$pendientes:boolean=false){    
+    return this.http.get<ResponseListadoRecorrido>(`${this.API_URL}/api/recorrido/chofer/${id_chofer}?pendientes=${$pendientes}`);              
+  }
   
   ultimo(id_transporte:string){
     return this.http.get<ResponseUltimoRecorrido>(`${this.API_URL}/api/recorrido/ultimo/${id_transporte}`).pipe(      
