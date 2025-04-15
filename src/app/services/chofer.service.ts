@@ -22,4 +22,10 @@ export class ChoferService {
     this.choferes.set(resp);
   }
 
+
+  async estaEnCurso(id_chofer: number) {
+    const resp = await firstValueFrom(this.http.get<{ enCurso: boolean }>(`${this.API_URL}/api/chofer/recorrido/${id_chofer}`));
+    return resp.enCurso;
+  }
+
 }

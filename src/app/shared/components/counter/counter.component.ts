@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal,input } from '@angular/core';
 
 @Component({
   selector: 'counter',
@@ -10,14 +10,14 @@ import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core
 })
 export class CounterComponent { 
     @Input() startTime?: Date;
-    @Input() isRunning: boolean = true;
+     isRunning  = input.required<boolean>();
     
     public minutes= signal<number>(0);
     public seconds = signal<number>(0);
     private interval: any;
   
     ngOnInit() {
-      console.log('startTime', this.startTime);
+      
       if (this.startTime) {
         this.startCounter();
       }
@@ -31,12 +31,11 @@ export class CounterComponent {
   
     private startCounter() {
       this.interval = setInterval(() => {
-        if (this.isRunning) {
+        if (this.isRunning()) {
           const now = new Date();
           const diff = now.getTime() - this.startTime!.getTime();
           this.minutes.set(Math.floor(diff / 60000));
-          this.seconds.set(Math.floor((diff % 60000) / 1000));
-          //console.log({minutes: this.minutes(), seconds: this.seconds()});
+          this.seconds.set(Math.floor((diff % 60000) / 1000));          
         }
       }, 1000);
     }
