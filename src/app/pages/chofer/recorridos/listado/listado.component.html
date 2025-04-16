@@ -3,6 +3,10 @@
       <div
          class="flex justify-between items-center w-full p-2 bg-transparent dark:bg-gray-500 rounded-tr-md rounded-tl-md text-gray-600 dark:text-white">
          <h1 class="text-2xl ">Recorridos</h1>
+         {{isRunning()}}
+         <pre>
+            <!-- {{recorridoActivo | json}} -->
+         </pre>
       </div>
 
       <div class="w-full mb-4">
@@ -17,112 +21,121 @@
                   </div>
                </div>
             </div>
-         </div>
-
+         </div>         
          }@else{
-         <ejs-grid #grid [dataSource]='Recorridos()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
-            [allowExcelExport]='true' AutoFitAll="true" [height]="heightGrid" allowReordering='true'
-            [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
-            [pageSettings]='pageSettings'>
-            <e-columns>
-
-               <e-column field='id_recorrido' [allowFiltering]="false" headerText='' width='40'> >
-                  <ng-template #template let-data>
-                     <div class="grid grid-cols-2  space-x-2   mt-2">
-                        @if (!data.fecha_salida || !data.fecha_regreso){
-                        @if(isRunning()){
-                        <svg xmlns="http://www.w3.org/2000/svg" (click)="stopCounter(data)"
-                           class="h-5 w-5  cursor-pointer stroke-current" viewBox="0 0 24 24" fill="none"
-                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                           <rect x="6" y="6" width="12" height="12" />
-                        </svg>
-                        <counter [startTime]="data.fecha_salida" [isRunning]="isRunning()"></counter>
-                        }@else{
-                        <svg class="h-6 w-6 cursor-pointer fill-current" (click)="startCounter(data)" version="1.1"
-                           id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                           viewBox="0 0 60 60" xml:space="preserve">
-                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                           <g id="SVGRepo_iconCarrier">
-                              <g>
-                                 <path
-                                    d="M45.563,29.174l-22-15c-0.307-0.208-0.703-0.231-1.031-0.058C22.205,14.289,22,14.629,22,15v30 c0,0.371,0.205,0.711,0.533,0.884C22.679,45.962,22.84,46,23,46c0.197,0,0.394-0.059,0.563-0.174l22-15 C45.836,30.64,46,30.331,46,30S45.836,29.36,45.563,29.174z M24,43.107V16.893L43.225,30L24,43.107z">
-                                 </path>
-                                 <path
-                                    d="M30,0C13.458,0,0,13.458,0,30s13.458,30,30,30s30-13.458,30-30S46.542,0,30,0z M30,58C14.561,58,2,45.439,2,30 S14.561,2,30,2s28,12.561,28,28S45.439,58,30,58z">
-                                 </path>
+            @if(!(recorridoActivoInicio || recorridoActivoFin)){         
+               <ejs-grid #grid [dataSource]='Recorridos()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
+               [allowExcelExport]='true' AutoFitAll="true" [height]="heightGrid" allowReordering='true'
+               [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
+               [pageSettings]='pageSettings'>
+               <e-columns>   
+                  <e-column field='id_recorrido' [allowFiltering]="false" headerText='' width='40'> >
+                     <ng-template #template let-data>
+                        <div class="grid grid-cols-2  space-x-2  p-1  ">
+                           <svg class="h-6 w-6 cursor-pointer fill-current" (click)="startCounter(data)" version="1.1"
+                              id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              viewBox="0 0 60 60" xml:space="preserve">
+                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                              <g id="SVGRepo_iconCarrier">
+                                 <g>
+                                    <path
+                                       d="M45.563,29.174l-22-15c-0.307-0.208-0.703-0.231-1.031-0.058C22.205,14.289,22,14.629,22,15v30 c0,0.371,0.205,0.711,0.533,0.884C22.679,45.962,22.84,46,23,46c0.197,0,0.394-0.059,0.563-0.174l22-15 C45.836,30.64,46,30.331,46,30S45.836,29.36,45.563,29.174z M24,43.107V16.893L43.225,30L24,43.107z">
+                                    </path>
+                                    <path
+                                       d="M30,0C13.458,0,0,13.458,0,30s13.458,30,30,30s30-13.458,30-30S46.542,0,30,0z M30,58C14.561,58,2,45.439,2,30 S14.561,2,30,2s28,12.561,28,28S45.439,58,30,58z">
+                                    </path>
+                                 </g>
                               </g>
-                           </g>
-                        </svg>
-
+                           </svg>
+                           <!-- @if (!data.fecha_salida || !data.fecha_regreso){
+                           @if(isRunning()) {
+                           <svg xmlns="http://www.w3.org/2000/svg" (click)="stopCounter(data)"
+                              class="h-5 w-5  cursor-pointer stroke-current" viewBox="0 0 24 24" fill="none"
+                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <rect x="6" y="6" width="12" height="12" />
+                           </svg>
+                           <counter [startTime]="data.fecha_salida" [isRunning]="isRunning()"></counter>
+                           }@else{
+                           <svg class="h-6 w-6 cursor-pointer fill-current" (click)="startCounter(data)" version="1.1"
+                              id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                              viewBox="0 0 60 60" xml:space="preserve">
+                              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                              <g id="SVGRepo_iconCarrier">
+                                 <g>
+                                    <path
+                                       d="M45.563,29.174l-22-15c-0.307-0.208-0.703-0.231-1.031-0.058C22.205,14.289,22,14.629,22,15v30 c0,0.371,0.205,0.711,0.533,0.884C22.679,45.962,22.84,46,23,46c0.197,0,0.394-0.059,0.563-0.174l22-15 C45.836,30.64,46,30.331,46,30S45.836,29.36,45.563,29.174z M24,43.107V16.893L43.225,30L24,43.107z">
+                                    </path>
+                                    <path
+                                       d="M30,0C13.458,0,0,13.458,0,30s13.458,30,30,30s30-13.458,30-30S46.542,0,30,0z M30,58C14.561,58,2,45.439,2,30 S14.561,2,30,2s28,12.561,28,28S45.439,58,30,58z">
+                                    </path>
+                                 </g>
+                              </g>
+                           </svg>
+                           }
+                           }@else{
+                              <h1>Terminado</h1>
+                           }    -->
+                        </div>
+                     </ng-template>
+                  </e-column>
+                  <e-column field='destino' />
+                  <e-column field='observaciones' />
+                  <e-column field='descripcion_tipo_servicio' headerText="Servicio"></e-column>
+                  <e-column field='nombre_chofer' headerText='chofer' width='150'></e-column>
+                  <e-column field='descripcion_transporte' headerText='transporte' width='150'></e-column>
+                  <e-column field='kilometraje_inicial' headerText="Inicial" width='150'>
+                     <ng-template #template let-data>
+                        @if (data.tipo=='interno' && !data.kilometraje_inicial){
+                        <h1 class="border rounded px-1 text-center text-white  bg-amber-500">PENDIENTE</h1>
+                        }@else{
+                        {{data.kilometraje_inicial ??'N/A'}}
+                        }
+                     </ng-template>
+                  </e-column>
+                  <e-column field='kilometraje_final' headerText="Final" width='150'>
+                     <ng-template #template let-data>
+                        @if (data.tipo=='interno' && !data.kilometraje_final){
+                        <h1 class="border rounded px-1 text-white text-center  bg-amber-500">PENDIENTE</h1>
+                        }@else{
+                        {{data.kilometraje_final ??'N/A'}}
+                        }
+   
+                     </ng-template>
+                  </e-column>
+                  <e-column field='fecha_salida' headerText="Salida" width='150'>
+                     <ng-template #template let-data>
+                        @if(data.tipo=='interno'){
+                        @if (!data.fecha_salida){
+                        <h1 class="border rounded text-center px-1 max-w-20 text-white  bg-amber-500">PENDIENTE</h1>
+                        }@else{
+                        {{data.fecha_salida ? (data.fecha_salida | date: 'dd-MM-yyyy hh:mm a'):'N/A' }}
                         }
                         }@else{
-                           <h1>Terminado</h1>
+                        {{data.fecha_salida ? (data.fecha_salida | date: 'dd-MM-yyyy'):'N/A' }}
                         }
-
-                     </div>
-                  </ng-template>
-               </e-column>
-               <e-column field='destino' />
-               <e-column field='observaciones' />
-               <e-column field='descripcion_tipo_servicio' headerText="Servicio"></e-column>
-               <e-column field='nombre_chofer' headerText='chofer' width='150'></e-column>
-               <e-column field='descripcion_transporte' headerText='transporte' width='150'></e-column>
-               <e-column field='kilometraje_inicial' headerText="Inicial" width='150'>
-                  <ng-template #template let-data>
-                     @if (data.tipo=='interno' && !data.kilometraje_inicial){
-                     <h1 class="border rounded px-1 text-center text-white  bg-amber-500">PENDIENTE</h1>
-                     }@else{
-                     {{data.kilometraje_inicial ??'N/A'}}
-                     }
-                  </ng-template>
-               </e-column>
-               <e-column field='kilometraje_final' headerText="Final" width='150'>
-                  <ng-template #template let-data>
-                     @if (data.tipo=='interno' && !data.kilometraje_final){
-                     <h1 class="border rounded px-1 text-white text-center  bg-amber-500">PENDIENTE</h1>
-                     }@else{
-                     {{data.kilometraje_final ??'N/A'}}
-                     }
-
-                  </ng-template>
-               </e-column>
-               <e-column field='fecha_salida' headerText="Salida" width='150'>
-                  <ng-template #template let-data>
-                     @if(data.tipo=='interno'){
-                     @if (!data.fecha_salida){
-                     <h1 class="border rounded text-center px-1 max-w-20 text-white  bg-amber-500">PENDIENTE</h1>
-                     }@else{
-                     {{data.fecha_salida ? (data.fecha_salida | date: 'dd-MM-yyyy hh:mm a'):'N/A' }}
-                     }
-                     }@else{
-                     {{data.fecha_salida ? (data.fecha_salida | date: 'dd-MM-yyyy'):'N/A' }}
-                     }
-                  </ng-template>
-               </e-column>
-               <e-column field='fecha_regreso' headerText="Llegada" allowEditing="false" width='150'>
-                  <ng-template #template let-data>
-                     @if(data.tipo=='interno' && !data.fecha_salida){
-                     <h1 class="border rounded text-center px-1 max-w-20 text-white bg-amber-500">PENDIENTE</h1>
-                     }@else{
-                     {{data.fecha_regreso ? (data.fecha_regreso | date: 'dd-MM-yyyy hh:mm a'):'N/A' }}
-                     }
-                  </ng-template>
-               </e-column>
-            </e-columns>
-         </ejs-grid>
-
+                     </ng-template>
+                  </e-column>
+                  <e-column field='fecha_regreso' headerText="Llegada" allowEditing="false" width='150'>
+                     <ng-template #template let-data>
+                        @if(data.tipo=='interno' && !data.fecha_salida){
+                        <h1 class="border rounded text-center px-1 max-w-20 text-white bg-amber-500">PENDIENTE</h1>
+                        }@else{
+                        {{data.fecha_regreso ? (data.fecha_regreso | date: 'dd-MM-yyyy hh:mm a'):'N/A' }}
+                        }
+                     </ng-template>
+                  </e-column>
+               </e-columns>
+            </ejs-grid>                     
+            }                                 
          }
-
-
       </div>
-
    </div>
-
 
    @if(recorridoActivoInicio){
    <dialog-captura-kilometraje 
-      title="Kilometraje inicial" 
+      title="Capture kilometraje inicial" 
       (save)="setRecorrridoInicial($event)" 
       [minimoKilometraje]="recorridoActivoInicio.kilometraje_inicial ?? 0"
       [recorrido]="recorridoActivoInicio"/>
@@ -130,8 +143,54 @@
 
    @if (recorridoActivoFin){
    <dialog-captura-kilometraje 
-      title="Kilometraje final" 
+      title="Capture kilometraje final" 
       (save)="setRecorrridoFinal($event)"
       [minimoKilometraje]="recorridoActivoFin.kilometraje_inicial ?? 0"
       [recorrido]="recorridoActivoFin"/>
    }
+
+
+   @if(isRunning()){
+      <div  class="bg-white shadow rounded-lg p-4 dark:bg-gray-800 dark:text-white">
+         <h2 class="text-lg font-semibold mb-2">Recorrido Activo</h2>
+         <div class="flex flex-row justify-around">
+            <counter [startTime]="today" [isRunning]="isRunning()"></counter>
+            <button class="border bg-slate-600  w-5 h-5 rounded-md p-2  ">
+               <svg xmlns="http://www.w3.org/2000/svg"
+               class="cursor-pointer stroke-current " viewBox="0 0 24 24" fill="none"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <rect x="6" y="6" width="12" height="12" />
+            </svg>
+            </button>
+         </div>
+         
+         <div class="grid grid-cols-2 gap-2">
+           <div>
+             <p class="text-sm font-medium">Destino:</p>
+             <p class="text-gray-700 dark:text-gray-300">Destino..</p>
+           </div>
+           <div>
+             <p class="text-sm font-medium">Chofer:</p>
+             <p class="text-gray-700 dark:text-gray-300">Chofer</p>
+           </div>
+           <div>
+             <p class="text-sm font-medium">Transporte:</p>
+             <p class="text-gray-700 dark:text-gray-300">Transporte</p>
+           </div>
+           <div>
+             <p class="text-sm font-medium">Servicio:</p>
+             <p class="text-gray-700 dark:text-gray-300">Servicio</p>
+           </div>
+           <div>
+             <p class="text-sm font-medium">Salida:</p>
+             <p class="text-gray-700 dark:text-gray-300">Servicio</p>
+           </div>
+           
+         </div>
+         <div class="mt-4">
+           <p class="text-sm font-medium">Observaciones:</p>
+           <p class="text-gray-700 dark:text-gray-300">fgdfgd</p>
+         </div>
+       </div>
+   }
+  

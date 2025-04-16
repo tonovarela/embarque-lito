@@ -6,7 +6,7 @@ export interface GpsPosition {
   latitude: number;
   longitude: number;
   accuracy?: number;
-  timestamp: number;
+  
 }
 
 
@@ -26,8 +26,7 @@ export class GpsService {
           const gpsPosition: GpsPosition = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            accuracy: position.coords.accuracy,
-            timestamp: position.timestamp
+            accuracy: position.coords.accuracy,            
           };
           this.positionSubject.next(gpsPosition);
           resolve(gpsPosition);

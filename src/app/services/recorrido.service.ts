@@ -7,6 +7,7 @@ import { ResponseUltimoRecorrido } from '@app/interface/responses/ResponseUltimo
 
 import { environment } from '@environments/environment.development';
 import { map, tap } from 'rxjs';
+import { GpsPosition } from './gps.service';
 
 @Injectable({
   providedIn: 'root'
@@ -40,12 +41,21 @@ export class RecorridoService {
     return this.http.post(`${this.API_URL}/api/recorrido`, {recorrido})
   }
 
-  actualizar(recorrido:Recorrido){
+  actualizarFactura(recorrido:Recorrido){
     return this.http.put(`${this.API_URL}/api/recorrido`, {recorrido})
   }
 
   eliminar(id_recorrido:number){
     return this.http.delete(`${this.API_URL}/api/recorrido/${id_recorrido}`)
+  }
+
+
+  actualizarInicial(recorrido:Recorrido,gpsPosicion:GpsPosition){
+    return this.http.put(`${this.API_URL}/api/recorrido/inicial`, {recorrido,gpsPosicion})
+  }
+
+  actualizarFinal(recorrido:Recorrido,gpsPosicion:GpsPosition){
+    return this.http.put(`${this.API_URL}/api/recorrido/final`, {recorrido})
   }
 
 }

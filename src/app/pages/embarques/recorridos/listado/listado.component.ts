@@ -68,7 +68,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
 
   async save() {
 
-    const resp = await firstValueFrom(this.recorridoService.actualizar(this.recorridoActivo!))    
+    const resp = await firstValueFrom(this.recorridoService.actualizarFactura(this.recorridoActivo!))    
     this._recorridos.set(this._recorridos().map((r) => {
       if (r.id_recorrido === this.recorridoActivo!.id_recorrido) {
         this.recorridoActivo!.importe_factura = obtenerValorNumerico(`${this.recorridoActivo?.importe_factura!}`);
