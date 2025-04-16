@@ -24,7 +24,7 @@ export class ChoferService {
   }
 
 
-  async estaEnCurso(id_chofer: number) {
+  async estaEnCurso(id_chofer: string) {
     const resp = await firstValueFrom(this.http.get<ResponseRecorridoActivo>(`${this.API_URL}/api/chofer/recorrido/${id_chofer}`));
     return resp;
   }

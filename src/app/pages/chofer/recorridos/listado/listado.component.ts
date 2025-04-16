@@ -61,31 +61,21 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     this.recorridoActivoFin = recorrido;
   }
 
-
-
-
-
   constructor() {
     super();
   }
-
 
   ngOnInit(): void {
     this.autoFitColumns = true;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
-
-
-
-
   }
-
-
 
 
   public async startCounter(recorrido: Recorrido) {
 
-    const respEnCurso = await this.choferService.estaEnCurso(recorrido.id_chofer);
+    const id_chofer = recorrido.id_chofer;
+    const respEnCurso = await this.choferService.estaEnCurso(`${id_chofer}`);
     if (respEnCurso.enCurso) {
       this.recorridoEnCurso.set(respEnCurso.recorrido);
       this.uiService.mostrarAlertaError("Recorridos", "El chofer ya tiene un recorrido en curso");
@@ -95,10 +85,10 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     recorrido.kilometraje_inicial = + (recorridoResponse.recorrido?.kilometraje_final || 0);
     recorrido.id_previo = recorridoResponse.recorrido?.id_recorrido || 0;
     this.recorridoActivoInicio = recorrido;
-
+    
   }
 
-  public async setRecorrridoInicial(posicionKilometraje: PosicionKilometraje | null) {
+  public async setRecorrridoInicial(posicionKilometraje: PosicionKilometraje | null) {    
     if (!this.recorridoActivoInicio) {
       return;
     }
@@ -117,17 +107,13 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     } catch (error) {
       this.uiService.mostrarAlertaError("Recorridos", "Error al iniciar el recorrido");
     } finally {
-
       this.recorridoActivoInicio = null;
       this.cargarInformacion();
-
-
     }
 
   }
 
-  public async setRecorrridoFinal(posicionKilometraje: PosicionKilometraje | null) {
-
+  public async setRecorrridoFinal(posicionKilometraje: PosicionKilometraje | null) {    
     if (!this.recorridoActivoFin) {
       return;
     }
@@ -140,7 +126,6 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
       this.recorridoActivoFin = null;
       return;
     }
-
     this.recorridoActivoFin.kilometraje_final = kilometraje;
     try {
       await firstValueFrom(this.recorridoService.actualizarFinal(this.recorridoActivoFin, gpsPosicion));
@@ -149,26 +134,21 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     } finally {
       this.recorridoActivoFin = null;
       this.cargarInformacion();
-
     }
-    //this._isRunning.set(false);
-
-
 
   }
 
   cargarInformacion() {
+
     this.cargando.set(true);
-    this.recorridoService.porChofer("3142", true).subscribe(({ recorridos }) => {
+    const personal = this.usuarioService.StatusSesion().usuario?.personal || 0;    
+    this.recorridoService.porChofer(`${personal}`, true).subscribe(({ recorridos }) => {
       this._recorridos.set(recorridos);
       this.cargando.set(false);
-    });
-    //const id_usuario = this.usuarioService.StatusSesion().usuario?.id || 0;    
-    const id_usuario = 3142
+    });        
     this.choferService
-      .estaEnCurso(id_usuario)
+      .estaEnCurso(`${personal}`)
       .then((resp) => this.recorridoEnCurso.set(resp.recorrido));
-
   }
 
 
