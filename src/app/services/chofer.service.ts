@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 
 import { Choferes } from '@app/interface/models/Catalogos';
+import { ResponseRecorridoActivo } from '@app/interface/responses';
 import { environment } from '@environments/environment.development';
 import { firstValueFrom } from 'rxjs';
 
@@ -24,7 +25,7 @@ export class ChoferService {
 
 
   async estaEnCurso(id_chofer: number) {
-    const resp = await firstValueFrom(this.http.get<{ enCurso: boolean }>(`${this.API_URL}/api/chofer/recorrido/${id_chofer}`));
+    const resp = await firstValueFrom(this.http.get<ResponseRecorridoActivo>(`${this.API_URL}/api/chofer/recorrido/${id_chofer}`));
     return resp;
   }
 

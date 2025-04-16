@@ -55,7 +55,7 @@ export class RecorridoService {
   }
 
   actualizarFinal(recorrido:Recorrido,gpsPosicion:GpsPosition){
-    return this.http.put(`${this.API_URL}/api/recorrido/final`, {recorrido})
+    return this.http.put(`${this.API_URL}/api/recorrido/final`, {recorrido,gpsPosicion})
   }
 
 }

@@ -17,7 +17,7 @@ export class DialogCapturaKilometrajeComponent implements OnInit {
   
 
   @Input() recorrido: Recorrido | null = null;
-  minimoKilometraje = input.required<number>();
+  
   @Input() title: string = 'Kilometraje ';
   @Output() save = new EventEmitter<PosicionKilometraje | null>();
 
@@ -27,16 +27,11 @@ export class DialogCapturaKilometrajeComponent implements OnInit {
   public kilometraje= signal<number>(0);
   private gpsService = inject(GpsService);
 
+  minimoKilometraje = input.required<number>();
 
-  esMinimoRequerido = computed(() => {
-    if (this.kilometraje() <= this.minimoKilometraje()) {
-      return true;
-    }
-    return false;
-  });
+  esMinimoRequerido = computed(() =>  this.kilometraje() < this.minimoKilometraje());
 
   ngOnInit(): void {
-
     this.kilometraje.set(this.minimoKilometraje());    
   }
 

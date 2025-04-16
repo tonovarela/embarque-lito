@@ -31,17 +31,15 @@ export const routes: Routes = [
             ]
         },
         {path: '**', redirectTo: 'recorridos', pathMatch: 'full' }
-    ],
-     
+    ],     
 },
 {
     path: 'chofer',    
     canActivateChild: [authGuard, choferGuard],
     component: SesionLayoutComponent,    
     children: [
-        { path: 'recorridos', loadComponent:()=> import('./pages/chofer/recorridos/listado/listado.component') },
-        { path: 'recorridos/nuevo', loadComponent:()=> import('./pages/chofer/recorridos/nuevo/nuevo.component') },
-         {path: '**', redirectTo: 'recorridos', pathMatch: 'full' }
+        { path: 'recorridos', loadComponent:()=> import('./pages/chofer/recorridos/listado/listado.component') },        
+        { path: '**', redirectTo: 'recorridos', pathMatch: 'full' }
     ]
 
 },
