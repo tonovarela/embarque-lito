@@ -5,14 +5,17 @@ import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Recorrido } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { ChoferService, RecorridoService, UiService, UsuarioService } from '@app/services';
+import { ChoferService, GpsService, RecorridoService, UiService, UsuarioService } from '@app/services';
 
 
 import { DialogCapturaKilometrajeComponent } from '../../componentes/dialog-captura-kilometraje/dialog-captura-kilometraje.component';
 import { PosicionKilometraje } from '../../interface/PosicionKilometraje';
 import { firstValueFrom } from 'rxjs';
 
-import { CounterComponent } from '@app/shared/counter/counter.component';
+import { CounterComponent } from '@app/pages/chofer/componentes/counter/counter.component';
+import { environment } from '@environments/environment.development';
+import { RecorridoActualComponent } from '../../componentes/recorrido-actual/recorrido-actual.component';
+
 
 
 @Component({
@@ -24,6 +27,7 @@ import { CounterComponent } from '@app/shared/counter/counter.component';
     PrimeNgModule,
     FormsModule,
     CounterComponent,
+    RecorridoActualComponent,
     DialogCapturaKilometrajeComponent,
   ],
   templateUrl: './listado.component.html',
@@ -32,10 +36,8 @@ import { CounterComponent } from '@app/shared/counter/counter.component';
 })
 export default class ListadoComponent extends BaseGridComponent implements OnInit {
   private _recorridos = signal<Recorrido[]>([]);
-  //private _isRunning = signal<boolean>(false);
+  
   public today = new Date();
-
-
 
   public recorridoActivoInicio: Recorrido | null = null;
   public recorridoActivoFin: Recorrido | null = null;
@@ -55,9 +57,8 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   public Recorridos = computed(() => this._recorridos());
   public isRunning = computed(() => this.recorridoEnCurso() !== null);
 
-  public stopCounter(recorrido: Recorrido) {
 
-    console.log("stopCounter", recorrido);
+  public stopCounter(recorrido: Recorrido) {          
     this.recorridoActivoFin = recorrido;
   }
 
@@ -65,10 +66,16 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     super();
   }
 
+
+
   ngOnInit(): void {
     this.autoFitColumns = true;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
+
+    
+    
+   
   }
 
 

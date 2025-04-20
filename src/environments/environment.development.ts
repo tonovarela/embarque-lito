@@ -1,5 +1,6 @@
 export const environment = {
     production:false,
     API_URL:'https://servicios.litoprocess.com/embarques',
-    userDev: {username:'svargas', password: '54622'}
+    userDev: {username:'svargas', password: '54622'},
+    mapboxToken:"pk.eyJ1IjoidG9ub3ZhcmVsYSIsImEiOiJjazdhdTlqczUxN3VnM2VwNTFuZTV0cWp6In0.454u4lgDsq-FdCfpv5AmnQ"
 };

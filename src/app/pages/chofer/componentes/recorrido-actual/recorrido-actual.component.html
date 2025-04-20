@@ -1,0 +1,69 @@
+ @if(isRunning() ){      
+   <div class="bg-white max-w-5xl m-auto shadow rounded-lg p-4 dark:bg-gray-800 dark:text-white">      
+      <div class="flex flex-row   justify-between items-center ">
+         <counter [startTime]="recorrido()!.fecha_salida" [isRunning]="isRunning()"/>                  
+         @if (visibleStopCounter()){
+            <button class="border rounded-full  w-16 h-16 disabled:cursor-not-allowed"
+            (click)="detenerContador()">
+            <svg class="cursor-pointer fill-current  " viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+               <g id="SVGRepo_iconCarrier">
+                  <title>stop-circle-solid</title>
+                  <g id="Layer_2" data-name="Layer 2">
+                     <g id="invisible_box" data-name="invisible box">
+                        <rect width="48" height="48" fill="none"></rect>
+                     </g>
+                     <g id="icons_Q2" data-name="icons Q2">
+                        <path
+                           d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm8,29a1.1,1.1,0,0,1-1,1H17a1.1,1.1,0,0,1-1-1V17a1.1,1.1,0,0,1,1-1H31a1.1,1.1,0,0,1,1,1Z">
+                        </path>
+                     </g>
+                  </g>
+               </g>
+            </svg>
+         </button>   
+         }
+              
+      </div>
+      <div class="grid grid-cols-2  gap-2">
+         <div>
+            <p class="text-sm font-medium">Destino:</p>
+            <p class="text-gray-700 dark:text-gray-300">{{recorrido()!.destino}}</p>
+         </div>
+         <div>
+            <p class="text-sm font-medium">Chofer:</p>
+            <p class="text-gray-700 dark:text-gray-300">{{recorrido()!.nombre_chofer}}</p>
+         </div>
+         <div>
+            <p class="text-sm font-medium">Transporte:</p>
+            <p class="text-gray-700 dark:text-gray-300">{{recorrido()!.descripcion_transporte}}</p>
+         </div>
+         <div>
+            <p class="text-sm font-medium">Servicio:</p>
+            <p class="text-gray-700 dark:text-gray-300">{{recorrido()!.descripcion_tipo_servicio}}</p>
+         </div>
+         <div>
+            <p class="text-sm font-medium">Salida:</p>
+            <p class="text-gray-700 dark:text-gray-300">{{recorrido()!.fecha_salida | date:'dd-MM-yyyy hh:mm a' }}</p>
+         </div>
+      </div>
+      <div class="mt-4">
+         <p class="text-sm font-medium">Observaciones:</p>
+         <p class="text-gray-700 dark:text-gray-300">{{recorrido()!.observaciones}}</p>
+      </div>
+
+      <div class=" flex  justify-center mt-4">         
+         <div class="relative sm:w-1/2  w-full mt-4 border-2 border-slate-400 rounded-sm ">
+            <h1 class="absolute top-2 left-1 text-sm font-medium text-white bg-slate-600 px-2 rounded-md ">Posición aproximada de inicio</h1>
+            <img [src]="mapImageUrl()" alt="Mapa de Mapbox" class="w-full h-full rounded-sm">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <img src="assets/img/marker.svg" class="w-6 h-6" />
+            </div>
+          </div>
+         
+      </div>
+      
+   </div>
+   
+   }

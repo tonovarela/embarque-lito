@@ -1,4 +1,4 @@
-<div class="sm:ml-52      py-8 px-2  ">
+<div class="sm:ml-52  py-8 px-2  ">
    <div class="p-1   rounded-lg  h-full  dark:border-gray-700 mt-8 transition-colors duration-30 ">
       <div
          class="flex justify-between items-center w-full p-2 bg-transparent dark:bg-gray-500 rounded-tr-md rounded-tl-md text-gray-600 dark:text-white">
@@ -44,7 +44,7 @@
                                  </path>
                               </g>
                            </g>
-                        </svg>                      
+                        </svg>
                      </div>
                   </ng-template>
                </e-column>
@@ -99,8 +99,6 @@
          }
          }
       </div>
-
-
    </div>
 
    @if(recorridoActivoInicio){
@@ -114,61 +112,9 @@
    }
 
 
-
-   @if(isRunning() ){      
-   <div class="bg-white shadow rounded-lg p-4 dark:bg-gray-800 dark:text-white ">      
-      <div class="flex flex-row   justify-between items-center ">
-         <counter [startTime]="recorridoEnCurso()!.fecha_salida" [isRunning]="isRunning()"/>         
-         @if (recorridoActivoFin== null){
-         <button class="border rounded-full  w-16 h-16 disabled:cursor-not-allowed"
-            (click)="stopCounter(recorridoEnCurso()!)">
-            <svg class="cursor-pointer fill-current  " viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-               <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-               <g id="SVGRepo_iconCarrier">
-                  <title>stop-circle-solid</title>
-                  <g id="Layer_2" data-name="Layer 2">
-                     <g id="invisible_box" data-name="invisible box">
-                        <rect width="48" height="48" fill="none"></rect>
-                     </g>
-                     <g id="icons_Q2" data-name="icons Q2">
-                        <path
-                           d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm8,29a1.1,1.1,0,0,1-1,1H17a1.1,1.1,0,0,1-1-1V17a1.1,1.1,0,0,1,1-1H31a1.1,1.1,0,0,1,1,1Z">
-                        </path>
-                     </g>
-                  </g>
-               </g>
-            </svg>
-         </button>
-         }
-      </div>
-      <div class="grid grid-cols-2  gap-2">
-         <div>
-            <p class="text-sm font-medium">Destino:</p>
-            <p class="text-gray-700 dark:text-gray-300">{{recorridoEnCurso()!.destino}}</p>
-         </div>
-         <div>
-            <p class="text-sm font-medium">Chofer:</p>
-            <p class="text-gray-700 dark:text-gray-300">{{recorridoEnCurso()!.nombre_chofer}}</p>
-         </div>
-         <div>
-            <p class="text-sm font-medium">Transporte:</p>
-            <p class="text-gray-700 dark:text-gray-300">{{recorridoEnCurso()!.descripcion_transporte}}</p>
-         </div>
-         <div>
-            <p class="text-sm font-medium">Servicio:</p>
-            <p class="text-gray-700 dark:text-gray-300">{{recorridoEnCurso()!.descripcion_tipo_servicio}}</p>
-         </div>
-         <div>
-            <p class="text-sm font-medium">Salida:</p>
-            <p class="text-gray-700 dark:text-gray-300">{{recorridoEnCurso()!.fecha_salida | date:'dd-MM-yyyy hh:mm' }}</p>
-         </div>
-      </div>
-      <div class="mt-4">
-         <p class="text-sm font-medium">Observaciones:</p>
-         <p class="text-gray-700 dark:text-gray-300">{{recorridoEnCurso()!.observaciones}}</p>
-      </div>
-   </div>
-   <div>
-   </div>
+   @if(isRunning() ){
+   <recorrido-actual [recorrido]="recorridoEnCurso()!"  
+                    [visibleStopCounter]="!recorridoActivoFin"  
+                    (onStopCounter)="stopCounter(recorridoEnCurso()!)"/>
+   
    }
