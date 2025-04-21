@@ -27,7 +27,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   private recorridoService = inject(RecorridoService);
   public recorridoActivo: Recorrido | null = null;
 
-  public cargando =signal<boolean>(false);
+  public cargando = signal<boolean>(false);
 
   private uiService = inject(UiService);
 
@@ -68,7 +68,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
 
   async save() {
 
-    const resp = await firstValueFrom(this.recorridoService.actualizarFactura(this.recorridoActivo!))    
+    const resp = await firstValueFrom(this.recorridoService.actualizarFactura(this.recorridoActivo!))
     this._recorridos.set(this._recorridos().map((r) => {
       if (r.id_recorrido === this.recorridoActivo!.id_recorrido) {
         this.recorridoActivo!.importe_factura = obtenerValorNumerico(`${this.recorridoActivo?.importe_factura!}`);
@@ -125,7 +125,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   }
 
   async eliminarRecorrido(recorrido: Recorrido) {
-    
+
     const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion("Recorridos", "¿Está seguro de eliminar el recorrido?", "Si,eliminarlo", "Cancelar");
     if (!isConfirmed) {
       return;
@@ -134,8 +134,9 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     this._recorridos.set([]);
     try {
       await firstValueFrom(this.recorridoService.eliminar(id_recorrido!));
-    } catch (e) {
-      this.uiService.mostrarAlertaError("Recorridos", "Error al eliminar el recorrido");
+    } catch (exception: any) {
+      const mensaje = exception["error"]["mensaje"] || "Error al eliminar el recorrido";
+      this.uiService.mostrarAlertaError("Recorridos", mensaje);
     } finally {
       this.cargarInformacion();
     }

@@ -74,6 +74,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     try {
       await firstValueFrom(this.cargaGasolinaService.eliminar(id_carga_gasolina!));
     } catch (_) {
+      
       this.uiService.mostrarAlertaError("Carga", "No se pudo eliminar la carga de gasolina");
     } finally {
       this.cargarInformacion();
