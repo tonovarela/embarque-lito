@@ -3,20 +3,17 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Recorrido } from '@app/interface/models';
+
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { ChoferService, GpsService, RecorridoService, UiService, UsuarioService } from '@app/services';
-
-
+import { ChoferService, RecorridoService, UiService, UsuarioService } from '@app/services';
+import { CounterComponent } from '@app/pages/chofer/componentes/counter/counter.component';
+import { RecorridoActualComponent } from '../../componentes/recorrido-actual/recorrido-actual.component';
 import { DialogCapturaKilometrajeComponent } from '../../componentes/dialog-captura-kilometraje/dialog-captura-kilometraje.component';
-import { PosicionKilometraje } from '../../interface/PosicionKilometraje';
 import { firstValueFrom } from 'rxjs';
 
-import { CounterComponent } from '@app/pages/chofer/componentes/counter/counter.component';
-import { environment } from '@environments/environment.development';
-import { RecorridoActualComponent } from '../../componentes/recorrido-actual/recorrido-actual.component';
-
-
+import { RecorridoEnCurso } from '../../interface/RecorridoEnCurso';
+import { PosicionKilometraje } from '../../interface/PosicionKilometraje';
 
 @Component({
   selector: 'app-listado',
@@ -32,136 +29,153 @@ import { RecorridoActualComponent } from '../../componentes/recorrido-actual/rec
   ],
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css',
-
 })
 export default class ListadoComponent extends BaseGridComponent implements OnInit {
+  // Signals for state management
   private _recorridos = signal<Recorrido[]>([]);
-  
-  public today = new Date();
+  public cargando = signal<boolean>(false);
+  public recorridoEnCurso = signal<RecorridoEnCurso | null>(null);
 
+  // Public properties
+  public today = new Date();
   public recorridoActivoInicio: Recorrido | null = null;
   public recorridoActivoFin: Recorrido | null = null;
-  public recorridoEnCurso = signal<Recorrido | null>(null);
-  public cargando = signal<boolean>(false);
+  protected minusHeight = 0.27;
 
+  // Computed properties
+  public Recorridos = computed(() => this._recorridos());
+  public isRunning = computed(() => !!this.recorridoEnCurso()?.recorrido);
 
-  public uiService = inject(UiService);
-  public usuarioService = inject(UsuarioService)
-
+  // Injected services
+  private uiService = inject(UiService);
+  private usuarioService = inject(UsuarioService);
   private choferService = inject(ChoferService);
   private recorridoService = inject(RecorridoService);
-
-
-
-  protected minusHeight = 0.27;
-  public Recorridos = computed(() => this._recorridos());
-  public isRunning = computed(() => this.recorridoEnCurso() !== null);
-
-
-  public stopCounter(recorrido: Recorrido) {          
-    this.recorridoActivoFin = recorrido;
-  }
 
   constructor() {
     super();
   }
 
-
-
   ngOnInit(): void {
     this.autoFitColumns = true;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
-
-    
-    
-   
   }
 
-
-  public async startCounter(recorrido: Recorrido) {
-
+  /**
+   * Starts the counter for a given recorrido.
+   * @param recorrido The recorrido to start the counter for.
+   */
+  public async startCounter(recorrido: Recorrido): Promise<void> {
     const id_chofer = recorrido.id_chofer;
-    const respEnCurso = await this.choferService.estaEnCurso(`${id_chofer}`);
-    if (respEnCurso.enCurso) {
-      this.recorridoEnCurso.set(respEnCurso.recorrido);
-      this.uiService.mostrarAlertaError("Recorridos", "El chofer ya tiene un recorrido en curso");
-      return;
+
+    try {
+      const respEnCurso = await this.choferService.estaEnCurso(`${id_chofer}`);
+
+      if (respEnCurso.enCurso) {
+        this.recorridoEnCurso.set({ recorrido: respEnCurso.recorrido, ubicacion: respEnCurso.ubicacion });
+        this.uiService.mostrarAlertaError("Recorridos", "El chofer ya tiene un recorrido en curso");
+        return;
+      }
+
+      const recorridoResponse = await firstValueFrom(this.recorridoService.ultimo(`${recorrido.id_transporte}`));
+      recorrido.kilometraje_inicial = +(recorridoResponse.recorrido?.kilometraje_final || 0);
+      recorrido.id_previo = recorridoResponse.recorrido?.id_recorrido || 0;
+      this.recorridoActivoInicio = recorrido;
+
+    } catch (error: any) {
+      this.uiService.mostrarAlertaError("Recorridos", error?.message || "Error al iniciar el recorrido");
     }
-    const recorridoResponse = await firstValueFrom(this.recorridoService.ultimo(`${recorrido.id_transporte}`))
-    recorrido.kilometraje_inicial = + (recorridoResponse.recorrido?.kilometraje_final || 0);
-    recorrido.id_previo = recorridoResponse.recorrido?.id_recorrido || 0;
-    this.recorridoActivoInicio = recorrido;
-    
   }
 
-  public async setRecorrridoInicial(posicionKilometraje: PosicionKilometraje | null) {    
-    if (!this.recorridoActivoInicio) {
+  public stopCounter(): void {
+    if (this.recorridoEnCurso()) {
+      this.recorridoActivoFin = this.recorridoEnCurso()!.recorrido;
+    }
+  }
+
+  public async setRecorrridoInicial(posicionKilometraje: PosicionKilometraje | null): Promise<void> {
+    await this.actualizarRecorrido(posicionKilometraje, true);
+  }
+
+  public async setRecorrridoFinal(posicionKilometraje: PosicionKilometraje | null): Promise<void> {
+    await this.actualizarRecorrido(posicionKilometraje, false);
+  }
+
+  /**
+   * Updates recorrido with initial or final data.
+   * @param posicionKilometraje The kilomentraje position data.
+   * @param isInitial Flag to determine if it's initial or final data.
+   */
+  private async actualizarRecorrido(posicionKilometraje: PosicionKilometraje | null, isInitial: boolean): Promise<void> {
+    const recorrido = isInitial ? this.recorridoActivoInicio : this.recorridoActivoFin;
+
+    if (!recorrido) {
       return;
     }
-    if (posicionKilometraje === null) {
-      this.recorridoActivoInicio = null;
+
+    if (!posicionKilometraje) {
+      if (isInitial) {
+        this.recorridoActivoInicio = null;
+      } else {
+        this.recorridoActivoFin = null;
+      }
       return;
     }
+
     const { kilometraje, gpsPosicion } = posicionKilometraje;
+
     if (!kilometraje) {
-      this.recorridoActivoInicio = null;
+      if (isInitial) {
+        this.recorridoActivoInicio = null;
+      } else {
+        this.recorridoActivoFin = null;
+      }
       return;
     }
-    this.recorridoActivoInicio.kilometraje_inicial = kilometraje;
+
+    if (isInitial) {
+      recorrido.kilometraje_inicial = kilometraje;
+    } else {
+      recorrido.kilometraje_final = kilometraje;
+    }
+
     try {
-      await firstValueFrom(this.recorridoService.actualizarInicial(this.recorridoActivoInicio, gpsPosicion));
-    } catch (error) {
-      this.uiService.mostrarAlertaError("Recorridos", "Error al iniciar el recorrido");
+      const updateFn = isInitial ? this.recorridoService.actualizarInicial(recorrido, gpsPosicion) : this.recorridoService.actualizarFinal(recorrido, gpsPosicion);
+      await firstValueFrom(updateFn);
+
+      this.uiService.mostrarAlertaSuccess("Recorridos", `Kilometraje ${isInitial ? 'inicial' : 'final'} actualizado correctamente.`);
+    } catch (error: any) {
+      this.uiService.mostrarAlertaError("Recorridos", error?.message || `Error al actualizar recorrido ${isInitial ? 'inicial' : 'final'}`);
     } finally {
       this.recorridoActivoInicio = null;
-      this.cargarInformacion();
-    }
-
-  }
-
-  public async setRecorrridoFinal(posicionKilometraje: PosicionKilometraje | null) {    
-    if (!this.recorridoActivoFin) {
-      return;
-    }
-    if (posicionKilometraje === null) {
-      this.recorridoActivoFin = null;
-      return;
-    }
-    const { kilometraje, gpsPosicion } = posicionKilometraje;
-    if (!kilometraje) {
-      this.recorridoActivoFin = null;
-      return;
-    }
-    this.recorridoActivoFin.kilometraje_final = kilometraje;
-    try {
-      await firstValueFrom(this.recorridoService.actualizarFinal(this.recorridoActivoFin, gpsPosicion));
-    } catch (error) {
-      this.uiService.mostrarAlertaError("Recorridos", "Error al finalizar el recorrido el recorrido");
-    } finally {
       this.recorridoActivoFin = null;
       this.cargarInformacion();
     }
-
   }
 
-  cargarInformacion() {
-
+  /**
+   * Loads recorrido information for a given personal ID.
+   */
+  cargarInformacion(): void {
     this.cargando.set(true);
-    const personal = this.usuarioService.StatusSesion().usuario?.personal || 0;    
-    this.recorridoService.porChofer(`${personal}`, true).subscribe(({ recorridos }) => {
-      this._recorridos.set(recorridos);
-      this.cargando.set(false);
-    });        
-    this.choferService
-      .estaEnCurso(`${personal}`)
-      .then((resp) => this.recorridoEnCurso.set(resp.recorrido));
+    const personal = this.usuarioService.StatusSesion().usuario?.personal || 0;
+
+    this.recorridoService.porChofer(`${personal}`, true).subscribe({
+      next: ({ recorridos }) => {
+        this._recorridos.set(recorridos);
+        this.cargando.set(false);
+      },
+      error: (error: any) => {
+        this.uiService.mostrarAlertaError("Recorridos", error?.message || "Error al cargar la información de los recorridos");
+        this.cargando.set(false);
+      }
+    });
+
+    this.choferService.estaEnCurso(`${personal}`)
+      .then(resp => this.recorridoEnCurso.set({
+        recorrido: resp.recorrido,
+        ubicacion: resp.ubicacion,
+      }));
   }
-
-
-
-
-
-
 }
-

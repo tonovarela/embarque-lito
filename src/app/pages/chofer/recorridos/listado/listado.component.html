@@ -113,8 +113,9 @@
 
 
    @if(isRunning() ){
-   <recorrido-actual [recorrido]="recorridoEnCurso()!"  
+   <recorrido-actual [recorridoEnCurso]="recorridoEnCurso()!"  
                     [visibleStopCounter]="!recorridoActivoFin"  
-                    (onStopCounter)="stopCounter(recorridoEnCurso()!)"/>
+                    (onStopCounter)="stopCounter()"/>
    
    }
+   
