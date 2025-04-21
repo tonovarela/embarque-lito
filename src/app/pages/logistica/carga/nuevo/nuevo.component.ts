@@ -124,7 +124,7 @@ export default class NuevoComponent implements OnInit {
     if (this.guardandoCarga()){
       return;
     }
-    this.router.navigate(['/embarques/carga']);
+    this.router.navigate(['/logistica/carga']);
   }
 
 

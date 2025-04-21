@@ -88,7 +88,7 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
     if (this.guardandoMantenimiento()) {
       return;
     }
-    this.router.navigate(['/embarques/mantenimiento']);
+    this.router.navigate(['/logisticas/mantenimiento']);
   }
 
 

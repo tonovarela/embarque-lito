@@ -17,7 +17,7 @@ import { RegistroRecorridoHook } from '../hooks/useRegistro';
 import { NumberFormatter } from '@app/helpers/validators';
 
 @Component({
-  selector: 'app-registro-externo',
+  selector: 'registro-externo',
   standalone: true,
   imports: [PrimeNgModule, ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent, AutocompleteComponent],
   providers: [RegistroRecorridoHook],

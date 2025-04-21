@@ -60,14 +60,14 @@
         </div>
         <div id="default-styled-tab-content">
             <div class="hidden  " id="registro-interno" role="tabpanel" aria-labelledby="profile-tab">                                    
-                <app-registro-interno [formGroup]="formRegistro"></app-registro-interno>                    
+                <registro-interno [formGroup]="formRegistro"/>
             </div>
             
             <div class="hidden" id="registro-externo" role="tabpanel" aria-labelledby="dashboard-tab">                
-                <app-registro-externo [formGroup]="formRegistro"></app-registro-externo>                                
+                <registro-externo [formGroup]="formRegistro"/>
             </div>
             <div class="hidden" id="registro-programado" role="tabpanel" aria-labelledby="programado-tab">
-                <app-registro-programado [formGroup]="formRegistro"></app-registro-programado>                    
+                <registro-programado [formGroup]="formRegistro"/>
             </div>
             
         </div>

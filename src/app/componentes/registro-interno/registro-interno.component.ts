@@ -21,7 +21,7 @@ import { RegistroRecorridoHook } from '../hooks/useRegistro';
 
 
 @Component({
-  selector: 'app-registro-interno',
+  selector: 'registro-interno',
   standalone: true,
   imports: [PrimeNgModule, ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent, AutocompleteComponent],
   providers: [RegistroRecorridoHook],

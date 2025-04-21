@@ -13,7 +13,7 @@ import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.com
 import { MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent } from '@app/shared/svg';
 
 @Component({
-  selector: 'app-registro-programado',
+  selector: 'registro-programado',
   standalone: true,
   imports: [PrimeNgModule, ReactiveFormsModule, CommonModule, FormsModule, MinusComponent, PlusComponent, CalendarComponent, TimeComponent, GaugeComponent, SearchComponent, AutocompleteComponent],
   providers: [RegistroRecorridoHook],

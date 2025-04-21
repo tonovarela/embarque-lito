@@ -82,7 +82,7 @@ export default class NuevaComponent implements AfterViewInit {
     if (this.guardandoRecorrido()) {
       return;
     }
-    this.router.navigate(['/embarques/recorridos']);
+    this.router.navigate(['/logistica/recorridos']);
   }
 
 

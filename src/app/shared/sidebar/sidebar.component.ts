@@ -32,24 +32,24 @@ export class SidebarComponent implements OnInit,AfterViewInit {
   public rutas = computed(() => this._rutas());
   private rutasEmbarques: Ruta[] = [{
     nombre: 'Recorridos',
-    icono: '/assets/img/recorridos.svg',
-    path: '/embarques/recorridos'
+    icono: 'assets/img/recorridos.svg',
+    path: '/logistica/recorridos'
   }, {
     nombre: 'Carga',
-    icono: '/assets/img/carga.svg',
-    path: '/embarques/carga'
+    icono: 'assets/img/carga.svg',
+    path: '/logistica/carga'
   },
   {
     nombre: 'Paros',
-    icono: '/assets/img/paros.svg',
-    path: '/embarques/mantenimiento'
+    icono: 'assets/img/paros.svg',
+    path: '/logistica/mantenimiento'
   }
   ];
 
   private rutasChofer = [
     {
       nombre: 'Recorridos',
-      icono: '/assets/img/recorridos.svg',
+      icono: 'assets/img/recorridos.svg',
       path: 'chofer/recorridos'
     }
   ];
