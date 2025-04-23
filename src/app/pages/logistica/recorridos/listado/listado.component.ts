@@ -10,6 +10,7 @@ import { SynfusionModule } from '@app/lib/synfusion.module';
 import { RecorridoService } from '@app/services/recorrido.service';
 import { UiService } from '@app/services/ui.service';
 import { FabbuttonComponent } from '@app/shared/fabbutton/fabbutton.component';
+import { GpsPositionSvgComponent } from '@app/shared/svg';
 import { EditService } from '@syncfusion/ej2-angular-grids';
 import { firstValueFrom } from 'rxjs';
 import * as XLSX from 'xlsx';
@@ -17,7 +18,7 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-listado',
   standalone: true,
-  imports: [SynfusionModule, FabbuttonComponent, CommonModule, PrimeNgModule, FormsModule],
+  imports: [SynfusionModule, FabbuttonComponent, CommonModule, PrimeNgModule, FormsModule,GpsPositionSvgComponent],
   providers: [EditService],
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css'
@@ -142,6 +143,11 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     }
 
 
+
+  }
+
+  mostrarUbicaciones(recorrido:Recorrido){
+    console.log(recorrido);
 
   }
 
