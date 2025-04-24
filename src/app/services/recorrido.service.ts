@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Recorrido } from '@app/interface/models';
-import { ResponseListadoRecorrido } from '@app/interface/responses';
+import { GpsPosition, Recorrido } from '@app/interface/models';
+import { ResponseListadoRecorrido, ResponseUbicacionRecorrido } from '@app/interface/responses';
 import { ResponseUltimoRecorrido } from '@app/interface/responses/ResponseUltimoRecorrido';
 
 
 import { environment } from '@environments/environment.development';
-import { map, tap } from 'rxjs';
-import { GpsPosition } from './gps.service';
+import { map } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +57,12 @@ export class RecorridoService {
   actualizarFinal(recorrido:Recorrido,gpsPosicion:GpsPosition){
     return this.http.put(`${this.API_URL}/api/recorrido/final`, {recorrido,gpsPosicion})
   }
+
+
+  
+  obtenerUbicacion(id_recorrido:number){
+    return this.http.get<ResponseUbicacionRecorrido>(`${this.API_URL}/api/recorrido/ubicacion/${id_recorrido}`);
+  }
+
 
 }

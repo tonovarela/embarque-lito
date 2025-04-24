@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {  Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
 
-import { GpsPosition, GpsService } from '@app/services';
+import { GpsService } from '@app/services';
 
 import { environment } from '@environments/environment.development';
 import { CounterComponent } from '../counter/counter.component';
 import { RecorridoEnCurso } from '../../interface/RecorridoEnCurso';
+import { GpsPosition } from '@app/interface/models';
+import { getMapboxImageUrl } from '@app/helpers/getImagePosition';
 
 
 @Component({
@@ -33,7 +35,7 @@ mapImageUrl = computed(() => {
   if (this.gpsInicioPosicion) {
     const posicion = this.recorridoEnCurso()?.ubicacion || this.gpsInicioPosicion();
     const { latitude, longitude } = posicion;
-    return this.getMapboxImageUrl(longitude,latitude,15, 600, 400 );
+    return getMapboxImageUrl(longitude,latitude);
   }
   return '';
 }); 
@@ -43,18 +45,6 @@ ngOnInit(): void {
 
 detenerContador(){
    this.onStopCounter.emit();
-}
-
-private getMapboxImageUrl(
-  lng: number,
-  lat: number,
-  zoom: number,
-  width: number,
-  height: number
-): string {
-  // Reemplaza con tu estilo de mapa preferido
-  const mapStyle = 'mapbox/streets-v11';
-  return `https://api.mapbox.com/styles/v1/${mapStyle}/static/${lng},${lat},${zoom}/${width}x${height}?access_token=${this.mapboxToken}`;
 }
 
 }

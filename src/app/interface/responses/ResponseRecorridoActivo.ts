@@ -1,5 +1,5 @@
-import { GpsPosition } from "@app/services";
-import { Recorrido } from "../models";
+
+import { GpsPosition, Recorrido } from "../models";
 
 export interface ResponseRecorridoActivo {
     enCurso:   boolean;

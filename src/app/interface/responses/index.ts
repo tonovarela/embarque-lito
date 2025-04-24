@@ -4,5 +4,6 @@ export * from './ResponseMantenimiento';
 export * from './ResponseMotivoMantenimiento';
 export * from './ResponseOrdenMetrics';
 export * from './ResponseRecorridoActivo';
+export * from './ResponseUbicacioRecorrido';
 export * from './ResponseUltimaCarga';
 export * from './ResponseUltimoRecorrido';

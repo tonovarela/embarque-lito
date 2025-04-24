@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnInit, Output, signal,input, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Recorrido } from '@app/interface/models';
+import { GpsPosition, Recorrido } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
-import { GpsPosition, GpsService } from '@app/services';
+import {  GpsService } from '@app/services';
 import { PosicionKilometraje } from '../../interface/PosicionKilometraje';
 
 @Component({

@@ -1,4 +1,5 @@
-import { GpsPosition } from "@app/services";
+import { GpsPosition } from "@app/interface/models";
+
 
 export interface PosicionKilometraje {
     kilometraje: number;

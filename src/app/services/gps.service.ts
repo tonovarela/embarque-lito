@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
+import { GpsPosition } from '@app/interface/models';
 import { Subject } from 'rxjs';
 
 
-export interface GpsPosition {
-  latitude: number;
-  longitude: number;
-  accuracy?: number;
-  
-}
+
+
+
 
 
 @Injectable({
@@ -55,5 +53,6 @@ export class GpsService {
         return new Error('Error desconocido');
     }
   }
+
 
 }

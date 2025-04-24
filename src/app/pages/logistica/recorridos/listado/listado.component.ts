@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
+import { getMapboxImageUrl } from '@app/helpers/getImagePosition';
 import { NumberFormatter, obtenerValorNumerico } from '@app/helpers/validators';
-import { Recorrido } from '@app/interface/models';
+import { GpsPositionWithType, Recorrido } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 
@@ -15,10 +16,16 @@ import { EditService } from '@syncfusion/ej2-angular-grids';
 import { firstValueFrom } from 'rxjs';
 import * as XLSX from 'xlsx';
 
+
+type ubicacionRecorrido  ={
+  inicial:string | null,
+  final:string | null
+}
+
 @Component({
   selector: 'app-listado',
   standalone: true,
-  imports: [SynfusionModule, FabbuttonComponent, CommonModule, PrimeNgModule, FormsModule,GpsPositionSvgComponent],
+  imports: [SynfusionModule, FabbuttonComponent, CommonModule, PrimeNgModule, FormsModule, GpsPositionSvgComponent],
   providers: [EditService],
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css'
@@ -28,7 +35,10 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   private recorridoService = inject(RecorridoService);
   public recorridoActivo: Recorrido | null = null;
 
+  ubicacionesRecorrido: ubicacionRecorrido = {inicial:null, final:null};
+
   public cargando = signal<boolean>(false);
+  public cargandoUbicaciones = signal<boolean>(false);  
 
   private uiService = inject(UiService);
 
@@ -51,21 +61,17 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   constructor() {
     super();
   }
-  visible = signal<boolean>(false);
+  visibleEditarInfo = signal<boolean>(false);
+  visibleUbicaciones = signal<boolean>(false);
   showEditDialog(recorrido: Recorrido) {
     this.recorridoActivo = recorrido;
     const { importe_factura } = this.recorridoActivo
     this.recorridoActivo = { ...this.recorridoActivo, importe_factura: importe_factura == 0 ? 0 : importe_factura }
-    this.visible.set(true);
+    this.visibleEditarInfo.set(true);
   }
 
 
-  hideEditDialog() {
-    if (this.visible()) {
-      this.visible.set(false);
-      this.recorridoActivo = null;
-    }
-  }
+
 
   async save() {
 
@@ -79,12 +85,30 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
       return r;
     }));
     this.recorridoActivo = null;
-    this.visible.set(false);
+    this.visibleEditarInfo.set(false);
   }
 
 
   visibleChange(e: boolean) {
     this.hideEditDialog();
+  }
+
+  hideEditDialog() {
+    if (this.visibleEditarInfo()) {
+      this.visibleEditarInfo.set(false);
+      this.recorridoActivo = null;
+    }
+  }
+
+  ubicacionDialogChange(e: boolean) {
+    this.hideUbicacionesDialog();
+  }
+
+  hideUbicacionesDialog() {
+    if (this.visibleUbicaciones()) {
+      this.visibleUbicaciones.set(false);
+      this.ubicacionesRecorrido = { inicial: null, final: null };
+    }
   }
 
 
@@ -141,16 +165,25 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     } finally {
       this.cargarInformacion();
     }
-
-
-
   }
+  async mostrarUbicaciones(recorrido: Recorrido) {
 
-  mostrarUbicaciones(recorrido:Recorrido){
-    console.log(recorrido);
-
+    const { id_recorrido } = recorrido
+    try {
+      this.cargandoUbicaciones.set(true);
+      this.visibleUbicaciones.set(true);
+      const { ubicaciones } = await firstValueFrom(this.recorridoService.obtenerUbicacion(id_recorrido!));      
+      const inicial = ubicaciones.find((u) => u.type === "Inicio");
+      const final = ubicaciones.find((u) => u.type === "Fin");      
+      this.ubicacionesRecorrido.inicial = inicial ? getMapboxImageUrl(inicial.longitude,inicial.latitude,): null;
+      this.ubicacionesRecorrido.final = final ? getMapboxImageUrl(final.longitude,final.latitude): null;
+    } catch (_) {
+      this.uiService.mostrarAlertaError("Recorridos", "Error al obtener las ubicaciones");
+    }
+    finally{
+      this.cargandoUbicaciones.set(false);
+    }
   }
-
 
 
 

@@ -1,5 +1,5 @@
-import { Recorrido } from "@app/interface/models";
-import { GpsPosition } from "@app/services";
+import { GpsPosition, Recorrido } from "@app/interface/models";
+
 
 export interface RecorridoEnCurso {
     ubicacion: GpsPosition | null;
