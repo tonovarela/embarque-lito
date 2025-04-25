@@ -20,7 +20,7 @@
             </div>
          </div>
          }@else{
-         @if(!(recorridoActivoInicio || recorridoActivoFin || isRunning() )){
+         @if(!(recorridoActivoInicio || recorridoActivoFin || isRunning() || recorridoPorFirmar() )){
          <ejs-grid #grid [dataSource]='Recorridos()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
             [allowExcelExport]='true' AutoFitAll="true" [height]="heightGrid" allowReordering='true'
             [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
@@ -29,6 +29,27 @@
                <e-column field='id_recorrido' [allowFiltering]="false" headerText='' width='40'> >
                   <ng-template #template let-data>
                      <div class="grid grid-cols-2  space-x-2  p-1  ">
+                        @if(data.porFirmar =='1'){
+                        <svg (click)="mostrarPad(data)" class="h-6 w-6 fill-current" version="1.1" id="Capa_1"
+                           xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                           viewBox="0 0 478.135 478.135" xml:space="preserve">
+                           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                           <g id="SVGRepo_iconCarrier">
+                              <g>
+                                 <path
+                                    d="M464.124,88.771c-18.685-18.683-49.082-18.681-67.765,0l-58.636,58.637H15c-8.284,0-15,6.716-15,15v225.968 c0,8.284,6.716,15,15,15h351.427c8.284,0,15-6.716,15-15V239.232l82.697-82.697C482.806,137.851,482.806,107.453,464.124,88.771z M430.241,94.737c7.457,0,14.468,2.903,19.74,8.177c10.389,10.389,10.853,26.993,1.409,37.949l-39.359-39.359 C417.095,97.129,423.483,94.737,430.241,94.737z M338.976,247.416l-33.496-33.496l-2.991-2.991l95.341-95.342l39.479,39.479 l-95.341,95.341L338.976,247.416z M295.95,232.675l5.063,5.063l-18.051,18.051c-3.905,3.905-3.905,10.237,0,14.143 c1.953,1.952,4.512,2.929,7.071,2.929s5.118-0.977,7.071-2.929l18.051-18.051l5.063,5.063l-10.518,27.043l-58.17,17.376 l17.375-58.17L295.95,232.675z M351.427,373.375H30V177.408h277.723l-26.449,26.449c-3.65,3.65-3.886,9.418-0.714,13.345 l-23.459,9.123c-2.876,1.118-5.074,3.502-5.958,6.458l-23.351,78.178l-9.983,9.983l-11.771-11.771 c-3.905-3.904-10.237-3.904-14.142,0c-3.905,3.905-3.905,10.237,0,14.143l11.77,11.77l-11.77,11.77 c-3.905,3.905-3.906,10.237,0,14.143c1.953,1.952,4.512,2.929,7.071,2.929c2.559,0,5.119-0.977,7.071-2.929l11.771-11.771 l11.771,11.771c1.953,1.952,4.512,2.929,7.071,2.929s5.119-0.977,7.071-2.929c3.905-3.905,3.905-10.237,0-14.143l-11.77-11.77 l9.983-9.982l78.178-23.352c2.956-0.884,5.339-3.082,6.458-5.957l9.124-23.459c1.826,1.475,4.049,2.214,6.274,2.214 c2.56,0,5.118-0.977,7.071-2.929l2.389-2.389V373.375z">
+                                 </path>
+                                 <path
+                                    d="M65.925,229.621h156.915c5.523,0,10-4.478,10-10s-4.477-10-10-10H65.925c-5.523,0-10,4.478-10,10 S60.402,229.621,65.925,229.621z">
+                                 </path>
+                                 <path
+                                    d="M212.115,261.07c0-5.522-4.477-10-10-10H65.925c-5.523,0-10,4.478-10,10s4.477,10,10,10h136.19 C207.638,271.07,212.115,266.592,212.115,261.07z">
+                                 </path>
+                              </g>
+                           </g>
+                        </svg>
+                        }@else {
                         <svg class="h-6 w-6 cursor-pointer fill-current" (click)="startCounter(data)" version="1.1"
                            id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                            viewBox="0 0 60 60" xml:space="preserve">
@@ -45,7 +66,10 @@
                               </g>
                            </g>
                         </svg>
+                        }
                      </div>
+
+
                   </ng-template>
                </e-column>
                <e-column field='destino' />
@@ -113,9 +137,22 @@
 
 
    @if(isRunning() ){
-   <recorrido-actual [recorridoEnCurso]="recorridoEnCurso()!"  
-                    [visibleStopCounter]="!recorridoActivoFin"  
-                    (onStopCounter)="stopCounter()"/>
-   
+   <recorrido-actual [recorridoEnCurso]="recorridoEnCurso()!" [visibleStopCounter]="!recorridoActivoFin"
+      (onStopCounter)="stopCounter()" />
+
    }
+   @if(recorridoPorFirmar() ){
    
+       <!-- Firma Pad -->
+  <firma-pad (onGuardarFirma)="guardarFirma($event)" (onCancelar)="cancelarFirma()"></firma-pad>
+  <!-- Loader -->
+  <div *ngIf="guardandoFirma()" class="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-10">
+    <div class="flex flex-col items-center">
+      <svg class="animate-spin h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+      <p class="text-white mt-2">Guardando firma...</p>
+    </div>
+  </div>
+   }

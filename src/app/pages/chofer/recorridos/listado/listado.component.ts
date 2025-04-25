@@ -14,6 +14,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { RecorridoEnCurso } from '../../interface/RecorridoEnCurso';
 import { PosicionKilometraje } from '../../interface/PosicionKilometraje';
+import { FirmaPadComponent } from '../../componentes/firma-pad/firma-pad.component';
 
 @Component({
   selector: 'app-listado',
@@ -23,6 +24,7 @@ import { PosicionKilometraje } from '../../interface/PosicionKilometraje';
     CommonModule,
     PrimeNgModule,
     FormsModule,
+    FirmaPadComponent,
     CounterComponent,
     RecorridoActualComponent,
     DialogCapturaKilometrajeComponent,
@@ -35,6 +37,8 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   private _recorridos = signal<Recorrido[]>([]);
   public cargando = signal<boolean>(false);
   public recorridoEnCurso = signal<RecorridoEnCurso | null>(null);
+  public recorridoPorFirmar = signal<Recorrido | null>(null);
+  public guardandoFirma = signal<boolean>(false);
 
   // Public properties
   public today = new Date();
@@ -160,10 +164,10 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   cargarInformacion(): void {
     this.cargando.set(true);
     const personal = this.usuarioService.StatusSesion().usuario?.personal || 0;
-
     this.recorridoService.porChofer(`${personal}`, true).subscribe({
-      next: ({ recorridos }) => {
-        this._recorridos.set(recorridos);
+      next: ({ recorridos, recorridosSinFirma }) => {
+        const _recorridos = [...recorridos, ...recorridosSinFirma];
+        this._recorridos.set(_recorridos);
         this.cargando.set(false);
       },
       error: (error: any) => {
@@ -172,10 +176,38 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
       }
     });
 
+
     this.choferService.estaEnCurso(`${personal}`)
       .then(resp => this.recorridoEnCurso.set({
         recorrido: resp.recorrido,
         ubicacion: resp.ubicacion,
       }));
+  };
+
+
+
+
+  mostrarPad(recorridoPorFirma: Recorrido) {
+    this.recorridoPorFirmar.set(recorridoPorFirma);
   }
+
+  cancelarFirma() {
+    this.recorridoPorFirmar.set(null);
+  }
+  async guardarFirma(firma: string) {
+    const id_recorrido = this.recorridoPorFirmar()?.id_recorrido;
+     this.guardandoFirma.set(true);
+    try {
+      await firstValueFrom(this.recorridoService.firmar(`${id_recorrido}`, firma))
+      this.uiService.mostrarAlertaSuccess("Recorridos", "Firma guardada correctamente");
+    } catch (_) {
+      this.uiService.mostrarAlertaError("Recorridos", "Error al guardar la firma");
+    } finally {
+      this.cargarInformacion();
+      this.recorridoPorFirmar.set(null);
+      this.guardandoFirma.set(false);
+    }    
+  }
+
+
 }

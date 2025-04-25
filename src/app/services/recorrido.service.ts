@@ -57,12 +57,18 @@ export class RecorridoService {
   actualizarFinal(recorrido:Recorrido,gpsPosicion:GpsPosition){
     return this.http.put(`${this.API_URL}/api/recorrido/final`, {recorrido,gpsPosicion})
   }
-
-
   
   obtenerUbicacion(id_recorrido:number){
     return this.http.get<ResponseUbicacionRecorrido>(`${this.API_URL}/api/recorrido/ubicacion/${id_recorrido}`);
   }
+
+  firmar(id_recorrido:string,firma:string){
+
+    return this.http.put(`${this.API_URL}/api/recorrido/firmar`, {id_recorrido,firma})
+
+  }
+
+
 
 
 }
