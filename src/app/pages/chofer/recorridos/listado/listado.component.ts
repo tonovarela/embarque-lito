@@ -6,15 +6,20 @@ import { Recorrido } from '@app/interface/models';
 
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { ChoferService, RecorridoService, UiService, UsuarioService } from '@app/services';
+
 import { CounterComponent } from '@app/pages/chofer/componentes/counter/counter.component';
 import { RecorridoActualComponent } from '../../componentes/recorrido-actual/recorrido-actual.component';
 import { DialogCapturaKilometrajeComponent } from '../../componentes/dialog-captura-kilometraje/dialog-captura-kilometraje.component';
-import { firstValueFrom } from 'rxjs';
 
-import { RecorridoEnCurso } from '../../interface/RecorridoEnCurso';
-import { PosicionKilometraje } from '../../interface/PosicionKilometraje';
+
+import { ChoferService, RecorridoService, UiService, UsuarioService } from '@app/services';
+
 import { FirmaPadComponent } from '../../componentes/firma-pad/firma-pad.component';
+import { PosicionKilometraje, RecorridoEnCurso } from '../../interface';
+
+
+
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-listado',

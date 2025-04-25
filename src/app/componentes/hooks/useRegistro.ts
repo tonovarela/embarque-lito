@@ -60,6 +60,14 @@ export class RegistroRecorridoHook {
         return false;
     }
 
+    estaHabilitado(controlName: string, formRegistro: FormGroup): boolean {
+        const control = formRegistro.get(controlName);
+        if (control) {
+            return !control.disabled;
+        }
+        return false;
+    }
+
 }
 
 

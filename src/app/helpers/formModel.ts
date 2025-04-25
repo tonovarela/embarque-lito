@@ -49,6 +49,7 @@ export const createFormRegistroExternoBuilder = (fb: FormBuilder) => {
 export const createFormRegistroProgramadorBuilder = (fb: FormBuilder) => {
   return fb.group({
     transporte: [0, MayorACeroValidator()],
+    retorno:[false],
     chofer: [0, MayorACeroValidator()],
     tipo_servicio: [0, MayorACeroValidator()],
     remisiones: fb.array([], Validators.required),  
@@ -140,6 +141,7 @@ export const resetFormRecorridoExterno = (formRegistro: FormGroup) => {
 export const resetFormRecorridoProgramado = (formRegistro: FormGroup) => {
 
   formRegistro.reset();
+  
   formRegistro.get("transporte")!.setValue("0");
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get("observaciones")!.setValue('');

@@ -190,6 +190,16 @@
             </div>
           </div>         
          }
+
+         @if(firma){
+            <div class="mt-4 border-2 rounded-md border-slate-600 ">
+               <div class="flex justify-between text-sm font-medium text-white bg-slate-600  px-2">
+                  <label>Firma de recibido</label>
+                  <label>Fecha registro  {{firma.fecha_registro | date:'dd-MM-yyyy hh:mm a'  }}</label>                   
+                  </div>
+               <img [src]="firma.imagen" alt="Firma" class="w-full h-full rounded-sm ">
+            </div>            
+         }
          </div>
       
    </p-dialog>

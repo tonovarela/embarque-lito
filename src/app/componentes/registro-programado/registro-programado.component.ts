@@ -40,6 +40,26 @@ export class RegistroProgramadoComponent implements OnInit, AfterViewInit {
       this.formRegistro = this.formGroup.get('registroProgramado') as FormGroup;
     }
 
+
+    onChangeRetorno(event: any) {
+      const valor = event.target.checked;
+      if (valor){
+        this.formRegistro.get("remisiones")?.disable();
+        this.formRegistro.get("ops")?.disable();
+        this.formRegistro.get("tipo_servicio")?.disable();
+        this.formRegistro.get("destino")?.disable();
+      }else{
+        this.formRegistro.get("remisiones")?.enable();
+        this.formRegistro.get("ops")?.enable();
+        this.formRegistro.get("tipo_servicio")?.enable();
+        this.formRegistro.get("destino")?.enable();
+      }
+      
+    }
+
+    estaHabilitado(controlName: string): boolean {  
+      return this.recorridoRegistroHook.estaHabilitado(controlName, this.formRegistro);
+    }
   
     ngAfterViewInit(): void {
       this.resetForm();    

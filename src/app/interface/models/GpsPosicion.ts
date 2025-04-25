@@ -6,4 +6,5 @@ export interface GpsPosition {
 
   export interface GpsPositionWithType extends GpsPosition {
     type: string;
+  
   }

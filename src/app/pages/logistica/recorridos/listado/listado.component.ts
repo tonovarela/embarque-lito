@@ -5,6 +5,7 @@ import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { getMapboxImageUrl } from '@app/helpers/getImagePosition';
 import { NumberFormatter, obtenerValorNumerico } from '@app/helpers/validators';
 import { GpsPositionWithType, Recorrido } from '@app/interface/models';
+import { Firma } from '@app/interface/responses';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 
@@ -39,6 +40,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
 
   public cargando = signal<boolean>(false);
   public cargandoUbicaciones = signal<boolean>(false);  
+  public firma:Firma | null = null;
 
   private uiService = inject(UiService);
 
@@ -108,6 +110,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     if (this.visibleUbicaciones()) {
       this.visibleUbicaciones.set(false);
       this.ubicacionesRecorrido = { inicial: null, final: null };
+      this.firma = null;
     }
   }
 
@@ -167,12 +170,13 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     }
   }
   async mostrarUbicaciones(recorrido: Recorrido) {
+    const { id_recorrido } = recorrido;
 
-    const { id_recorrido } = recorrido
     try {
       this.cargandoUbicaciones.set(true);
       this.visibleUbicaciones.set(true);
-      const { ubicaciones } = await firstValueFrom(this.recorridoService.obtenerUbicacion(id_recorrido!));      
+      const { ubicaciones,firma } = await firstValueFrom(this.recorridoService.obtenerUbicacion(id_recorrido!));      
+      this.firma = firma || null;
       const inicial = ubicaciones.find((u) => u.type === "Inicio");
       const final = ubicaciones.find((u) => u.type === "Fin");      
       this.ubicacionesRecorrido.inicial = inicial ? getMapboxImageUrl(inicial.longitude,inicial.latitude,): null;

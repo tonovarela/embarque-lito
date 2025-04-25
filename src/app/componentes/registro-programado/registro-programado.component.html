@@ -3,11 +3,24 @@
         class="font-roboto  w-full lg:w-3/4 2xl:w-2/3   mx-1 mt-1 p-5  bg-white  space-y-1 border border-gray-400  rounded-md  dark:border-white dark:bg-gray-900/50">
 
         <form [formGroup]="formRegistro">
-            <div class="flex sm:flex-row flex-col  space-x-2">
-                <div class="sm:w-1/2 w-full mt-1 space-y-2">
-                    <div class="grid  gap-1 ">                
-                        
-                        <app-autocomplete [hasError]="tieneError('ops')"
+            <div class="w-full flex justify-end items-end space-x-2 mb-4">
+                <input 
+                    type="checkbox" 
+                    id="retorno" 
+                    (change)="onChangeRetorno($event)"
+                    formControlName="retorno" 
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800">
+                <label 
+                    for="retorno" 
+                    class="text-sm font-medium text-gray-900 dark:text-gray-300">
+                    Retorno
+                </label>
+            </div>
+            <div class="flex sm:flex-row flex-col  space-x-2">                
+                <div class="sm:w-1/2 w-full mt-1 space-y-2">                   
+                    <div class="grid  gap-1 ">  
+                        @if (estaHabilitado('ops')){
+                            <app-autocomplete [hasError]="tieneError('ops')"
                             (onSelect)="onSelectOP($event)"></app-autocomplete>
                         <div class="flex items-start justify-start flex-wrap gap-2 mt-2 w-full ">                            
                             @for (op of formRegistro.get('ops')!.value;track op){
@@ -15,7 +28,8 @@
                                 styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
                                 label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
                             }
-                        </div>
+                        </div>    
+                        }                                                              
                     </div>
                     <div class="space-y-4">                    
                     <div class="w-full">
@@ -28,7 +42,9 @@
                             }
                         </select>
                     </div>
+                    
                     <div class="w-full">
+                        
                         <select id="transporte" formControlName="transporte" 
                         
                             aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
@@ -41,6 +57,7 @@
                             }
                         </select>
                     </div>
+                    @if (estaHabilitado('tipo_servicio')){                    
                     <div class="w-full">
                         <select id="transporte" formControlName="tipo_servicio"
                             aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
@@ -51,6 +68,8 @@
                             }
                         </select>
                     </div>
+                }
+                
                 </div>
                     <!-- <div class="max-w-[32rem] ">
                          <label for="end-time"
@@ -193,27 +212,33 @@
                     </div>
                     } -->
                 </div>
+            
                 <div class="sm:w-1/2 w-full space-y-4">                
-                    <div class="w-full">
-                        <p-chips variant="filled"
-                            [styleClass]="tieneError('remisiones')?'chips-contenedor-invalido':'chips-contenedor-valido'"
-                            allowDuplicate="false" [ngModel]="remisionesArray.value"
-                            [ngModelOptions]="{standalone: true}" (onAdd)="onAddRemision($event)"
-                            (onRemove)="onRemoveRemision($event)" (onBlur)="onBlurRemision($event)" separator=","
-                            placeholder="Remisión Ejemplo: 4661 , 6691 , 444"
-                            [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'chip-input'">
-                        </p-chips>
-                    </div>
+                    @if (estaHabilitado('remisiones')){
+                        <div class="w-full">
+                            <p-chips variant="filled"
+                                [styleClass]="tieneError('remisiones')?'chips-contenedor-invalido':'chips-contenedor-valido'"
+                                allowDuplicate="false" [ngModel]="remisionesArray.value"
+                                [ngModelOptions]="{standalone: true}" (onAdd)="onAddRemision($event)"
+                                (onRemove)="onRemoveRemision($event)" (onBlur)="onBlurRemision($event)" separator=","
+                                placeholder="Remisión Ejemplo: 4661 , 6691 , 444"
+                                [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'chip-input'">
+                            </p-chips>
+                        </div>
+                    }
+                    @if (estaHabilitado('destino')){                    
                     <div class="w-full">
                         <input name="destino" placeholder="Destino" formControlName="destino"
                             [ngClass]="{'input-invalido': tieneError('destino'), 'input ': !tieneError('destino') }" />
                     </div>
-                    <div class="w-full">
+                }
+                    <div class="w-full mt-5">
                         <textarea id="observaciones" rows="5" formControlName="observaciones"
                             class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Escribe tus observaciones aqui..."></textarea>
                     </div>
                 </div>
+            
             </div>
         </form>
     </div>

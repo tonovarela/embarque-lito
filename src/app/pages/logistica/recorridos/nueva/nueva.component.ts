@@ -31,13 +31,12 @@ import { RegistroProgramadoComponent } from '@app/componentes/registro-programad
   styleUrl: './nueva.component.css'
 })
 export default class NuevaComponent implements AfterViewInit {
-
-
-
   ngAfterViewInit(): void {
     initFlowbite();
     this.changeDetectorRef.detectChanges();
+    
   }
+
 
   changeDetectorRef = inject(ChangeDetectorRef);
   recorridoService = inject(RecorridoService);
@@ -149,26 +148,26 @@ export default class NuevaComponent implements AfterViewInit {
     if (formRegistro.invalid) {
       return;
     }
+  
     this.guardandoRecorrido.set(true);
-    const {  ops, transporte, tipo_servicio, chofer,  destino,  observaciones, id_previo, remisiones } = formRegistro.getRawValue();
+    const {retorno,  ops, transporte, tipo_servicio, chofer,  destino,  observaciones, id_previo, remisiones } = formRegistro.getRawValue();
+
     const registro: Recorrido = {
-      ops,
+      ops:retorno?["Retorno"]:ops,
       observaciones,
-      destino,
-      remisiones,
+      destino:retorno?"Retorno Litoprocess":destino,
+      remisiones:retorno?["N/A"]:remisiones,
       factura: "N/A",
       importe_factura: 0,
       id_previo: id_previo ?? null,
-      id_tipo_servicio: tipo_servicio,    
+      id_tipo_servicio: retorno?"16":tipo_servicio,    
       id_transporte: +transporte,
       id_chofer: +chofer,    
       tipo: 'interno'
-    };
-    
+    };    
     await this.registrarRecorrido(registro);      
     this.guardandoRecorrido.set(false);
   }
-
 
   private async registrarRecorrido(recorrido: Recorrido) {
 
@@ -185,12 +184,7 @@ export default class NuevaComponent implements AfterViewInit {
 
   }
 
-
-
-
-
-
-  tieneError(controlName: string): boolean {
+ public tieneError(controlName: string): boolean {
     return tieneErrorForm(controlName, this.formRegistro);
   }
 
