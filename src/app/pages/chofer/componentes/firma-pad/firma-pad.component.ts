@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import {  Component, EventEmitter, Output } from '@angular/core';
 import SignaturePad from 'signature_pad';
 @Component({
   selector: 'firma-pad',
@@ -11,16 +11,21 @@ import SignaturePad from 'signature_pad';
 export class FirmaPadComponent {
 
   @Output("onGuardarFirma") _onGuardarFirm = new EventEmitter<string>();
-  @Output("onCancelar")  _onCancelar = new EventEmitter<void>();
+  @Output("onCancelar") _onCancelar = new EventEmitter<void>();
   signaturePad: SignaturePad | undefined;
 
-  ngOnInit(): void { }
-  ngAfterViewInit() {
+  ngOnInit(): void {
     const canvas = document.querySelector("canvas")!;
-    const parentWidth = document.getElementById("contenedorFirma")!;    
-    canvas.setAttribute("width", parentWidth.clientWidth.toString());
-    canvas.setAttribute("height", (parentWidth.clientHeight+150).toString());
-    this.signaturePad = new SignaturePad(canvas!);
+      const parentWidth = document.getElementById("contenedorFirma")!;
+      canvas.setAttribute("width", parentWidth.clientWidth.toString());
+      canvas.setAttribute("height", (parentWidth.clientHeight + 150).toString());
+      this.signaturePad = new SignaturePad(canvas!);
+   }
+  ngAfterViewInit() {
+    
+      
+    
+
   }
   startDrawing(event: Event) {
     // works in device not in browser	
@@ -42,15 +47,15 @@ export class FirmaPadComponent {
   }
 
   guardarPad() {
-    const base64Data = this.signaturePad!.toDataURL();    
+    const base64Data = this.signaturePad!.toDataURL();
     this.limpiarPad();
     this._onGuardarFirm.emit(base64Data);
   }
 
-  cancelarFirma(){
+  cancelarFirma() {
     this.limpiarPad();
     this._onCancelar.emit();
   }
 
-  
- }
+
+}
