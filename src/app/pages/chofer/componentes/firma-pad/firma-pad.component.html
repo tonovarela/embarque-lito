@@ -1,45 +1,43 @@
-<div class="flex justify-between items-center flex-wrap my-4">
-  <!-- Botón para Cancelar-->
-  <div class="flex items-center justify-center font-bold m-2">
-    <button         
-    (click)="cancelarFirma()"
-    class="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-md shadow-md">
-      Cancelar
-    </button>
-  </div>
-  <!-- Texto de instrucción -->
-  <div class="flex items-center justify-center font-bold m-2">
-    <button 
-    (click)="limpiarPad()"
-      class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md shadow-md">
-      Limpiar
-    </button>
-  </div>
-  <!-- Botón para guardar -->
-  <div class="flex items-center justify-center font-bold m-2">
-    <button 
-    (click)="guardarPad()" [disabled]="!tieneFirma"
-      class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-md">
-      Guardar Firma
-    </button>
+<div class="card" id="contenedorFirma">
+  <!-- Área de firma -->
+  <div class="relative w-full h-64 border border-gray-300 rounded-md shadow-md bg-white flex items-center justify-center">
+    <canvas id="espacioFirma" (touchstart)="startDrawing($event)"
+    (touchmove)="moved($event)" class="absolute w-full h-full"></canvas>
+    @if(!tieneFirma){
+      <!-- SVG y texto de invitación -->
+      <div class="flex flex-col items-center justify-center pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.121 2.121 0 113 3L7 19H4v-3L16.5 3.5z" />
+          </svg>
+          <p class="text-gray-400 mt-2">Por favor, firme aquí</p>
+        </div>
+    }            
+  </div>  
+  <!-- Controles -->
+  <div class="flex justify-between items-center flex-wrap mt-4">
+    <!-- Botón para Cancelar-->
+    <div class="flex items-center justify-center font-bold m-2">
+      <button         
+      (click)="cancelarFirma()"
+      class="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-md shadow-md">
+        Cancelar
+      </button>
+    </div>
+    <!-- Texto de instrucción -->
+    <div class="flex items-center justify-center font-bold m-2">
+      <button 
+      (click)="limpiarPad()"
+        class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md shadow-md">
+        Limpiar
+      </button>
+    </div>
+    <!-- Botón para guardar -->
+    <div class="flex items-center justify-center font-bold m-2">
+      <button 
+      (click)="guardarPad()" [disabled]="!tieneFirma"
+        class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-md">
+        Guardar Firma
+      </button>
+    </div>
   </div>
 </div>
-<div class="card  " id="contenedorFirma">
-    <!-- Área de firma -->
-    <div class=" w-full  h-96 border border-gray-300 rounded-md shadow-md bg-white flex items-center justify-center">
-      <canvas id="espacioFirma" (touchstart)="startDrawing($event)"
-      (touchmove)="moved($event)" class="absolute "></canvas>
-      @if(!tieneFirma){
-        <!-- SVG y texto de invitación -->
-        <div class="flex flex-col items-center justify-center pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.121 2.121 0 113 3L7 19H4v-3L16.5 3.5z" />
-            </svg>
-            <p class="text-gray-400 mt-2">Por favor, firme aquí</p>
-          </div>
-      }            
-    </div>  
-    
-  </div>
-  <!-- Controles -->
-

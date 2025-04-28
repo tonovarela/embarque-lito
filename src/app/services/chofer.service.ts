@@ -4,7 +4,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Choferes } from '@app/interface/models/Catalogos';
 import { ResponseRecorridoActivo } from '@app/interface/responses';
 import { environment } from '@environments/environment.development';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, tap } from 'rxjs';
 
 
 @Injectable({
@@ -12,6 +12,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class ChoferService {
 
+  public nowServer= signal<Date| null>(null);
   
   choferes = signal<Choferes>({ internos: [], externos: [] });
   readonly API_URL = environment.API_URL;
@@ -25,8 +26,15 @@ export class ChoferService {
 
 
   async estaEnCurso(id_chofer: string) {
-    const resp = await firstValueFrom(this.http.get<ResponseRecorridoActivo>(`${this.API_URL}/api/chofer/recorrido/${id_chofer}`));
+    const resp = await firstValueFrom(this.http.get<ResponseRecorridoActivo>(`${this.API_URL}/api/chofer/recorrido/${id_chofer}`).pipe(
+      tap((resp) => {
+        console.log('recorrido activo', resp);
+        this.nowServer.set(new Date(resp.horaActual!));        
+      })
+    ));
     return resp;
   }
+
+  
 
 }

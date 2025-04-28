@@ -3,7 +3,7 @@ import {  Component, computed, inject, input, OnInit, output, signal } from '@an
 
 import { GpsService } from '@app/services';
 
-import { environment } from '@environments/environment.development';
+
 import { CounterComponent } from '../counter/counter.component';
 import { RecorridoEnCurso } from '../../interface/RecorridoEnCurso';
 import { GpsPosition } from '@app/interface/models';
@@ -20,8 +20,8 @@ import { getMapboxImageUrl } from '@app/helpers/getImagePosition';
 export class RecorridoActualComponent implements OnInit {
 
 public _mapImageUrl =signal<string>('');
-private mapboxToken = environment.mapboxToken;
-
+//private mapboxToken = environment.mapboxToken;
+public now= new Date(); // Current time in milliseconds
 recorridoEnCurso = input.required<RecorridoEnCurso | null>();
 gpsInicioPosicion = input<GpsPosition>({latitude: 19.466327669634705,longitude: -99.26530456102172,accuracy: 10} as GpsPosition);
 visibleStopCounter = input.required<boolean>();
