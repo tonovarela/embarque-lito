@@ -1,4 +1,4 @@
-<div class="sm:ml-52      py-8 px-2  ">
+<div class="sm:ml-52 py-8 px-2  ">
    <div class="p-2   rounded-lg  h-full  dark:border-gray-700 mt-8 transition-colors duration-30 ">
       <div class="flex justify-between items-center w-full p-2 bg-transparent dark:bg-gray-500 rounded-tr-md rounded-tl-md text-gray-600 dark:text-white">
          <h1 class="text-2xl ">Recorridos</h1>
@@ -20,12 +20,12 @@
                </div>
             </div>            
          }@else{
+
             <ejs-grid #grid [dataSource]='Recorridos()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
             [allowExcelExport]='true' AutoFitAll="true" [height]="heightGrid" allowReordering='true'
             [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
             [pageSettings]='pageSettings'>
             <e-columns>
-
                <e-column field='id_recorrido' [allowFiltering]="false" headerText='' width='50'> >
                   <ng-template #template let-data>
                      <div  class="grid grid-cols-2 gap-4">
@@ -55,9 +55,9 @@
                      {{data.costo_viaje| currency}}
                   </ng-template>
                   </e-column>                  
-               <e-column field='tipo'>
+               <e-column field='tipoRecorrido'>
                   <ng-template #template let-data>
-                     {{data.tipo | uppercase}}
+                     {{data.tipoRecorrido | uppercase}}
                   </ng-template>
                </e-column>
                <e-column field='descripcion_tipo_servicio' headerText="Servicio"></e-column>
@@ -113,19 +113,14 @@
             <e-column headerText="GPS" width='150'>
                <ng-template #template let-data>
                <gps-position-svg (click)="mostrarUbicaciones(data)"/>
-
                </ng-template>
                </e-column>
-
             </e-columns>
-         </ejs-grid>
+</ejs-grid>
          }       
       </div>
-
    </div>
    <app-fabbutton></app-fabbutton>
-
-
    <p-dialog header="Editar información" [visible]="visibleEditarInfo()" [style]="{ width: '25rem' }" 
       (onHide)="hideEditDialog()"
       (visibleChange)="visibleChange($event)"
@@ -182,6 +177,15 @@
                <p class="text-gray-500 mt-2">No hay ubicaciones registradas</p>
              </div>
          } 
+         @if(ubicacionesRecorrido.final) { 
+            <div class="relative  w-full mt-4 border-2 border-slate-400 rounded-sm ">
+              <h1 class="absolute top-2 left-1 text-sm font-medium text-white bg-slate-600 px-2 rounded-md ">Posición aproximada de fin</h1>
+              <img [src]="ubicacionesRecorrido.final" alt="Mapa de Mapbox" class="w-full h-full rounded-sm">
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <img src="assets/img/marker.svg" class="w-6 h-6" />
+              </div>
+            </div>         
+           }      
          @if(ubicacionesRecorrido.inicial) { 
          <div class="relative  w-full mt-4 border-2 border-slate-400 rounded-sm ">
             <h1 class="absolute top-2 left-1 text-sm font-medium text-white bg-slate-600 px-2 rounded-md ">Posición aproximada de inicio</h1>
@@ -191,16 +195,6 @@
             </div>
           </div>         
          }
-         @if(ubicacionesRecorrido.final) { 
-          <div class="relative  w-full mt-4 border-2 border-slate-400 rounded-sm ">
-            <h1 class="absolute top-2 left-1 text-sm font-medium text-white bg-slate-600 px-2 rounded-md ">Posición aproximada de fin</h1>
-            <img [src]="ubicacionesRecorrido.final" alt="Mapa de Mapbox" class="w-full h-full rounded-sm">
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <img src="assets/img/marker.svg" class="w-6 h-6" />
-            </div>
-          </div>         
-         }
-      
-         </div>
-      
+       
+         </div>      
    </p-dialog>

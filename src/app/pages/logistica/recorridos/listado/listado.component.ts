@@ -1,13 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { SynfusionModule } from '@app/lib/synfusion.module';
 import { FormsModule } from '@angular/forms';
+import { PrimeNgModule } from '@app/lib/primeng.module';
+
+
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { getMapboxImageUrl } from '@app/helpers/getImagePosition';
 import { NumberFormatter, obtenerValorNumerico } from '@app/helpers/validators';
-import { GpsPositionWithType, Recorrido } from '@app/interface/models';
+import {  Recorrido } from '@app/interface/models';
 import { Firma } from '@app/interface/responses';
-import { PrimeNgModule } from '@app/lib/primeng.module';
-import { SynfusionModule } from '@app/lib/synfusion.module';
+
+
 
 import { RecorridoService } from '@app/services/recorrido.service';
 import { UiService } from '@app/services/ui.service';
@@ -42,7 +46,14 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   public cargandoUbicaciones = signal<boolean>(false);  
   public firma:Firma | null = null;
 
+  public visibleEditarInfo = signal<boolean>(false);
+  public visibleUbicaciones = signal<boolean>(false);
+
   private uiService = inject(UiService);
+  protected minusHeight = 0.27;
+
+  Recorridos = computed(() => this._recorridos());
+
 
   cargarInformacion() {
     this.cargando.set(true);
@@ -56,15 +67,15 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     this.autoFitColumns = true;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
-
   }
-  Recorridos = computed(() => this._recorridos());
-  protected minusHeight = 0.27;
+  
+  
   constructor() {
     super();
   }
-  visibleEditarInfo = signal<boolean>(false);
-  visibleUbicaciones = signal<boolean>(false);
+
+  
+
   showEditDialog(recorrido: Recorrido) {
     this.recorridoActivo = recorrido;
     const { importe_factura } = this.recorridoActivo
@@ -76,8 +87,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
 
 
   async save() {
-
-    const resp = await firstValueFrom(this.recorridoService.actualizarFactura(this.recorridoActivo!))
+     await firstValueFrom(this.recorridoService.actualizarFactura(this.recorridoActivo!))
     this._recorridos.set(this._recorridos().map((r) => {
       if (r.id_recorrido === this.recorridoActivo!.id_recorrido) {
         this.recorridoActivo!.importe_factura = obtenerValorNumerico(`${this.recorridoActivo?.importe_factura!}`);
@@ -113,8 +123,6 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
       this.firma = null;
     }
   }
-
-
 
 
   onValidateNumber(event: KeyboardEvent) {

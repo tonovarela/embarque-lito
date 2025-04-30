@@ -197,7 +197,7 @@ export default class NuevaComponent implements AfterViewInit {
         resetFormRecorridoExterno(this.formRegistro.get('registroExterno') as FormGroup);
         break;
       case 'programado':
-        console.log('programado');
+        
         resetFormRecorridoProgramado(this.formRegistro.get('registroProgramado') as FormGroup);
         break;
       default:
