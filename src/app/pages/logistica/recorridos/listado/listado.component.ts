@@ -20,6 +20,7 @@ import { GpsPositionSvgComponent } from '@app/shared/svg';
 import { EditService } from '@syncfusion/ej2-angular-grids';
 import { firstValueFrom } from 'rxjs';
 import * as XLSX from 'xlsx';
+import { environment } from '@environments/environment.development';
 
 
 type ubicacionRecorrido  ={
@@ -52,6 +53,11 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   private uiService = inject(UiService);
   protected minusHeight = 0.27;
 
+
+
+  detalleRecorridoVisible: boolean = false;
+  recorridoSeleccionado: any | null = null;
+
   Recorridos = computed(() => this._recorridos());
 
 
@@ -64,7 +70,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   }
 
   ngOnInit(): void {
-    this.autoFitColumns = true;
+    //this.autoFitColumns = true;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
   }
@@ -188,7 +194,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
       const inicial = ubicaciones.find((u) => u.type === "Inicio");
       const final = ubicaciones.find((u) => u.type === "Fin");      
       this.ubicacionesRecorrido.inicial = inicial ? getMapboxImageUrl(inicial.longitude,inicial.latitude,): null;
-      this.ubicacionesRecorrido.final = final ? getMapboxImageUrl(final.longitude,final.latitude): null;
+      this.ubicacionesRecorrido.final = final ? getMapboxImageUrl(final.longitude,final.latitude): null;      
     } catch (_) {
       this.uiService.mostrarAlertaError("Recorridos", "Error al obtener las ubicaciones");
     }
@@ -197,6 +203,37 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     }
   }
 
+
+  irUbicacionGooleMaps(ubicacion: string) {    
+    try {
+      // Extraer las coordenadas de la URL
+      const coordenadas = ubicacion.split("/").slice(-2)[0].split(",");
+      const latitude = parseFloat(coordenadas[1]);
+      const longitude = parseFloat(coordenadas[0]);
+  
+      // Validar que las coordenadas sean números válidos
+      if (!isNaN(latitude) && !isNaN(longitude)) {
+        const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+        window.open(googleMapsUrl, "_blank");
+      } else {
+        throw new Error("Coordenadas inválidas");
+      }
+    } catch (error) {
+      this.uiService.mostrarAlertaError("Error", "No se pudieron obtener las coordenadas correctamente");
+    }
+  }
+  
+
+  mostrarDetalleRecorrido(recorrido: any) {
+    this.recorridoSeleccionado = recorrido;
+    this.recorridoSeleccionado.fotoChofer= `${!environment.production?'https://servicios.litoprocess.com':''}/colaboradores/api/foto/${recorrido.personalChofer==0?'XXX':recorrido.personalChofer}`;
+    this.detalleRecorridoVisible = true;
+  }
+
+  cerrarDetalleRecorrido() {
+    this.detalleRecorridoVisible = false;
+    this.recorridoSeleccionado = null;
+  }
 
 
 }

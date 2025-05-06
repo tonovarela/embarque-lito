@@ -22,13 +22,20 @@
          }@else{
 
             <ejs-grid #grid [dataSource]='Recorridos()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
-            [allowExcelExport]='true' AutoFitAll="true" [height]="heightGrid" allowReordering='true'
+            [allowExcelExport]='true'  [height]="heightGrid" allowReordering='true'
             [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
             [pageSettings]='pageSettings'>
             <e-columns>
-               <e-column field='id_recorrido' [allowFiltering]="false" headerText='' width='50'> >
+               <e-column field='id_recorrido' [allowFiltering]="false" headerText='' width=100> >
                   <ng-template #template let-data>
-                     <div  class="grid grid-cols-2 gap-4">
+                     <div  class="grid grid-cols-3 gap-4">
+                        
+                        <svg  (click)="mostrarDetalleRecorrido(data)" class="h-4 w-4 cursor-pointer stroke-slate-950 dark:stroke-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c-4.142 0-7.5 3.358-7.5 7.5s3.358 7.5 7.5 7.5 7.5-3.358 7.5-7.5-3.358-7.5-7.5-7.5z" />
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9a3 3 0 100 6 3 3 0 000-6z" />
+                         </svg>
+                           
+
                         @if(data.tipo=='externo'){
                            <svg class="h-4 w-4 cursor-pointer stroke-slate-950 dark:stroke-white " (click)="showEditDialog(data)"  viewBox="0 0 24 24" fill="none" 
                            xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
@@ -37,35 +44,37 @@
                         @if(data.esUltimo=='1'){
                            <svg  (click)="eliminarRecorrido(data)"  class="h-4 w-4 cursor-pointer   fill-current " viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path  d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"></path></g></svg>                           
                         }
+                        
                      </div>
                      
                   </ng-template>
                </e-column>
-               <e-column field='factura' headerText="Factura" />
-               <e-column field='importe_factura' headerText="Importe" width='150'>
+               <!-- <e-column field='factura' headerText="Factura" /> -->
+               <!-- <e-column field='importe_factura' headerText="Importe" width='150'>
                   <ng-template #template let-data>
                      {{data.importe_factura | currency}}
                   </ng-template>
                   <ng-template #editTemplate let-data>
                      <input class="e-input" type="text">
                   </ng-template>
-               </e-column>
-               <e-column field='costo_viaje' headerText="Costo de envio" >
+               </e-column> -->
+               <!-- <e-column field='costo_viaje' headerText="Costo de envio" >
                   <ng-template #template let-data>
                      {{data.costo_viaje| currency}}
                   </ng-template>
-                  </e-column>                  
-               <e-column field='tipoRecorrido'>
+               </e-column>                   -->
+
+               <e-column field='tipoRecorrido' headerText="Tipo" width=100>
                   <ng-template #template let-data>
                      {{data.tipoRecorrido | uppercase}}
                   </ng-template>
                </e-column>
-               <e-column field='descripcion_tipo_servicio' headerText="Servicio"></e-column>
-               <e-column field='nombre_chofer' headerText='chofer' width='150'></e-column>
-               <e-column field='descripcion_transporte' headerText='transporte' width='150'></e-column>
-               <e-column field='opsAsignadas' headerText="Op"></e-column>
-               <e-column field='remisionesAsignadas' headerText="Remisión"></e-column>
-               <e-column field='kilometraje_inicial' headerText="Inicial" width='150'>
+               <e-column field='descripcion_tipo_servicio' headerText="Servicio" width=50 ></e-column>
+               <e-column field='nombre_chofer' headerText='chofer'  width='auto'></e-column>
+               <e-column field='descripcion_transporte' headerText='transporte'  width='auto'></e-column>
+               <e-column field='opsAsignadas' headerText="Op"  width='auto'></e-column>
+               <!-- <e-column field='remisionesAsignadas' headerText="Remisión"></e-column> -->
+               <e-column field='kilometraje_inicial' headerText="Inicial"   width='auto'>
                   <ng-template #template let-data>
                      @if (data.tipo=='interno' && !data.kilometraje_inicial){
                         <h1 class="border rounded px-1 text-center text-white  bg-amber-500">PENDIENTE</h1>
@@ -74,7 +83,7 @@
                      }                     
                   </ng-template>
                </e-column>
-               <e-column field='kilometraje_final' headerText="Final" width='150'>
+               <e-column field='kilometraje_final' headerText="Final"  width='auto' >
                   <ng-template #template let-data>
                      @if (data.tipo=='interno' && !data.kilometraje_final){
                         <h1 class="border rounded px-1 text-white text-center  bg-amber-500">PENDIENTE</h1>
@@ -84,8 +93,8 @@
                      
                   </ng-template>
                </e-column>
-               <e-column field='kilometros' headerText="kilometros"></e-column>
-               <e-column field='fecha_salida' headerText="Salida" width='150'>
+               <e-column field='kilometros' headerText="kilometros"  width='auto'></e-column>
+               <e-column field='fecha_salida' headerText="Salida"   width='auto'>
                   <ng-template #template let-data>
                      @if(data.tipo=='interno'){
                         @if (!data.fecha_salida){
@@ -98,7 +107,7 @@
                      }
                   </ng-template>
                </e-column>
-               <e-column field='fecha_regreso' headerText="Regreso" allowEditing="false" width='150'>
+               <e-column field='fecha_regreso' headerText="Regreso" allowEditing="false"  width='auto' >
                   <ng-template #template let-data>
                      @if(data.tipo=='interno' && !data.fecha_salida){                        
                         <h1 class="border rounded text-center px-1 max-w-20 text-white bg-amber-500">PENDIENTE</h1>
@@ -108,13 +117,18 @@
                   </ng-template>
                </e-column>
 
-               <e-column field='destino' />
-               <e-column field='observaciones' />
-            <e-column headerText="GPS" width='150'>
+               <e-column field='destino'   width='auto'/>
+               <!-- <e-column field='observaciones' /> -->
+            <e-column headerText="GPS"   width='auto'>
                <ng-template #template let-data>
                <gps-position-svg (click)="mostrarUbicaciones(data)"/>
                </ng-template>
-               </e-column>
+            </e-column>
+            <e-column field="fechaFirma" headerText="Fecha firma"  [allowFiltering]="false"  width='auto'>
+               <ng-template #template let-data>                  
+                     {{data.fechaFirma | date: 'dd-MM-yyyy hh:mm a'}}                  
+                  </ng-template>
+            </e-column>
             </e-columns>
 </ejs-grid>
          }       
@@ -180,23 +194,82 @@
              </div>
          } 
          @if(ubicacionesRecorrido.final) { 
-            <div class="relative  w-full mt-4 border-2 border-slate-400 rounded-sm ">
+            <div class="relative  w-full mt-4 border-2 border-slate-400 rounded-sm  " >
               <h1 class="absolute top-2 left-1 text-sm font-medium text-white bg-slate-600 px-2 rounded-md ">Posición aproximada de fin</h1>
-              <img [src]="ubicacionesRecorrido.final" alt="Mapa de Mapbox" class="w-full h-full rounded-sm">
+              <img [src]="ubicacionesRecorrido.final" alt="Mapa de Mapbox" class="w-full h-full rounded-sm cursor-pointer"  (click)="irUbicacionGooleMaps(ubicacionesRecorrido.final)">
               <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <img src="assets/img/marker.svg" class="w-6 h-6" />
               </div>
             </div>         
            }      
          @if(ubicacionesRecorrido.inicial) { 
-         <div class="relative  w-full mt-4 border-2 border-slate-400 rounded-sm ">
+         <div class="relative  w-full mt-4 border-2 border-slate-400 rounded-sm  ">
             <h1 class="absolute top-2 left-1 text-sm font-medium text-white bg-slate-600 px-2 rounded-md ">Posición aproximada de inicio</h1>
-            <img [src]="ubicacionesRecorrido.inicial" alt="Mapa de Mapbox" class="w-full h-full rounded-sm">
+            <img [src]="ubicacionesRecorrido.inicial" alt="Mapa de Mapbox" class="w-full h-full rounded-sm cursor-pointer" (click)="irUbicacionGooleMaps(ubicacionesRecorrido.inicial)">
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <img src="assets/img/marker.svg" class="w-6 h-6" />
+              <img src="assets/img/marker.svg" class="w-6 h-6 " />
             </div>
           </div>         
          }
        
          </div>      
+   </p-dialog>
+
+
+
+   <p-dialog [(visible)]="detalleRecorridoVisible" [style]="{ width: '50vw' }" [modal]="true" [closable]="true" (onHide)="cerrarDetalleRecorrido()">
+      <ng-template pTemplate="headless">
+         
+         <div *ngIf="recorridoSeleccionado" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Información del Recorrido</h3>
+            <div class="grid  gap-4 items-center"  [class]="recorridoSeleccionado.personalChofer!=0 ? 'grid-cols-3 ' : 'grid-cols-2'">
+               <!-- Foto del chofer -->
+                @if(recorridoSeleccionado.personalChofer!=0){            
+               <div class="col-span-1 flex justify-center">
+                  <img [src]="recorridoSeleccionado.fotoChofer" alt="Foto del Chofer" class="w-24 h-24 rounded-full shadow-md object-cover dark:border-gray-700">
+               </div>
+            }
+               <!-- Detalles del recorrido -->
+               <div class="col-span-2 grid grid-cols-2 gap-4">
+                  <div>
+                     <p class="text-sm font-medium text-gray-600 dark:text-gray-300">ID:</p>
+                     <p class="text-base text-gray-800 dark:text-gray-100">{{ recorridoSeleccionado.id_recorrido }}</p>
+                  </div>
+                  <div>
+                     <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Chofer:</p>
+                     <p class="text-base text-gray-800 dark:text-gray-100">{{ recorridoSeleccionado.nombre_chofer }}</p>
+                  </div>
+                  <div>
+                     <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Transporte:</p>
+                     <p class="text-base text-gray-800 dark:text-gray-100">{{ recorridoSeleccionado.descripcion_transporte }}</p>
+                  </div>
+                  <div>
+                     <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Destino:</p>
+                     <p class="text-base text-gray-800 dark:text-gray-100">{{ recorridoSeleccionado.destino }}</p>
+                  </div>
+                  <div>
+                     <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Factura:</p>
+                     <p class="text-base text-gray-800 dark:text-gray-100">{{ recorridoSeleccionado.factura }}</p>
+                  </div>
+                  <div>
+                     <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Importe factura:</p>
+                     <p class="text-base text-gray-800 dark:text-gray-100">{{ recorridoSeleccionado.importe_factura | currency }}</p>
+                  </div>
+                  <div>
+                     <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Costo de envío:</p>
+                     <p class="text-base text-gray-800 dark:text-gray-100">{{ recorridoSeleccionado.costo_viaje ?? 0 | currency }}</p>
+                  </div>
+                  <div>
+                     <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Remisión:</p>
+                     <p class="text-base text-gray-800 dark:text-gray-100">{{ recorridoSeleccionado.remisionesAsignadas }}</p>
+                  </div>
+               </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+               <button (click)="cerrarDetalleRecorrido()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                  Cerrar
+               </button>
+            </div>
+         </div>
+      </ng-template>
    </p-dialog>
