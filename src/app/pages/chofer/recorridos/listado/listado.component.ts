@@ -45,6 +45,9 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   public recorridoPorFirmar = signal<Recorrido | null>(null);
   public guardandoFirma = signal<boolean>(false);
 
+  public tienePendientesPorFirmar = computed(() => this._recorridos().some((recorrido) => recorrido.porFirmar === "1" && +(recorrido.id_tipo_servicio ||0) !=16));
+
+
   // Public properties
   public today = new Date();
   public recorridoActivoInicio: Recorrido | null = null;

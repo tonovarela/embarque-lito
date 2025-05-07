@@ -22,6 +22,8 @@ remisiones?:string[];
 id_previo?:number;
 opsAsignadas?:string;
 remisionesAsignadas?:string;
+
+porFirmar?:string;
 }
 
 

@@ -3,10 +3,10 @@
       <div
          class="flex justify-between items-center w-full p-2 bg-transparent dark:bg-gray-500 rounded-tr-md rounded-tl-md text-gray-600 dark:text-white">
          @if (!isRunning()){
-            <div class="flex  justify-between w-full  space-x-2">
-               <h1 class="text-2xl ">Recorridos</h1>
-            </div>
-         
+         <div class="flex  justify-between w-full  space-x-2">
+            <h1 class="text-2xl ">Recorridos</h1>
+         </div>
+
          }
       </div>
       <div class="w-full">
@@ -24,7 +24,7 @@
          </div>
          }@else{
          @if(!(recorridoActivoInicio || recorridoActivoFin || isRunning() || recorridoPorFirmar() )){
-            
+         {{tienePendientesPorFirmar() ? 'Recorridos por firmar' : 'No hay recorridos por firmar'}}
          <ejs-grid #grid [dataSource]='Recorridos()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
             [allowExcelExport]='true' AutoFitAll="true" [height]="heightGrid" allowReordering='true'
             [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
@@ -54,6 +54,7 @@
                            </g>
                         </svg>
                         }@else {
+                        @if(!tienePendientesPorFirmar()){
                         <svg class="h-6 w-6 cursor-pointer fill-current" (click)="startCounter(data)" version="1.1"
                            id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                            viewBox="0 0 60 60" xml:space="preserve">
@@ -70,6 +71,8 @@
                               </g>
                            </g>
                         </svg>
+                        }
+
                         }
                      </div>
 
@@ -146,17 +149,19 @@
 
    }
    @if(recorridoPorFirmar() ){
-   
-       <!-- Firma Pad -->
-  <firma-pad (onGuardarFirma)="guardarFirma($event)" (onCancelar)="cancelarFirma()"></firma-pad>
-  <!-- Loader -->
-  <div *ngIf="guardandoFirma()" class="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-10">
-    <div class="flex flex-col items-center">
-      <svg class="animate-spin h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-      </svg>
-      <p class="text-white mt-2">Guardando firma...</p>
-    </div>
-  </div>
+
+   <!-- Firma Pad -->
+   <firma-pad (onGuardarFirma)="guardarFirma($event)" (onCancelar)="cancelarFirma()"></firma-pad>
+   <!-- Loader -->
+   <div *ngIf="guardandoFirma()"
+      class="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-10">
+      <div class="flex flex-col items-center">
+         <svg class="animate-spin h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+         </svg>
+         <p class="text-white mt-2">Guardando firma...</p>
+      </div>
+   </div>
    }
