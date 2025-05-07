@@ -19,8 +19,8 @@ export class RecorridoService {
 
   constructor() { }
 
-  listar(){
-    return this.http.get<ResponseListadoRecorrido>(`${this.API_URL}/api/recorrido`);
+  listar(pendientes:boolean=true){
+    return this.http.get<ResponseListadoRecorrido>(`${this.API_URL}/api/recorrido?pendientes=${pendientes}`);
   }
 
   porChofer(id_chofer:string,$pendientes:boolean=false){    

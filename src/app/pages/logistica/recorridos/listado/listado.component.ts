@@ -8,9 +8,9 @@ import { PrimeNgModule } from '@app/lib/primeng.module';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { getMapboxImageUrl } from '@app/helpers/getImagePosition';
 import { NumberFormatter, obtenerValorNumerico } from '@app/helpers/validators';
+
 import {  Recorrido } from '@app/interface/models';
 import { Firma } from '@app/interface/responses';
-
 
 
 import { RecorridoService } from '@app/services/recorrido.service';
@@ -54,6 +54,9 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   protected minusHeight = 0.27;
 
 
+  private _mostrarRecorridosPendientes= signal<boolean>(true);
+  public mostrarRecorridosPendientes = computed(() => this._mostrarRecorridosPendientes());
+
 
   detalleRecorridoVisible: boolean = false;
   recorridoSeleccionado: any | null = null;
@@ -61,16 +64,26 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   Recorridos = computed(() => this._recorridos());
 
 
+
+   toogleRecorridosPendientes() {
+    if (this.cargando()){
+      return;
+    }        
+    this._mostrarRecorridosPendientes.set(!this._mostrarRecorridosPendientes());        
+    this.cargarInformacion();
+  }
+
   cargarInformacion() {
     this.cargando.set(true);
-    this.recorridoService.listar().subscribe(({ recorridos }) => {
+    const pendientes = this.mostrarRecorridosPendientes();
+    this.recorridoService.listar(pendientes).subscribe(({ recorridos }) => {    
       this._recorridos.set(recorridos);
       this.cargando.set(false);
     });
   }
 
   ngOnInit(): void {
-    //this.autoFitColumns = true;
+    this.autoFitColumns = false;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
   }

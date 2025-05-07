@@ -5,6 +5,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import {  SpeedDialModule } from 'primeng/speeddial';
 import {ChipsModule} from 'primeng/chips';
 import { DialogModule } from 'primeng/dialog';
+import { TabViewModule } from 'primeng/tabview';
 
 
 
