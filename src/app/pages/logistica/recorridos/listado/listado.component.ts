@@ -21,6 +21,7 @@ import { EditService } from '@syncfusion/ej2-angular-grids';
 import { firstValueFrom } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { environment } from '@environments/environment.development';
+import { obtenerColorTransporte } from '@app/helpers/helpers';
 
 
 type ubicacionRecorrido  ={
@@ -77,7 +78,11 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     this.cargando.set(true);
     const pendientes = this.mostrarRecorridosPendientes();
     this.recorridoService.listar(pendientes).subscribe(({ recorridos }) => {    
-      this._recorridos.set(recorridos);
+      const _recorridos = recorridos.map((recorrido) => {        
+        const color = obtenerColorTransporte(recorrido.id_transporte);
+        return { ...recorrido, color_transporte: color };
+      });      
+      this._recorridos.set(_recorridos);
       this.cargando.set(false);
     });
   }

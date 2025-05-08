@@ -6,7 +6,7 @@ import { DiferenciaTiempo } from '@app/interface/models';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
-import { onFocusNumberValidate, onInputNumberValidate, unirFechaHora } from '@app/helpers/helpers';
+import { obtenerColorTransporte, onFocusNumberValidate, onInputNumberValidate, unirFechaHora } from '@app/helpers/helpers';
 import { ChoferService } from '@app/services/chofer.service';
 import { TransporteService } from '@app/services/transporte.service';
 

@@ -24,6 +24,7 @@ opsAsignadas?:string;
 remisionesAsignadas?:string;
 
 porFirmar?:string;
+color_transporte?:string;
 }
 
 

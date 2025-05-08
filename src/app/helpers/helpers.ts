@@ -51,3 +51,37 @@ export const onFocusNumberValidate=(event: any,field:string,form:FormGroup)=>{
    }
    form.get(field)!.setValue(target.value);
 }
+
+
+export const obtenerColorTransporte = (id_transporte:number): string => {
+
+  const colores = [
+    "#FF0000", // Rojo brillante    
+    "#0000FF", // Azul brillante
+    "#FFFF00", // Amarillo brillante
+    "#FF00FF", // Magenta
+    "#00FFFF", // Cian    
+    "#800080", // Púrpura
+    "#FFC0CB", // Rosa
+    "#00FF7F", // Verde primavera
+    "#FF4500", // Naranja rojizo
+    "#1E90FF", // Azul Dodger
+    "#FFD700", // Oro
+    "#ADFF2F", // Verde amarillo
+    "#FF1493", // Rosa profundo    
+    "#00BFFF", // Azul profundo
+    "#FF6347", // Tomate
+    "#7FFF00", // Verde chartreuse
+  ];
+  const index= colores.at(id_transporte)!;
+  if (index == undefined) {   
+    return "#000000"; // Color por defecto si no se encuentra el id_transporte
+  }
+  return colores[id_transporte]; // Devuelve el color correspondiente al id_transporte
+
+
+  
+
+  
+
+}

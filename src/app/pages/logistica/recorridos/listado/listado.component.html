@@ -92,7 +92,20 @@
                </e-column>
                
                <e-column field='nombre_chofer' headerText='chofer'  width=150></e-column>
-               <e-column field='descripcion_transporte' headerText='transporte'  width=100></e-column>
+               <e-column field='descripcion_transporte' headerText='transporte'  width="150">
+                  <ng-template #template let-data>
+                     <div class="flex items-start space-x-2">
+                        <!-- Círculo con el color dinámico -->
+                        <div
+                          class="w-4 h-4 rounded-full"
+                          [style.backgroundColor]="data.color_transporte"
+                          title="{{ data.color_transporte }}"
+                        ></div>
+                        <!-- Descripción del transporte -->
+                        <span>{{ data.descripcion_transporte }}</span>
+                      </div>
+                     </ng-template> 
+               </e-column>
                <e-column field='descripcion_tipo_servicio' headerText="Servicio" width=110 ></e-column>
                <e-column field='destino'   width=150/>
                <e-column field='opsAsignadas' headerText="Op"  width=120></e-column>

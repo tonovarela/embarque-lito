@@ -5,7 +5,7 @@
         <form [formGroup]="formRegistro">
             <div class="flex sm:flex-row flex-col  space-x-2">
                 <div class="sm:w-1/2 w-full space-y-2">
-                    
+
                     <div class="grid  gap-1 ">
                         <app-autocomplete [hasError]="tieneError('ops')"
                             (onSelect)="onSelectOP($event)"></app-autocomplete>
@@ -33,8 +33,9 @@
                             [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
                             <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
                             @for (transporte of transportes();track transporte.id_transporte){
-                            <option value="{{transporte.id_transporte}}">{{transporte.descripcion}} -
-                                {{transporte.placas}}
+                            <option value="{{transporte.id_transporte}}">                                                                    
+                                    <span
+                                        class="text-sm font-medium text-red-900 dark:text-white">{{transporte.descripcion}}- {{transporte.placas}}</span>                                
                             </option>
                             }
                         </select>
@@ -125,8 +126,7 @@
                                     class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                                     <app-time />
                                 </div>
-                                <input type="time"                                
-                                 id="start-time" tabindex="2" formControlName="hora_salida"
+                                <input type="time" id="start-time" tabindex="2" formControlName="hora_salida"
                                     name="hora_salida"
                                     class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     value="00:00" required />
@@ -162,11 +162,8 @@
                                     class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                                     <app-time />
                                 </div>
-                                <input  type="time"                                 
-                                        id="start-time" 
-                                        tabindex="2" 
-                                        formControlName="hora_regreso" 
-                                        name="hora_regreso"                                        
+                                <input type="time" id="start-time" tabindex="2" formControlName="hora_regreso"
+                                    name="hora_regreso"
                                     class="bg-gray-50  leading-none border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     value="00:00" required />
 
@@ -190,7 +187,7 @@
                     </div>
                     }
                 </div>
-                <div class="sm:w-1/2 w-full space-y-4">                
+                <div class="sm:w-1/2 w-full space-y-4">
                     <div class="w-full">
                         <p-chips variant="filled"
                             [styleClass]="tieneError('remisiones')?'chips-contenedor-invalido':'chips-contenedor-valido'"
