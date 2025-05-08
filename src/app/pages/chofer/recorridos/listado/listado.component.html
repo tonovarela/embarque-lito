@@ -23,8 +23,7 @@
             </div>
          </div>
          }@else{
-         @if(!(recorridoActivoInicio || recorridoActivoFin || isRunning() || recorridoPorFirmar() )){
-         {{tienePendientesPorFirmar() ? 'Recorridos por firmar' : 'No hay recorridos por firmar'}}
+         @if(!(recorridoActivoInicio || recorridoActivoFin || isRunning() || recorridoPorFirmar() )){         
          <ejs-grid #grid [dataSource]='Recorridos()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
             [allowExcelExport]='true' AutoFitAll="true" [height]="heightGrid" allowReordering='true'
             [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
