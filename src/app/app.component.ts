@@ -11,8 +11,6 @@ import { UsuarioService } from './services/usuario.service';
 import { environment } from '@environments/environment.development';
 import { MantenimientoService } from './services';
 
-
-
 @Component({
   selector: 'app-root',
   standalone: true,
