@@ -11,12 +11,19 @@ export const routes: Routes = [
       canActivateChild: [authGuard,embarquesGuard],    
         component: SesionLayoutComponent, children: [
         {
-            path: 'recorridos', children: [
+            path: 'recorridos', 
+            data: { type: 'recorridos' },
+            children: [
                 { path: '', loadComponent:()=> import('@app/pages/logistica/recorridos/listado/listado.component') },
                 { path: 'nuevo', loadComponent: () => import('@app/pages/logistica/recorridos/nueva/nueva.component') },                            
                 
-            ]
+            ],
+            
         },
+        {
+            path:'solicitudes', loadComponent: () => import('@app/pages/logistica/recorridos/listado/listado.component'),
+            data:{ type: 'solicitudes' }
+        },        
         {
             path: 'carga',children: [
                 { path: '', loadComponent:()=> import('@app/pages/logistica/carga/listado/listado.component') },
@@ -38,7 +45,7 @@ export const routes: Routes = [
     canActivateChild: [authGuard, choferGuard],
     component: SesionLayoutComponent,    
     children: [
-        { path: 'recorridos', loadComponent:()=> import('./pages/chofer/recorridos/listado/listado.component') },        
+        { path: 'recorridos', loadComponent:()=> import('./pages/chofer/recorridos/listado/listado.component') },                
         { path: '**', redirectTo: 'recorridos', pathMatch: 'full' }
     ]
 

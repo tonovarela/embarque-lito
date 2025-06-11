@@ -22,6 +22,7 @@ import { firstValueFrom } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { environment } from '@environments/environment.development';
 import { obtenerColorTransporte } from '@app/helpers/helpers';
+import { ActivatedRoute } from '@angular/router';
 
 
 type ubicacionRecorrido  ={
@@ -40,6 +41,8 @@ type ubicacionRecorrido  ={
 export default class ListadoComponent extends BaseGridComponent implements OnInit {
   private _recorridos = signal<Recorrido[]>([]);
   private recorridoService = inject(RecorridoService);
+
+  private route  =inject(ActivatedRoute);
   public recorridoActivo: Recorrido | null = null;
 
   ubicacionesRecorrido: ubicacionRecorrido = {inicial:null, final:null};
@@ -55,8 +58,12 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   protected minusHeight = 0.27;
 
 
-  private _mostrarRecorridosPendientes= signal<boolean>(true);
+  private _mostrarRecorridosPendientes= signal<boolean>(false);
   public mostrarRecorridosPendientes = computed(() => this._mostrarRecorridosPendientes());
+
+  public titulo = signal<string>("");
+
+  
 
 
   detalleRecorridoVisible: boolean = false;
@@ -67,11 +74,11 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
 
 
    toogleRecorridosPendientes() {
-    if (this.cargando()){
-      return;
-    }        
-    this._mostrarRecorridosPendientes.set(!this._mostrarRecorridosPendientes());        
-    this.cargarInformacion();
+    // if (this.cargando()){
+    //   return;
+    // }        
+    // this._mostrarRecorridosPendientes.set(!this._mostrarRecorridosPendientes());        
+    // this.cargarInformacion();
   }
 
   cargarInformacion() {
@@ -89,8 +96,13 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
 
   ngOnInit(): void {
     this.autoFitColumns = false;
-    this.iniciarResizeGrid(this.minusHeight);
-    this.cargarInformacion();
+    this.iniciarResizeGrid(this.minusHeight);    
+    this.route.data.subscribe((data:any)=> {      
+      const pendientes =data.type=='solicitudes';
+      this.titulo.set(pendientes ? "Solicitudes" : "Recorridos");
+      this._mostrarRecorridosPendientes.set(pendientes);
+      this.cargarInformacion();        
+    })
   }
   
   

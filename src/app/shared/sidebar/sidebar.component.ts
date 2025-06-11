@@ -29,11 +29,18 @@ export class SidebarComponent implements OnInit,AfterViewInit {
   router = inject(Router);
   private _rutas = signal<Ruta[]>([]);
   public rutas = computed(() => this._rutas());
-  private rutasEmbarques: Ruta[] = [{
+  private rutasEmbarques: Ruta[] = [
+    {
+    nombre: 'Solicitudes',
+    icono: 'assets/img/recorridos.svg',
+    path: '/logistica/solicitudes'
+  },
+  {
     nombre: 'Recorridos',
     icono: 'assets/img/recorridos.svg',
     path: '/logistica/recorridos'
-  }, {
+  }
+  , {
     nombre: 'Carga',
     icono: 'assets/img/carga.svg',
     path: '/logistica/carga'

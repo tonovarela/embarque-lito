@@ -20,6 +20,7 @@ import { PosicionKilometraje, RecorridoEnCurso } from '../../interface';
 
 
 import { firstValueFrom } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-listado',
@@ -64,6 +65,8 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   private choferService = inject(ChoferService);
   private recorridoService = inject(RecorridoService);
 
+  
+
   constructor() {
     super();
   }
@@ -72,6 +75,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     this.autoFitColumns = true;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
+    
   }
 
   /**
