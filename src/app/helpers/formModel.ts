@@ -60,6 +60,18 @@ export const createFormRegistroProgramadorBuilder = (fb: FormBuilder) => {
 );
 }
 
+export const createFormRetornoBuilder = (fb: FormBuilder) => {
+  return fb.group({
+    id_retorno: [0, MayorACeroValidator()],
+    id_motivo: ['', Validators.required],
+    tipo:['', Validators.required],
+    ops: fb.array([], Validators.required),  
+    cantidad:[0, MayorACeroValidator()],
+    observaciones: [''],
+    adjuntos: fb.array([], Validators.required),
+  });
+}
+
 
 export const createFormRegistroCargaBuilder = (fb: FormBuilder) => {
   return fb.group({
