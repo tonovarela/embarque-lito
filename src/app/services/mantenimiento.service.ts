@@ -11,8 +11,8 @@ import { environment } from '@environments/environment.development';
 
 
 export class MantenimientoService {
-  readonly API_URL = environment.API_URL;
-
+  
+readonly API_URL = environment.API_URL;
   private http = inject(HttpClient);
   constructor() { }
 

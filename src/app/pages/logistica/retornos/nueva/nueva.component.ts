@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegistroRecorridoHook } from '@app/componentes/hooks/useRegistro';
 import { createFormRetornoBuilder } from '@app/helpers/formModel';
+import { Motivo } from '@app/interface/responses';
 import { PrimeNgModule } from '@app/lib/primeng.module';
+import { RetornoService } from '@app/services/retorno.service';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 
 @Component({
@@ -15,9 +17,27 @@ import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.com
   styleUrl: './nueva.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class NuevaComponent {
+export default class NuevaComponent implements OnInit  {
   router = inject(Router);
   fb = inject(FormBuilder);
+  motivos = signal<Motivo[]>([]);
+
+  retornoService  = inject(RetornoService);
+
+  ngOnInit() {
+    this.cargarMotivos();
+  }
+
+  private cargarMotivos() {
+    this.retornoService.listarMotivos().subscribe(response => {
+      this.motivos.set(response.motivos);
+       console.log(response.motivos);
+    });
+  }
+
+
+
+
   recorridoRegistroHook = inject(RegistroRecorridoHook);
   formRegistro: FormGroup = createFormRetornoBuilder(this.fb);
   

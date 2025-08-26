@@ -2,6 +2,7 @@ export * from './LoginResponse';
 export * from './ResponseListados';
 export * from './ResponseMantenimiento';
 export * from './ResponseMotivoMantenimiento';
+export * from './ResponseMotivoRetorno';
 export * from './ResponseOrdenMetrics';
 export * from './ResponseRecorridoActivo';
 export * from './ResponseUbicacioRecorrido';

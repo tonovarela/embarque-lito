@@ -26,7 +26,7 @@
           <!-- Órdenes de Producción -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Órdenes de Producción *
+              Órdenes de Producción 
             </label>
             <app-autocomplete
               (onSelect)="onSelectOP($event)"
@@ -42,19 +42,7 @@
             </div>
           </div>
 
-          <!-- ID Retorno -->
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              ID Retorno *
-            </label>
-            <input
-              type="number"
-              formControlName="id_retorno"
-              min="1"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="ID del retorno">
-          </div>
-
+    
           <!-- Tipo -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -83,18 +71,21 @@
               formControlName="id_motivo"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
               <option value="">Seleccionar motivo</option>
-              <option value="1">Producto defectuoso</option>
+              @for (motivo of motivos(); track motivo.id_motivo) {
+                <option value="{{motivo.id_motivo}}">{{motivo.descripcion}}</option>
+              }
+              <!-- <option value="1">Producto defectuoso</option>
               <option value="2">Entrega errónea</option>
               <option value="3">Daño en transporte</option>
               <option value="4">No conforme con especificaciones</option>
-              <option value="5">Otro</option>
+              <option value="5">Otro</option> -->
             </select>
           </div>
 
           <!-- Cantidad -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Cantidad *
+              Cantidad 
             </label>
             <input
               type="number"
@@ -104,7 +95,16 @@
               placeholder="Cantidad de productos">
           </div>
 
-          <!-- Adjuntos -->
+         
+
+
+          
+        </div>
+      </div>
+
+
+
+       <!-- Adjuntos -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Adjuntos *
@@ -132,9 +132,6 @@
               }
             </div>
           </div>
-        </div>
-      </div>
-
       <!-- Observaciones (ancho completo) -->
       <div class="space-y-2 mt-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
