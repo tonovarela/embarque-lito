@@ -17,8 +17,13 @@ export const routes: Routes = [
                 { path: '', loadComponent:()=> import('@app/pages/logistica/recorridos/listado/listado.component') },
                 { path: 'nuevo', loadComponent: () => import('@app/pages/logistica/recorridos/nueva/nueva.component') },                            
                 
-            ],
-            
+            ]  
+        },
+        {
+            path: 'retornos', children: [
+                { path: '', loadComponent: () => import('@app/pages/logistica/retornos/listado/listado.component') },
+                { path: 'nuevo', loadComponent: () => import('@app/pages/logistica/retornos/nueva/nueva.component') },
+            ]
         },
         {
             path:'solicitudes', loadComponent: () => import('@app/pages/logistica/recorridos/listado/listado.component'),

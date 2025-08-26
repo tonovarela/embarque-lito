@@ -49,6 +49,11 @@ export class SidebarComponent implements OnInit,AfterViewInit {
     nombre: 'Paros',
     icono: 'assets/img/paros.svg',
     path: '/logistica/mantenimiento'
+  },
+  {
+    nombre: 'Retornos',
+    icono: 'assets/img/retornos.svg',
+    path: '/logistica/retornos'
   }
   ];
 
