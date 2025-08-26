@@ -16,13 +16,7 @@
                   </div>
                </div>
             </div>            
-         }@else{
-
-
-
-       
-
-
+         }@else{       
             <ejs-grid #grid [dataSource]='Recorridos()' 
             [filterSettings]="filterSettings" 
             (dataBound)='dataBound()'
@@ -35,10 +29,10 @@
             allowSorting="true"
             [pageSettings]='pageSettings'>
             <e-columns>
-               <e-column field='id_recorrido' [allowFiltering]="false" headerText='' width=70> >
+               <e-column field='id_recorrido' [allowFiltering]="false" headerText='' width=70> </e-column>
+               <e-column  [allowFiltering]="false" headerText='' width=70> 
                   <ng-template #template let-data>
-                     <div  class="grid grid-cols-3 gap-4">
-                        
+                     <div  class="grid grid-cols-3 gap-4">                        
                         <svg  (click)="mostrarDetalleRecorrido(data)" class="h-4 w-4 cursor-pointer stroke-slate-950 dark:stroke-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2">
                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c-4.142 0-7.5 3.358-7.5 7.5s3.358 7.5 7.5 7.5 7.5-3.358 7.5-7.5-3.358-7.5-7.5-7.5z" />
                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9a3 3 0 100 6 3 3 0 000-6z" />
@@ -158,6 +152,7 @@
       </div>
    </div>
    <app-fabbutton></app-fabbutton>
+   
    <p-dialog header="Editar información" [visible]="visibleEditarInfo()" [style]="{ width: '25rem' }" 
       (onHide)="hideEditDialog()"
       (visibleChange)="visibleChange($event)"
