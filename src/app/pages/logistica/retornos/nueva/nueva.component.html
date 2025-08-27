@@ -1,175 +1,180 @@
-<div class="sm:ml-52 py-5 ">
-  <div class="w-full bg-white dark:bg-gray-500 h-14 flex items-center justify-between mt-10 px-5">
-        <svg  (click)="regresar()" class=" cursor-pointer h-7 w-7 hover:fill-blue-600 dark:hover:fill-gray-600 fill-gray-600 dark:fill-white"  viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="current"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="current" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path><path fill="current" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path></g></svg>                
-        <button 
-        
-                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-1 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                    <!-- @if(guardandoCarga()){
-                        <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
-                            </svg>
-                             Guardando ...
-                    }
-                            @else { -->
-                        Guardar
-                    <!-- }             -->
-        </button>            
+<div class="sm:ml-52 py-5">
+  <!-- Header con botón de regresar y guardar -->
+  <div class="w-full bg-white dark:bg-gray-800 h-14 flex items-center justify-between mt-10 px-5 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <div class="flex items-center">
+      <svg (click)="regresar()" 
+           class="cursor-pointer h-7 w-7 hover:fill-blue-600 dark:hover:fill-gray-400 fill-gray-600 dark:fill-white transition-colors duration-200"  
+           viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <path fill="current" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path>
+        <path fill="current" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path>
+      </svg>
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white ml-4">Nuevo Retorno</h1>
     </div>
-  <h1 class="text-2xl font-bold mb-4 text-center">Nuevo Retorno</h1>
-<div id="wrapper" class="flex justify-center">
-  <div class="font-roboto w-full lg:w-3/4 2xl:w-2/3 mx-1 mt-1 p-5 bg-white space-y-1 border border-gray-400 rounded-md dark:border-white dark:bg-gray-900/50">
-    <form [formGroup]="formRegistro" (ngSubmit)="guardarRegistro()">
-      <div class="flex sm:flex-row flex-col gap-2">
-        <!-- Columna izquierda -->
-        <div class="sm:w-1/2 w-full space-y-4">
-          <!-- Órdenes de Producción -->
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Órdenes de Producción 
-            </label>
-            <app-autocomplete
-              (onSelect)="onSelectOP($event)"
-            ></app-autocomplete>
-
-            <div class="flex items-start justify-start flex-wrap gap-2 mt-2 w-full">
-              @for (op of formRegistro.get('ops')!.value;track op){
-                <p-chip
-                  styleClass="bg-blue-100 text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
-                  label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true">
-                </p-chip>
-              }
-            </div>
-          </div>
-
     
-          <!-- Tipo -->
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Tipo 
-            </label>
-            <select
-              formControlName="tipo"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <option value="">Seleccionar tipo</option>
-              <option value="R">Retorno</option>
-              <option value="D">Devolución</option>
-             
-            </select>
-          </div>
-        </div>
+    <button type="submit" 
+            form="formRetorno"
+            [disabled]="!formRegistro.valid"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors duration-200">
+      <!-- @if(guardandoCarga()){
+        <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+          <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
+        </svg>
+        Guardando...
+      } @else { -->
+        Guardar
+      <!-- } -->
+    </button>
+  </div>
 
-        <!-- Columna derecha -->
-        <div class="sm:w-1/2 w-full space-y-2">
-          <!-- Motivo -->
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Motivo *
-            </label>
-            <select
-              formControlName="id_motivo"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <option value="">Seleccionar motivo</option>
-              @for (motivo of motivos(); track motivo.id_motivo) {
-                <option value="{{motivo.id_motivo}}">{{motivo.descripcion}}</option>
-              }
-            
-              
-            </select>
-          </div>
-
-          <!-- Cantidad -->
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Cantidad 
-            </label>
-            <input
-              type="number"
-              formControlName="cantidad"
-              min="1"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Cantidad de productos">
-          </div>
-
-         
-
-
-          
-        </div>
-      </div>
-
-       <!-- Adjuntos -->
-          <div class="space-y-2 p-2 mt-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Adjuntos 
-            </label>
-            <input
-              type="file"
-              multiple              
-              (change)="onFileSelect($event)"
-              class="hidden"
-              id="file-input">
-            <label for="file-input" class="cursor-pointer">
-              <span class="inline-block  px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600">
-                Seleccionar archivos
-              </span>
-            </label>
-
-            <!-- Lista de archivos seleccionados -->
-            <div class="mt-2 space-y-1">
-              @for (archivo of formRegistro.get('adjuntos')!.value; track archivo) {
-                <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded">
-                  <span class="text-sm text-gray-700 dark:text-gray-300">{{archivo.name}}</span>
-                  <button
-                    type="button"
-                    (click)="removeFile(archivo)"
-                    class="text-red-500 hover:text-red-700">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                  </button>
+  <!-- Contenido principal -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
+      <div class="p-6">
+        <form id="formRetorno" [formGroup]="formRegistro" (ngSubmit)="guardarRegistro()">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Columna izquierda -->
+            <div class="space-y-6">
+              <!-- Órdenes de Producción -->
+              <div class="space-y-4">
+                <label class="block text-sm mb-3 font-medium text-gray-700 dark:text-gray-300">
+                  Órdenes de Producción 
+                </label>
+                <app-autocomplete (onSelect)="onSelectOP($event)"></app-autocomplete>
+                
+                <div class="flex items-start justify-start flex-wrap gap-2 mt-3">
+                  @for (op of formRegistro.get('ops')!.value; track op) {
+                    <p-chip
+                      styleClass="bg-blue-50 text-blue-700 text-xs border border-blue-200 px-3 py-1 font-medium rounded-full dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-700"
+                      label="{{op}}" 
+                      (onRemove)="onRemoverOP(op)" 
+                      [removable]="true">
+                    </p-chip>
+                  }
                 </div>
-              }
+              </div>
+
+              <!-- Tipo -->
+              <div class="space-y-3">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Tipo
+                </label>
+                <select
+                  formControlName="tipo"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200">
+                  <option value="">Seleccionar tipo</option>
+                  <option value="R">Retorno</option>
+                  <option value="D">Devolución</option>
+                </select>
+              </div>
+
+              <!-- Cantidad -->
+              <div class="space-y-3">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Cantidad 
+                </label>
+                <input
+                  type="number"
+                  formControlName="cantidad"
+                  min="1"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200"
+                  placeholder="Ingrese la cantidad">
+              </div>
+            </div>
+
+            <!-- Columna derecha -->
+            <div class="space-y-6">
+              <!-- Motivo -->
+              <div class="space-y-3">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Motivo 
+                </label>
+                <select
+                  formControlName="id_motivo"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200">
+                  <option value="">Seleccionar motivo</option>
+                  @for (motivo of motivos(); track motivo.id_motivo) {
+                    <option value="{{motivo.id_motivo}}">{{motivo.descripcion}}</option>
+                  }
+                </select>
+              </div>
+
+              <!-- Adjuntos -->
+              <div class="space-y-3">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Adjuntos
+                </label>
+                <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 hover:border-gray-400 dark:hover:border-gray-500 transition-colors duration-200">
+                  <input
+                    type="file"
+                    multiple              
+                    (change)="onFileSelect($event)"
+                    class="hidden"
+                    id="file-input">
+                  <label for="file-input" class="cursor-pointer">
+                    <div class="text-center">
+                      <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        <span class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400">Haz clic para subir</span> o arrastra y suelta
+                      </p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, PDF hasta 10MB</p>
+                    </div>
+                  </label>
+
+                  <!-- Lista de archivos seleccionados -->
+                  @if (formRegistro.get('adjuntos')!.value?.length > 0) {
+                    <div class="mt-4 space-y-2">
+                      @for (archivo of formRegistro.get('adjuntos')!.value; track archivo) {
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                          <div class="flex items-center">
+                            <svg class="h-8 w-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span class="ml-3 text-sm text-gray-700 dark:text-gray-300 truncate">{{archivo.name}}</span>
+                          </div>
+                          <button
+                            type="button"
+                            (click)="removeFile(archivo)"
+                            class="ml-3 text-red-400 hover:text-red-600 dark:text-red-500 dark:hover:text-red-400 transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                          </button>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
             </div>
           </div>
-      <!-- Observaciones (ancho completo) -->
-      <div class="space-y-2 mt-4">
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Observaciones
-        </label>
-        <textarea
-          formControlName="observaciones"
-          rows="4"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          placeholder="Observaciones adicionales sobre el retorno">
-        </textarea>
-      </div>
 
-      <!-- Botones de acción -->
-      <div class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-        <button
-          type="button"
-          (click)="regresar()"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-600 dark:text-white dark:border-gray-500 dark:hover:bg-gray-700">
-          Cancelar
-        </button>
-        <!-- <button
-          type="submit"
-          [disabled]="!formRegistro.valid || guardandoCarga()"
-          class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-blue-500 dark:hover:bg-blue-600">
-          @if(guardandoCarga()){
-            <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-2 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
-            </svg>
-            Guardando...
-          } @else {
-            Guardar Retorno
-          }
-        </button> -->
+          <!-- Observaciones (ancho completo) -->
+          <div class="mt-6 space-y-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Observaciones
+            </label>
+            <textarea
+              formControlName="observaciones"
+              rows="4"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200"
+              placeholder="Ingrese observaciones adicionales sobre el retorno...">
+            </textarea>
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-600">
+            <button
+              type="button"
+              (click)="regresar()"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-600 dark:text-white dark:border-gray-500 dark:hover:bg-gray-700 transition-colors duration-200">
+              Cancelar
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
-</div>
-

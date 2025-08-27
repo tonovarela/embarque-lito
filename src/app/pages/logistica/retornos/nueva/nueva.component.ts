@@ -31,7 +31,7 @@ export default class NuevaComponent implements OnInit  {
   private cargarMotivos() {
     this.retornoService.listarMotivos().subscribe(response => {
       this.motivos.set(response.motivos);
-       console.log(response.motivos);
+       
     });
   }
 
