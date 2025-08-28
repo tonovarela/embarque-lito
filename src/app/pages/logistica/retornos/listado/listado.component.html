@@ -1,8 +1,48 @@
-<div class="sm:ml-52 py-8 px-2  ">
+   <div class="sm:ml-52 py-8 px-2  ">
    <div class="p-2    rounded-lg  h-full  dark:border-gray-700 mt-8 transition-colors duration-30 ">
       <div class="flex justify-between items-center w-full p-2 bg-transparent dark:bg-gray-500 rounded-tr-md rounded-tl-md text-gray-600 dark:text-white">
-         <h1 class="text-2xl ">Retornos</h1>                                 
-      </div> 
+         <h1 class="text-2xl ">Rechazos</h1>                                 
+      </div>      
+      <div class="w-full mb-4">           
+         @if (cargando())  {
+            <div>
+               <div class="animate-pulse flex space-x-4">
+                  <div class="flex-1 space-y-4 py-1">
+                     <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
+                     <div class="space-y-2">
+                        <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                        <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
+                     </div>
+                  </div>
+               </div>
+            </div>            
+         }@else{       
+            <ejs-grid #grid [dataSource]='retornos()' 
+            [filterSettings]="filterSettings" 
+            (dataBound)='dataBound()'
+            [allowExcelExport]='true'
+            [height]="heightGrid"
+            allowReordering='true'
+            [allowFiltering]=true
+            allowPaging="true"
+            allowResizing="true"
+            allowSorting="true"
+            [pageSettings]='pageSettings'
+            >            
+            <e-columns>                              
+               <e-column field='tipoRetorno' headerText='Tipo' textAlign='Left' width="150"></e-column>               
+               <e-column field='ops' headerText='Ops' textAlign='Left' width="200"></e-column>               
+               <e-column field='descripcion_motivo' headerText='Motivo' textAlign='Left' width="150"></e-column>
+               <e-column field='fecha_registro' headerText='Fecha' textAlign='Center' width="100">
+                  <ng-template #template let-data>
+                     {{data.fecha_registro | date:'dd-MM-yyyy HH:mm'}}
+                  </ng-template>
+               </e-column>
+               <e-column field='observaciones' headerText='Observaciones' textAlign='Left' width="200"></e-column>                              
+            </e-columns>
+           </ejs-grid>
+           
+         }       
+      </div>
    </div>
-</div>
-   <app-fabbutton></app-fabbutton>
+   <app-fabbutton></app-fabbutton> 

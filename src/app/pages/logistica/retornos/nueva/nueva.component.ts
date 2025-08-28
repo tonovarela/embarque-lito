@@ -6,6 +6,7 @@ import { RegistroRecorridoHook } from '@app/componentes/hooks/useRegistro';
 import { createFormRetornoBuilder, resetFormRetorno } from '@app/helpers/formModel';
 import { Motivo } from '@app/interface/responses';
 import { PrimeNgModule } from '@app/lib/primeng.module';
+import { UiService } from '@app/services';
 import { RetornoService } from '@app/services/retorno.service';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
 import { firstValueFrom } from 'rxjs';
@@ -23,6 +24,7 @@ export default class NuevaComponent implements OnInit  {
 
   router = inject(Router);
   fb = inject(FormBuilder);
+  uiService = inject(UiService);
   motivos = signal<Motivo[]>([]);
   retornoService  = inject(RetornoService);
   recorridoRegistroHook = inject(RegistroRecorridoHook);
@@ -65,17 +67,13 @@ export default class NuevaComponent implements OnInit  {
          if (adjuntosArray.length === 0) {
            formData.append('adjuntos', '');
          }         
-        const r =await firstValueFrom(this.retornoService.registrar(formData));
-        console.log('Retorno guardado:', r);
+        await firstValueFrom(this.retornoService.registrar(formData));        
         this.formRegistro.enable();
-        resetFormRetorno(this.formRegistro);
-      
-        // Redirigir después del guardado exitoso
-        //this.router.navigate(['/logistica/retornos']);
+        resetFormRetorno(this.formRegistro);                    
+        this.uiService.mostrarAlertaSuccess('','Retorno registrado con éxito');
         
       } catch (error) {
-        console.error('Error al guardar retorno:', error);
-        // TODO: Mostrar mensaje de error al usuario
+        console.error('Error al guardar retorno:', error);        
       } finally {
         this._guardandoCarga.set(false);
       }

@@ -19,5 +19,8 @@ export class RetornoService {
   public registrar(registro:FormData){
     return this.httpClient.post(`${this.API_URL}/api/retorno`, registro);
   }
+  public listar(){
+    return this.httpClient.get<any>(`${this.API_URL}/api/retorno`);
+  }
 }
   

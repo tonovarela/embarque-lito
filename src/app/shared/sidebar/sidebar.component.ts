@@ -31,15 +31,15 @@ export class SidebarComponent implements OnInit,AfterViewInit {
   public rutas = computed(() => this._rutas());
   private rutasEmbarques: Ruta[] = [
     {
-    nombre: 'Solicitudes',
-    icono: 'assets/img/recorridos.svg',
-    path: '/logistica/solicitudes'
-  },
-  {
     nombre: 'Recorridos',
     icono: 'assets/img/recorridos.svg',
     path: '/logistica/recorridos'
-  }
+  },
+    {
+    nombre: 'Solicitudes',
+    icono: 'assets/img/recorridos.svg',
+    path: '/logistica/solicitudes'
+  }  
   , {
     nombre: 'Carga',
     icono: 'assets/img/carga.svg',
@@ -51,7 +51,7 @@ export class SidebarComponent implements OnInit,AfterViewInit {
     path: '/logistica/mantenimiento'
   },
   {
-    nombre: 'Retornos',
+    nombre: 'Rechazos',
     icono: 'assets/img/retornos.svg',
     path: '/logistica/retornos'
   }
