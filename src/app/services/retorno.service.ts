@@ -16,5 +16,8 @@ export class RetornoService {
   public listarMotivos(){
     return this.httpClient.get<ResponseMotivoRetorno>(`${this.API_URL}/api/retorno/motivos`);
   }
+  public registrar(registro:FormData){
+    return this.httpClient.post(`${this.API_URL}/api/retorno`, registro);
+  }
 }
   

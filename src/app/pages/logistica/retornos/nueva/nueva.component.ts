@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegistroRecorridoHook } from '@app/componentes/hooks/useRegistro';
 import { createFormRetornoBuilder, resetFormRetorno } from '@app/helpers/formModel';
@@ -8,6 +8,7 @@ import { Motivo } from '@app/interface/responses';
 import { PrimeNgModule } from '@app/lib/primeng.module';
 import { RetornoService } from '@app/services/retorno.service';
 import { AutocompleteComponent } from '@app/shared/autocomplete/autocomplete.component';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-nueva',
@@ -28,20 +29,19 @@ export default class NuevaComponent implements OnInit  {
   formRegistro: FormGroup = createFormRetornoBuilder(this.fb);  
   private _guardandoCarga = signal(false);
 
-
   ngOnInit() {
     this.cargarMotivos();
   }
 
   private cargarMotivos() {
-    this.retornoService.listarMotivos().subscribe(response => this.motivos.set(response.motivos));
+    
+    this.retornoService.listarMotivos().subscribe(response => this.motivos.set(response.motivos.map(({id_motivo,descripcion}) => ({ id_motivo, descripcion: descripcion.toUpperCase() }))));
   }
-
 
   onSelectOP(op_metrics: string) {    
     this.recorridoRegistroHook.onSelectOP(op_metrics, this.formRegistro);   
   }
-  
+
   regresar() {
     this.router.navigate(['/logistica/retornos']);
   }
@@ -51,14 +51,22 @@ export default class NuevaComponent implements OnInit  {
       this._guardandoCarga.set(true);
       this.formRegistro.disable();
       try {
-        const formData = this.formRegistro.value;
-        console.log('Datos del retorno:', formData);
-        
-        // TODO: Implementar el servicio para guardar el retorno
-        // await this.retornoService.crearRetorno(formData);
-        
-        // Simular llamada async
-        await new Promise(resolve => setTimeout(resolve, 2000));
+                                
+        let formData =new FormData();
+        formData.append('id_motivo', this.formRegistro.get('id_motivo')?.value);
+        formData.append('tipo', this.formRegistro.get('tipo')?.value);
+        formData.append('ops', this.formRegistro.get('ops')?.value);
+        formData.append('cantidad', this.formRegistro.get('cantidad')?.value);
+        formData.append('observaciones', this.formRegistro.get('observaciones')?.value);
+        const adjuntosArray = this.formRegistro.get('adjuntos') as FormArray;
+        adjuntosArray.value.forEach((file: File, index: number) => {
+           formData.append(`adjuntos[]`, file, file.name);
+         });
+         if (adjuntosArray.length === 0) {
+           formData.append('adjuntos', '');
+         }         
+        const r =await firstValueFrom(this.retornoService.registrar(formData));
+        console.log('Retorno guardado:', r);
         this.formRegistro.enable();
         resetFormRetorno(this.formRegistro);
       
