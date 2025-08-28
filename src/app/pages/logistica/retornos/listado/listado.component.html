@@ -38,11 +38,155 @@
                      {{data.fecha_registro | date:'dd-MM-yyyy HH:mm'}}
                   </ng-template>
                </e-column>
-               <e-column field='observaciones' headerText='Observaciones' textAlign='Left' width="200"></e-column>                              
+               <e-column field='observaciones' headerText='Observaciones' textAlign='Left' width="200"></e-column>
+               <e-column headerText='Acciones' textAlign='Center' width="120" [allowSorting]="false" [allowFiltering]="false">
+                  <ng-template #template let-data>
+                     <button
+                        (click)="verArchivos(data)"
+                        class="inline-flex items-center px-3 py-1 text-xs font-medium text-blue-600 bg-blue-100 border border-blue-300 rounded-lg hover:bg-blue-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 dark:text-white transition-colors duration-200"
+                        title="Ver archivos adjuntos">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                        </svg>
+                        Archivos
+                     </button>
+                  </ng-template>
+               </e-column>                              
             </e-columns>
            </ejs-grid>
            
          }       
       </div>
    </div>
-   <app-fabbutton></app-fabbutton> 
+   <app-fabbutton></app-fabbutton>
+
+   <!-- Modal para mostrar archivos -->
+   @if (mostrarModal()) {
+      <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+         <!-- Overlay -->
+         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div 
+               class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+               (click)="cerrarModal()">
+            </div>
+
+            <!-- Modal panel -->
+            <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+               <!-- Header -->
+               <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div class="flex items-center justify-between">
+                     <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                        Archivos del Retorno
+                     </h3>
+                     <button
+                        type="button"
+                        (click)="cerrarModal()"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                     </button>
+                  </div>
+               </div>
+
+               <!-- Content -->
+               <div class="bg-white dark:bg-gray-800 px-4 pb-4 sm:p-6 sm:pt-0">
+                  @if (retornoSeleccionado()) {
+                     <div class="mb-4">                        
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                           <span class="font-medium">Tipo:</span> {{retornoSeleccionado()?.tipoRetorno}}
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                           <span class="font-medium">OPs:</span> {{retornoSeleccionado()?.ops}}
+                        </p>
+                     </div>
+
+                     <div class="border-t border-gray-200 dark:border-gray-600 pt-4">
+                        <h4 class="text-md font-medium text-gray-900 dark:text-white mb-3">
+                           Archivos Adjuntos
+                        </h4>
+                        
+                        @if (archivosRetorno().length > 0) {
+                           <div class="space-y-2 max-h-60 overflow-y-auto">
+                              @for (archivo of archivosRetorno(); track archivo.id) {
+                                 <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200">
+                                    <div class="flex items-center space-x-3">
+                                       <!-- Icono del archivo según el tipo -->
+                                       <div class="flex-shrink-0">
+                                          @if (esImagen(archivo.nombre)) {
+                                             <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                             </svg>
+                                          } @else if (esPDF(archivo.nombre)) {
+                                             <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                             </svg>
+                                          } @else {
+                                             <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                             </svg>
+                                          }
+                                       </div>
+                                       
+                                       <div class="flex-1 min-w-0">
+                                          <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                             {{archivo.nombre}}
+                                          </p>
+                                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                                             {{formatearTamano(archivo.tamano)}} • {{archivo.fecha_subida | date:'dd/MM/yyyy HH:mm'}}
+                                          </p>
+                                       </div>
+                                    </div>
+                                    
+                                    <div class="flex space-x-2">
+                                       <button
+                                          (click)="descargarArchivo(archivo)"
+                                          class="p-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200"
+                                          title="Descargar archivo">
+                                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                          </svg>
+                                       </button>
+                                       
+                                       @if (esImagen(archivo.nombre)) {
+                                          <button
+                                             (click)="previsualizarArchivo(archivo)"
+                                             class="p-1 text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 transition-colors duration-200"
+                                             title="Vista previa">
+                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                             </svg>
+                                          </button>
+                                       }
+                                    </div>
+                                 </div>
+                              }
+                           </div>
+                        } @else {
+                           <div class="text-center py-8">
+                              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                              </svg>
+                              <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                 No hay archivos adjuntos para este retorno
+                              </p>
+                           </div>
+                        }
+                     </div>
+                  }
+               </div>
+
+               <!-- Footer -->
+               <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                     type="button"
+                     (click)="cerrarModal()"
+                     class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                     Cerrar
+                  </button>
+               </div>
+            </div>
+         </div>
+      </div>
+   } 
