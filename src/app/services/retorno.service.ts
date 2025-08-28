@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ResponseMotivoRetorno } from '@app/interface/responses';
+import { ResponseListadoAdjuntos } from '@app/interface/responses/ResponseListadoAdjuntos';
 import { environment } from '@environments/environment.development';
 
 @Injectable({
@@ -21,6 +22,10 @@ export class RetornoService {
   }
   public listar(){
     return this.httpClient.get<any>(`${this.API_URL}/api/retorno`);
+  }
+
+  public obtenerArchivos(id_retorno:number){
+    return this.httpClient.get<ResponseListadoAdjuntos>(`${this.API_URL}/api/retorno/${id_retorno}/archivos`);
   }
 }
   

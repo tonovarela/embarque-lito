@@ -13,6 +13,7 @@ import { RetornoService } from '@app/services/retorno.service';
 import { FabbuttonComponent } from '@app/shared/fabbutton/fabbutton.component';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ArchivoRetorno } from '@app/interface/responses/ResponseListadoAdjuntos';
 
 @Component({
   selector: 'app-listado',
@@ -83,31 +84,26 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
     try {
       // TODO: Implementar el servicio para obtener archivos del retorno
       // const archivos = await this.retornoService.obtenerArchivos(idRetorno);
-      
+       const resp = await firstValueFrom(this.retornoService.obtenerArchivos(idRetorno));
+       console.log('Archivos obtenidos:', resp);
       // Datos simulados para ejemplo
       const archivosMock: ArchivoRetorno[] = [
         {
-          id: 1,
-          nombre: 'evidencia_defecto.jpg',
-          tamano: 2048576, // 2MB
-          tipo: 'image/jpeg',
-          fecha_subida: new Date('2024-08-15T10:30:00'),
+          id_adjunto: 1,
+          nombre: 'evidencia_defecto.jpg',        
+          tipo: 'image/jpeg',        
           url: '/api/archivos/evidencia_defecto.jpg'
         },
         {
-          id: 2,
-          nombre: 'reporte_calidad.pdf',
-          tamano: 1536000, // 1.5MB
-          tipo: 'application/pdf',
-          fecha_subida: new Date('2024-08-15T11:15:00'),
+          id_adjunto: 2,
+          nombre: 'reporte_calidad.pdf',        
+          tipo: 'application/pdf',        
           url: '/api/archivos/reporte_calidad.pdf'
         },
         {
-          id: 3,
-          nombre: 'formulario_retorno.docx',
-          tamano: 512000, // 512KB
-          tipo: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          fecha_subida: new Date('2024-08-15T14:20:00'),
+          id_adjunto: 3,
+          nombre: 'formulario_retorno.docx',        
+          tipo: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',        
           url: '/api/archivos/formulario_retorno.docx'
         }
       ];
@@ -182,11 +178,9 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
 }
 
 // Interface para los archivos del retorno
-interface ArchivoRetorno {
-  id: number;
-  nombre: string;
-  tamano: number;
-  tipo: string;
-  fecha_subida: Date;
-  url: string;
-}
+// interface ArchivoRetorno {
+//   id_adjunto: number;
+//   nombre: string;  
+//   tipo: string;  
+//   url: string;
+// }

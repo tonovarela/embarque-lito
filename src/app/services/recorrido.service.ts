@@ -37,6 +37,8 @@ export class RecorridoService {
       }),      
     );
   }
+
+
   registrar(recorrido:Recorrido){
     return this.http.post(`${this.API_URL}/api/recorrido`, {recorrido})
   }
@@ -48,7 +50,6 @@ export class RecorridoService {
   eliminar(id_recorrido:number){
     return this.http.delete(`${this.API_URL}/api/recorrido/${id_recorrido}`)
   }
-
 
   actualizarInicial(recorrido:Recorrido,gpsPosicion:GpsPosition){
     return this.http.put(`${this.API_URL}/api/recorrido/inicial`, {recorrido,gpsPosicion})
