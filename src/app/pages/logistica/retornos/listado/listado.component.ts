@@ -26,6 +26,8 @@ import { ArchivoRetorno } from '@app/interface/responses/ResponseListadoAdjuntos
 })
 export default class ListadoComponent   extends BaseGridComponent implements OnInit
 {
+
+  
   private _retornos = signal<Retorno[]>([]);
   public  retornos = computed(() => this._retornos().map((r) => ({ ...r,tipoRetorno:r.tipo=='R'?'Rechazo':'Devolución' })));
   retornoService = inject(RetornoService);
@@ -43,6 +45,9 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
     this.iniciarResizeGrid(0.27);    
     this.cargarInformacion();
   }
+
+
+
 
   async cargarInformacion() {
     this.cargando.set(true);
@@ -138,59 +143,7 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
   }
   }
 
-  /**
-   * Abre vista previa de imagen
-   */
-  previsualizarArchivo(archivo: ArchivoRetorno) {
-     if (this.esImagen(archivo.nombre)) {
-    try {
-      console.log('Previsualizando imagen:', archivo.nombre);
-      
-      if (!archivo.archivo) {
-        console.error('No hay datos del archivo para previsualizar');
-        return;
-      }
 
-      // Crear data URL desde base64
-      const dataUrl = `data:${archivo.tipo || 'image/jpeg'};base64,${archivo.archivo}`;
-      
-      // Abrir en nueva ventana
-      const newWindow = window.open('', '_blank');
-      if (newWindow) {
-        newWindow.document.write(`
-          <html>
-            <head>
-              <title>${archivo.nombre}</title>
-              <style>
-                body { 
-                  margin: 0; 
-                  padding: 20px; 
-                  background-color: #f5f5f5; 
-                  display: flex; 
-                  justify-content: center; 
-                  align-items: center; 
-                  min-height: 100vh; 
-                }
-                img { 
-                  max-width: 100%; 
-                  max-height: 100vh; 
-                  object-fit: contain; 
-                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                }
-              </style>
-            </head>
-            <body>
-              <img src="${dataUrl}" alt="${archivo.nombre}" />
-            </body>
-          </html>
-        `);
-        newWindow.document.close();
-      }
-    } catch (error) {
-      console.error('Error al previsualizar archivo:', error);
-    }
-  }
-  }
 
   /**
  * Convierte base64 a Blob
@@ -224,24 +177,7 @@ private base64ToBlob(base64: string, mimeType: string): Blob {
     return nombreArchivo.toLowerCase().endsWith('.pdf');
   }
 
-  /**
-   * Formatea el tamaño del archivo en formato legible
-   */
-  formatearTamano(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
+  
+  
 }
 
-// Interface para los archivos del retorno
-// interface ArchivoRetorno {
-//   id_adjunto: number;
-//   nombre: string;  
-//   tipo: string;  
-//   url: string;
-// }
