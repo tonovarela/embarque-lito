@@ -87,28 +87,8 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
        const resp = await firstValueFrom(this.retornoService.obtenerArchivos(idRetorno));
        console.log('Archivos obtenidos:', resp);
       // Datos simulados para ejemplo
-      const archivosMock: ArchivoRetorno[] = [
-        {
-          id_adjunto: 1,
-          nombre: 'evidencia_defecto.jpg',        
-          tipo: 'image/jpeg',        
-          url: '/api/archivos/evidencia_defecto.jpg'
-        },
-        {
-          id_adjunto: 2,
-          nombre: 'reporte_calidad.pdf',        
-          tipo: 'application/pdf',        
-          url: '/api/archivos/reporte_calidad.pdf'
-        },
-        {
-          id_adjunto: 3,
-          nombre: 'formulario_retorno.docx',        
-          tipo: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',        
-          url: '/api/archivos/formulario_retorno.docx'
-        }
-      ];
-      
-      this.archivosRetorno.set(archivosMock);
+            
+      this.archivosRetorno.set(resp.archivos );
     } catch (error) {
       console.error('Error al cargar archivos:', error);
       this.archivosRetorno.set([]);
@@ -122,29 +102,110 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
    */
   async descargarArchivo(archivo: ArchivoRetorno) {
     try {
-      // TODO: Implementar descarga real
-      console.log('Descargando archivo:', archivo.nombre);
-      
-      // Simular descarga
-      const link = document.createElement('a');
-      link.href = archivo.url;
-      link.download = archivo.nombre;
-      link.click();
-    } catch (error) {
-      console.error('Error al descargar archivo:', error);
+    console.log('Descargando archivo:', archivo.nombre);
+    
+    // Verificar si tiene archivo en base64
+    if (!archivo.archivo) {
+      console.error('No hay datos del archivo para descargar');
+      return;
     }
+
+    // Crear el blob desde base64
+    const byteCharacters = atob(archivo.archivo);
+    const byteNumbers = new Array(byteCharacters.length);
+    
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: archivo.tipo || 'application/octet-stream' });
+
+    // Crear URL temporal y descargar
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = archivo.nombre;
+    document.body.appendChild(link);
+    link.click();
+    
+    // Limpiar
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+  } catch (error) {
+    console.error('Error al descargar archivo:', error);
+  }
   }
 
   /**
    * Abre vista previa de imagen
    */
   previsualizarArchivo(archivo: ArchivoRetorno) {
-    if (this.esImagen(archivo.nombre)) {
-      // TODO: Implementar modal de vista previa de imagen
+     if (this.esImagen(archivo.nombre)) {
+    try {
       console.log('Previsualizando imagen:', archivo.nombre);
-      window.open(archivo.url, '_blank');
+      
+      if (!archivo.archivo) {
+        console.error('No hay datos del archivo para previsualizar');
+        return;
+      }
+
+      // Crear data URL desde base64
+      const dataUrl = `data:${archivo.tipo || 'image/jpeg'};base64,${archivo.archivo}`;
+      
+      // Abrir en nueva ventana
+      const newWindow = window.open('', '_blank');
+      if (newWindow) {
+        newWindow.document.write(`
+          <html>
+            <head>
+              <title>${archivo.nombre}</title>
+              <style>
+                body { 
+                  margin: 0; 
+                  padding: 20px; 
+                  background-color: #f5f5f5; 
+                  display: flex; 
+                  justify-content: center; 
+                  align-items: center; 
+                  min-height: 100vh; 
+                }
+                img { 
+                  max-width: 100%; 
+                  max-height: 100vh; 
+                  object-fit: contain; 
+                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+              </style>
+            </head>
+            <body>
+              <img src="${dataUrl}" alt="${archivo.nombre}" />
+            </body>
+          </html>
+        `);
+        newWindow.document.close();
+      }
+    } catch (error) {
+      console.error('Error al previsualizar archivo:', error);
     }
   }
+  }
+
+  /**
+ * Convierte base64 a Blob
+ */
+private base64ToBlob(base64: string, mimeType: string): Blob {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mimeType });
+}
 
   /**
    * Verifica si un archivo es una imagen
