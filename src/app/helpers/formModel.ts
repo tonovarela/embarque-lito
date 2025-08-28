@@ -62,13 +62,13 @@ export const createFormRegistroProgramadorBuilder = (fb: FormBuilder) => {
 
 export const createFormRetornoBuilder = (fb: FormBuilder) => {
   return fb.group({
-    id_retorno: [0, MayorACeroValidator()],
+    
     id_motivo: ['', Validators.required],
     tipo:['', Validators.required],
     ops: fb.array([], Validators.required),  
     cantidad:[0, MayorACeroValidator()],
     observaciones: [''],
-    adjuntos: fb.array([], Validators.required),
+    adjuntos: fb.array([]),
   });
 }
 
@@ -96,6 +96,15 @@ const actualizarInputPorID = (id: string, valor: string) => {
 
 }
 
+export const resetFormRetorno = (formRegistro: FormGroup) => {
+  formRegistro.reset();
+  formRegistro.setControl("ops", new FormArray([], Validators.required));
+  formRegistro.get("id_motivo")!.setValue('0');
+  formRegistro.get("tipo")!.setValue('');
+  formRegistro.get("cantidad")!.setValue(0);
+  formRegistro.get("observaciones")!.setValue('');
+  formRegistro.setControl("adjuntos", new FormArray([]));
+}
 
 export const resetFormCarga = (formRegistro: FormGroup) => {
   const today = new Date();
