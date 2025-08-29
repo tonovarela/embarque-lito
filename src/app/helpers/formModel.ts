@@ -63,8 +63,8 @@ export const createFormRegistroProgramadorBuilder = (fb: FormBuilder) => {
 export const createFormRetornoBuilder = (fb: FormBuilder) => {
   return fb.group({
     
-    id_motivo: ['0', Validators.required],
-    tipo:['0', Validators.required],
+    id_motivo: [0, MayorACeroValidator()],
+    tipo:['', Validators.required],
     ops: fb.array([], Validators.required),  
     cantidad:[0, MayorACeroValidator()],
     observaciones: [''],
@@ -100,7 +100,7 @@ export const resetFormRetorno = (formRegistro: FormGroup) => {
   formRegistro.reset();
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get("id_motivo")!.setValue('0');
-  formRegistro.get("tipo")!.setValue('0');
+  formRegistro.get("tipo")!.setValue('');
   formRegistro.get("cantidad")!.setValue(0);
   formRegistro.get("observaciones")!.setValue('');
   formRegistro.setControl("adjuntos", new FormArray([]));
