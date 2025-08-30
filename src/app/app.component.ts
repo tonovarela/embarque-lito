@@ -32,9 +32,15 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor() {
     this.effectLogin = effect(() => {
       if (this.estatusLogin() === 'LOGIN') {
+
+
         if (this._usuarioService.esChofer()){
            this.router.navigate(['/chofer']);
         }else {          
+          if (this._usuarioService.soloRetornos()){
+            this.router.navigate(['/logistica/retornos']);
+            return;
+          }
           this.router.navigate(['/logistica']);
         }        
         setTimeout(() => {

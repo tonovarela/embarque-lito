@@ -69,6 +69,10 @@ export class SidebarComponent implements OnInit,AfterViewInit {
     if (this.usuarioService.esChofer()) {
       this._rutas.set(this.rutasChofer);
     } else {
+      if (this.usuarioService.soloRetornos()){
+        this._rutas.set([this.rutasEmbarques[4]]);
+        return;
+      }
       this._rutas.set(this.rutasEmbarques);
     }
   }

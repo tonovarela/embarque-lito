@@ -4,6 +4,7 @@ export type Usuario ={
     login:string;
     personal?:string;
     puesto?:string;
+    soloRetornos?:string;
     
 }
 

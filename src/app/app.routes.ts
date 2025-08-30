@@ -6,6 +6,7 @@ import { authGuard } from './guards/auth/auth.guard';
 import { choferGuard } from './guards/auth/chofer.guard';
 import { embarquesGuard } from './guards/auth/embarques.guard';
 
+
 export const routes: Routes = [
     { path: 'logistica',            
       canActivateChild: [authGuard,embarquesGuard],    
@@ -20,7 +21,8 @@ export const routes: Routes = [
             ]  
         },
         {
-            path: 'retornos', children: [
+            path: 'retornos',            
+            children: [
                 { path: '', loadComponent: () => import('@app/pages/logistica/retornos/listado/listado.component') },
                 { path: 'nuevo', loadComponent: () => import('@app/pages/logistica/retornos/nueva/nueva.component') },
             ]

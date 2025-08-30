@@ -29,6 +29,14 @@ export class UsuarioService {
     }
     return false;
   });
+   
+  soloRetornos = computed(() => {
+      const usuario = this._statusSesion().usuario;
+    if (usuario) {      
+      return  (usuario.soloRetornos?.trim() === '1');
+    }
+    return false;
+  });
   
   private async login(username: string, password: string) {
     this._statusSesion.set({ usuario: undefined, estatus: StatutLogin.LOADING });
