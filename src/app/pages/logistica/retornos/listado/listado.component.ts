@@ -14,6 +14,7 @@ import { FabbuttonComponent } from '@app/shared/fabbutton/fabbutton.component';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ArchivoRetorno } from '@app/interface/responses/ResponseListadoAdjuntos';
+import { UsuarioService } from '@app/services';
 
 @Component({
   selector: 'app-listado',
@@ -27,7 +28,7 @@ import { ArchivoRetorno } from '@app/interface/responses/ResponseListadoAdjuntos
 export default class ListadoComponent   extends BaseGridComponent implements OnInit
 {
 
-  
+  private usuarioService = inject(UsuarioService)
   private _retornos = signal<Retorno[]>([]);
   public  retornos = computed(() => this._retornos().map((r) => ({ ...r,tipoRetorno:r.tipo=='R'?'Rechazo':'Devolución' })));
   retornoService = inject(RetornoService);
@@ -41,13 +42,13 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
   cargando = signal(false);
 
   ngOnInit(): void {
-    this.autoFitColumns = false;
     this.iniciarResizeGrid(0.27);    
     this.cargarInformacion();
   }
 
 
 
+  soloRetornos = computed(() => this.usuarioService.soloRetornos());
 
   async cargarInformacion() {
     this.cargando.set(true);

@@ -5,14 +5,16 @@ import { SesionLayoutComponent } from '@layout/sesion-layout/sesion-layout.compo
 import { authGuard } from './guards/auth/auth.guard';
 import { choferGuard } from './guards/auth/chofer.guard';
 import { embarquesGuard } from './guards/auth/embarques.guard';
+import { rechazosGuard } from './guards/auth/rechazos.guard';
 
 
 export const routes: Routes = [
     { path: 'logistica',            
-      canActivateChild: [authGuard,embarquesGuard],    
+      canActivateChild: [authGuard,],    
         component: SesionLayoutComponent, children: [
         {
             path: 'recorridos', 
+            canActivate: [embarquesGuard],
             data: { type: 'recorridos' },
             children: [
                 { path: '', loadComponent:()=> import('@app/pages/logistica/recorridos/listado/listado.component') },
@@ -21,7 +23,8 @@ export const routes: Routes = [
             ]  
         },
         {
-            path: 'retornos',            
+            path: 'retornos', 
+            canActivateChild: [rechazosGuard],                       
             children: [
                 { path: '', loadComponent: () => import('@app/pages/logistica/retornos/listado/listado.component') },
                 { path: 'nuevo', loadComponent: () => import('@app/pages/logistica/retornos/nueva/nueva.component') },
@@ -29,16 +32,20 @@ export const routes: Routes = [
         },
         {
             path:'solicitudes', loadComponent: () => import('@app/pages/logistica/recorridos/listado/listado.component'),
+            canActivate: [embarquesGuard],
             data:{ type: 'solicitudes' }
         },        
         {
-            path: 'carga',children: [
-                { path: '', loadComponent:()=> import('@app/pages/logistica/carga/listado/listado.component') },
+            path: 'carga',
+            canActivateChild: [embarquesGuard],
+            children: [
+                { path: '', loadComponent:()=> import('@app/pages/logistica/carga/listado/listado.component') },                
                 { path: 'nuevo', loadComponent:()=> import('@app/pages/logistica/carga/nuevo/nuevo.component') },                                
             ]
         },
         {
             path: 'mantenimiento',            
+            canActivateChild: [embarquesGuard],
             children: [
                 { path: '', loadComponent: () => import('./pages/logistica/mantenimiento/listado/listado.component') },
                 { path: 'nuevo', loadComponent: () => import('./pages/logistica/mantenimiento/nuevo/nuevo.component') },                                

@@ -27,8 +27,7 @@ export class ChoferService {
 
   async estaEnCurso(id_chofer: string) {
     const resp = await firstValueFrom(this.http.get<ResponseRecorridoActivo>(`${this.API_URL}/api/chofer/recorrido/${id_chofer}`).pipe(
-      tap((resp) => {
-        console.log('recorrido activo', resp);
+      tap((resp) => {        
         this.nowServer.set(new Date(resp.horaActual!));        
       })
     ));

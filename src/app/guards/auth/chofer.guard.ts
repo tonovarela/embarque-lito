@@ -4,5 +4,5 @@ import { UsuarioService } from '@app/services';
 
 export const choferGuard: CanActivateFn = (route, state) => {
   const usuarioService = inject(UsuarioService);
-  return usuarioService.esChofer();
+  return usuarioService.esChofer() && !usuarioService.soloRetornos();
 };

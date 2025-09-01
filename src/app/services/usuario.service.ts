@@ -25,7 +25,7 @@ export class UsuarioService {
   esChofer = computed(() => {
     const usuario = this._statusSesion().usuario;
     if (usuario) {      
-      return  (usuario.puesto?.trim().toLowerCase() === 'chofer');
+      return  (usuario.puesto?.trim().toLowerCase() === 'chofer') ;
     }
     return false;
   });

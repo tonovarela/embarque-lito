@@ -4,7 +4,6 @@ import { UsuarioService } from '@app/services';
 
 
 export const embarquesGuard: CanActivateFn = (route, state) => {
-  const usuarioService= inject(UsuarioService);
-  return !usuarioService.esChofer();
-
+  const usuarioService= inject(UsuarioService);  
+  return !usuarioService.esChofer() && !usuarioService.soloRetornos();  ;
 };

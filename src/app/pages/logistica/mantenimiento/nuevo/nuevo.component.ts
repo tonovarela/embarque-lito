@@ -54,15 +54,7 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
   formRegistro = createFormMantenimientoBuilder(this.fb);
 
   ngOnInit(): void {
-    resetFormMantenimiento(this.formRegistro);
-    // this.formRegistro.valueChanges.subscribe((form) => {
-    //   const { hora_inicio, hora_fin, fecha_fin, fecha_inicio } = form;
-    //   const fecha_inicioTime = unirFechaHora(fecha_inicio!, hora_inicio!);
-    //   const fecha_regresoTime = unirFechaHora(fecha_fin!, hora_fin!);
-    //   this.diferenciaTiempo = this.obtenerDiferenciaHoras(fecha_inicioTime, fecha_regresoTime);
-
-    // });
-
+    resetFormMantenimiento(this.formRegistro);    
   }
 
   ngAfterViewInit(): void {
@@ -88,23 +80,10 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
     if (this.guardandoMantenimiento()) {
       return;
     }
-    this.router.navigate(['/logisticas/mantenimiento']);
+    this.router.navigate(['/logistica/mantenimiento']);
   }
 
 
-
-  // private obtenerDiferenciaHoras(fechaInicio: Date, fechaFin: Date) {
-  //   const diferenciaMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
-  //   const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60)) || 0;
-  //   const diferenciaMinutos = Math.floor((diferenciaMilisegundos % (1000 * 60 * 60)) / (1000 * 60)) || 0;
-  //   const totalMinutos = Math.floor(diferenciaMilisegundos / (1000 * 60));
-  //   if (isNaN(totalMinutos) || totalMinutos < 1) {
-  //     this.formRegistro.get('hora_fin')!.setErrors({ diferenciaInvalida: true });
-  //   } else {
-  //     this.formRegistro.get('hora_fin')!.setErrors(null);
-  //   }
-  //   return { horas: diferenciaHoras, minutos: diferenciaMinutos, totalMinutos };
-  // }
 
   async guardar() {
     this.formRegistro.markAllAsTouched();
@@ -114,14 +93,13 @@ export default class NuevoComponent implements OnInit, AfterViewInit {
 
     this.guardandoMantenimiento.set(true);
     const {  transporte, motivo, observaciones, fecha_fin, fecha_inicio,
-      // hora_fin, hora_inicio 
+      
       } = this.formRegistro.value;
 
     const fecha_inicioTime = formatDate(new Date(fecha_inicio!), null)
     const fecha_finTime = formatDate(new Date(fecha_fin!), null)
     const mantenimiento = {
-      id_motivo: motivo,
-      ///id_chofer: chofer,
+      id_motivo: motivo,    
       id_transporte: transporte,
       fecha_inicio: fecha_inicioTime,
       fecha_fin: fecha_finTime,
