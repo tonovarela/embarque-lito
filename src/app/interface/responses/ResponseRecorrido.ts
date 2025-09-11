@@ -10,5 +10,7 @@ export interface Retorno {
     observaciones:      string;
     fecha_registro:     Date;
     ops:                string;
+    vendedor:           string;
+    cliente:            string;
     descripcion_motivo: string;
 }
