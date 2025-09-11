@@ -50,13 +50,14 @@ export default class NuevaComponent implements OnInit  {
 
   async guardarRegistro() {   
     if (this.formRegistro.valid) {
-      this._guardandoCarga.set(true);
+      this._guardandoCarga.set(true);      
       this.formRegistro.disable();
       try {
                                 
         let formData =new FormData();
         formData.append('id_motivo', this.formRegistro.get('id_motivo')?.value);
         formData.append('fecha_rechazo', this.formRegistro.get('fecha_rechazo')?.value);
+        formData.append('numero_documento', this.formRegistro.get('numero_documento')?.value);
         formData.append('tipo', this.formRegistro.get('tipo')?.value);
         formData.append('ops', this.formRegistro.get('ops')?.value);
         formData.append('cantidad', this.formRegistro.get('cantidad')?.value);

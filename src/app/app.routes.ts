@@ -51,7 +51,7 @@ export const routes: Routes = [
                 { path: 'nuevo', loadComponent: () => import('./pages/logistica/mantenimiento/nuevo/nuevo.component') },                                
             ]
         },
-        {path: '**', redirectTo: 'retornos', pathMatch: 'full' }
+        {path: '**', redirectTo: 'recorridos', pathMatch: 'full' }
     ],     
 },
 {
