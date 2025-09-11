@@ -15,22 +15,32 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ArchivoRetorno } from '@app/interface/responses/ResponseListadoAdjuntos';
 import { UsuarioService } from '@app/services';
+import {
+  ExcelExportProperties,
+  ExcelExportService,
+} from '@syncfusion/ej2-angular-grids';
 
 @Component({
   selector: 'app-listado',
   standalone: true,
-  
-  imports:[SynfusionModule,FabbuttonComponent,CommonModule],
+  providers: [ExcelExportService],
+  imports: [SynfusionModule, FabbuttonComponent, CommonModule],
   templateUrl: './listado.component.html',
   styleUrl: './listado.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ListadoComponent   extends BaseGridComponent implements OnInit
+export default class ListadoComponent
+  extends BaseGridComponent
+  implements OnInit
 {
-
-  private usuarioService = inject(UsuarioService)
+  private usuarioService = inject(UsuarioService);
   private _retornos = signal<Retorno[]>([]);
-  public  retornos = computed(() => this._retornos().map((r) => ({ ...r,tipoRetorno:r.tipo=='R'?'Rechazo':'Devolución' })));
+  public retornos = computed(() =>
+    this._retornos().map((r) => ({
+      ...r,
+      tipoRetorno: r.tipo == 'R' ? 'Rechazo' : 'Devolución',
+    }))
+  );
   retornoService = inject(RetornoService);
 
   // Estados del modal
@@ -42,11 +52,9 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
   cargando = signal(false);
 
   ngOnInit(): void {
-    this.iniciarResizeGrid(0.27);    
+    this.iniciarResizeGrid(0.27);
     this.cargarInformacion();
   }
-
-
 
   soloRetornos = computed(() => this.usuarioService.soloRetornos());
 
@@ -58,10 +66,30 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
       );
       this._retornos.set(resp.retornos);
     } catch (error) {
-      console.error(error);
+      //console.error(error);
     } finally {
       this.cargando.set(false);
     }
+  }
+
+  async exportarExcel() {
+    const datosFiltadors = await this.grid.getFilteredRecords();
+    let dataShow =
+      Array.isArray(datosFiltadors) && datosFiltadors.length > 0
+        ? datosFiltadors
+        : this.retornos();
+    const columns = this.grid
+      .getColumns()
+      .filter((c) => c.headerText != 'Acciones');
+
+    const excelExportProperties: ExcelExportProperties = {
+      enableFilter: true,
+      columns,
+      fileName: 'Rechazos.xlsx',
+      dataSource: dataShow,
+    };
+    
+    this.grid.excelExport(excelExportProperties);
   }
 
   /**
@@ -90,11 +118,13 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
     try {
       // TODO: Implementar el servicio para obtener archivos del retorno
       // const archivos = await this.retornoService.obtenerArchivos(idRetorno);
-       const resp = await firstValueFrom(this.retornoService.obtenerArchivos(idRetorno));
-       console.log('Archivos obtenidos:', resp);
+      const resp = await firstValueFrom(
+        this.retornoService.obtenerArchivos(idRetorno)
+      );
+      console.log('Archivos obtenidos:', resp);
       // Datos simulados para ejemplo
-            
-      this.archivosRetorno.set(resp.archivos );
+
+      this.archivosRetorno.set(resp.archivos);
     } catch (error) {
       console.error('Error al cargar archivos:', error);
       this.archivosRetorno.set([]);
@@ -108,65 +138,71 @@ export default class ListadoComponent   extends BaseGridComponent implements OnI
    */
   async descargarArchivo(archivo: ArchivoRetorno) {
     try {
-    console.log('Descargando archivo:', archivo.nombre);
-    
-    // Verificar si tiene archivo en base64
-    if (!archivo.archivo) {
-      console.error('No hay datos del archivo para descargar');
-      return;
-    }
+      console.log('Descargando archivo:', archivo.nombre);
 
-    // Crear el blob desde base64
-    const byteCharacters = atob(archivo.archivo);
+      // Verificar si tiene archivo en base64
+      if (!archivo.archivo) {
+        console.error('No hay datos del archivo para descargar');
+        return;
+      }
+
+      // Crear el blob desde base64
+      const byteCharacters = atob(archivo.archivo);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], {
+        type: archivo.tipo || 'application/octet-stream',
+      });
+
+      // Crear URL temporal y descargar
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = archivo.nombre;
+      document.body.appendChild(link);
+      link.click();
+
+      // Limpiar
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error al descargar archivo:', error);
+    }
+  }
+
+  /**
+   * Convierte base64 a Blob
+   */
+  private base64ToBlob(base64: string, mimeType: string): Blob {
+    const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
-    
+
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
-    
+
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: archivo.tipo || 'application/octet-stream' });
-
-    // Crear URL temporal y descargar
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = archivo.nombre;
-    document.body.appendChild(link);
-    link.click();
-    
-    // Limpiar
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-    
-  } catch (error) {
-    console.error('Error al descargar archivo:', error);
+    return new Blob([byteArray], { type: mimeType });
   }
-  }
-
-
-
-  /**
- * Convierte base64 a Blob
- */
-private base64ToBlob(base64: string, mimeType: string): Blob {
-  const byteCharacters = atob(base64);
-  const byteNumbers = new Array(byteCharacters.length);
-  
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  
-  const byteArray = new Uint8Array(byteNumbers);
-  return new Blob([byteArray], { type: mimeType });
-}
 
   /**
    * Verifica si un archivo es una imagen
    */
   esImagen(nombreArchivo: string): boolean {
-    const extensionesImagen = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
-    return extensionesImagen.some(ext => 
+    const extensionesImagen = [
+      '.jpg',
+      '.jpeg',
+      '.png',
+      '.gif',
+      '.bmp',
+      '.webp',
+    ];
+    return extensionesImagen.some((ext) =>
       nombreArchivo.toLowerCase().endsWith(ext)
     );
   }
@@ -177,8 +213,4 @@ private base64ToBlob(base64: string, mimeType: string): Blob {
   esPDF(nombreArchivo: string): boolean {
     return nombreArchivo.toLowerCase().endsWith('.pdf');
   }
-
-  
-  
 }
-

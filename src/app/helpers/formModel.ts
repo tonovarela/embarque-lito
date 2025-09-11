@@ -65,6 +65,7 @@ export const createFormRetornoBuilder = (fb: FormBuilder) => {
     
     id_motivo: [0, MayorACeroValidator()],
     tipo:['', Validators.required],
+    fecha_rechazo: ['', Validators.required],
     ops: fb.array([], Validators.required),  
     cantidad:[0, MayorACeroValidator()],
     observaciones: [''],
@@ -99,6 +100,7 @@ const actualizarInputPorID = (id: string, valor: string) => {
 export const resetFormRetorno = (formRegistro: FormGroup) => {
   formRegistro.reset();
   formRegistro.setControl("ops", new FormArray([], Validators.required));
+  formRegistro.get("fecha_rechazo")!.setValue('');
   formRegistro.get("id_motivo")!.setValue('0');
   formRegistro.get("tipo")!.setValue('');
   formRegistro.get("cantidad")!.setValue(0);
