@@ -1,25 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, } from '@angular/forms';
 
+
+import { FormBuilder, FormGroup, ReactiveFormsModule, } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { initFlowbite } from 'flowbite';
-
 import { createFormRegistroExternoBuilder, createFormRegistroInternoBuilder, createFormRegistroProgramadorBuilder, resetFormRecorridoExterno, resetFormRecorridoInterno, resetFormRecorridoProgramado } from '@app/helpers/formModel';
 
-import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
-import { RegistroInternoComponent } from '@app/componentes/registro-interno/registro-interno.component';
-
-
 import { RecorridoService } from '@app/services/recorrido.service';
-
 import { Recorrido } from '@app/interface/models';
 import { UiService } from '@app/services/ui.service';
 import { formatDate, tieneErrorForm } from '@app/helpers/helpers';
 import { obtenerValorNumerico } from '@app/helpers/validators';
-import { RegistroProgramadoComponent } from '@app/componentes/registro-programado/registro-programado.component';
 
+import { RegistroProgramadoComponent } from '@app/componentes/registro-programado/registro-programado.component';
+import { RegistroExternoComponent } from '@app/componentes/registro-externo/registro-externo.component';
+import { RegistroInternoComponent } from '@app/componentes/registro-interno/registro-interno.component';
 
 
 
@@ -30,12 +27,11 @@ import { RegistroProgramadoComponent } from '@app/componentes/registro-programad
   templateUrl: './nueva.component.html',
   styleUrl: './nueva.component.css'
 })
-export default class NuevaComponent implements AfterViewInit {
-  ngAfterViewInit(): void {
-    initFlowbite();
-    this.changeDetectorRef.detectChanges();
 
-  }
+
+
+export default class NuevaComponent implements AfterViewInit {
+
 
 
   changeDetectorRef = inject(ChangeDetectorRef);
@@ -54,7 +50,10 @@ export default class NuevaComponent implements AfterViewInit {
   })
 
 
-
+  ngAfterViewInit(): void {
+    initFlowbite();
+    this.changeDetectorRef.detectChanges();
+  }
 
   public guardarRegistro() {
     if (this.guardandoRecorrido()) {
@@ -176,12 +175,10 @@ export default class NuevaComponent implements AfterViewInit {
 
   private async registrarRecorrido(recorrido: Recorrido) {
       if (recorrido.ayudante1 !="0" && recorrido.ayudante2 !="0" && recorrido.ayudante1==recorrido.ayudante2 ){
-
-        console.log("Ayudanted iguales")
-
+        this.uiService.mostrarAlertaError("Embarques","Los ayudantes no pueden ser iguales");
+        return;
       }
-      console.log(recorrido)
-      return;
+
 
     try {
       this.guardandoRecorrido.set(true);

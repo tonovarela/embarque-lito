@@ -48,8 +48,10 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
   diferenciaTiempo: DiferenciaTiempo = { horas: 0, minutos: 0, totalMinutos: 1 };
 
   transportes = computed(() => this.transporteService.transportes().internos);
-  choferes = computed(() => this.choferService.choferes().internos);
   ayudantes = computed(()=>this.choferService.choferes().ayudantes)
+  choferes = computed(() => this.choferService.choferes().internos);
+
+
   tipoServicios = computed(() => this.transporteService.transportes().tipoServicios);
 
 

@@ -4,36 +4,70 @@
 
         <form [formGroup]="formRegistro">
             <div class="w-full flex justify-end items-end space-x-2 mb-4">
-                <input 
-                    type="checkbox" 
-                    id="retorno" 
+                <input
+                    type="checkbox"
+                    id="retorno"
                     (change)="onChangeRetorno($event)"
-                    formControlName="retorno" 
+                    formControlName="retorno"
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800">
-                <label 
-                    for="retorno" 
+                <label
+                    for="retorno"
                     class="text-sm font-medium text-gray-900 dark:text-gray-300">
                     Retorno
                 </label>
             </div>
-            <div class="flex sm:flex-row flex-col  space-x-2">                
-                <div class="sm:w-1/2 w-full mt-1 space-y-2">                   
-                    <div class="grid  gap-1 ">  
+            <div class="flex sm:flex-row flex-col  space-x-2">
+                <div class="sm:w-1/2 w-full mt-1 space-y-2">
+                    <div class="grid  gap-1 ">
                         @if (estaHabilitado('ops')){
                             <app-autocomplete [hasError]="tieneError('ops')"
                             (onSelect)="onSelectOP($event)"></app-autocomplete>
-                        <div class="flex items-start justify-start flex-wrap gap-2 mt-2 w-full ">                            
+                        <div class="flex items-start justify-start flex-wrap gap-2 mt-2 w-full ">
                             @for (op of formRegistro.get('ops')!.value;track op){
                             <p-chip
                                 styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
                                 label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
                             }
-                        </div>    
-                        }                                                              
+                        </div>
+                        }
                     </div>
-                    <div class="space-y-4">                    
+                    <div class="space-y-4">
+
+
+
+          <div class="py-3 space-y-2">
+            <div class="w-full">
+              <select
+                id="ayudante1"
+                formControlName="ayudante1"
+                class="input"
+                aria-placeholder="Seleccione un ayudante"
+              >
+                <option value="0">SELECCIONE UN AYUDANTE</option>
+                 @for (ayudante of ayudantes();track ayudante.id){
+                <option value="{{ ayudante.id }}">{{ ayudante.nombre }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="w-full">
+              <select
+                id="ayudante2"
+                formControlName="ayudante2"
+                class="input"
+                aria-placeholder="Seleccione un ayudante"
+              >
+                <option value="0">SELECCIONE UN AYUDANTE</option>
+                 @for (ayudante of ayudantes();track ayudante.id){
+                <option value="{{ ayudante.id }}">{{ ayudante.nombre }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+
                     <div class="w-full">
-                        <select id="chofer" formControlName="chofer" 
+                        <select id="chofer" formControlName="chofer"
                             aria-placeholder="Seleccione un chofer"
                             [ngClass]="{'input-invalido': tieneError('chofer'), 'input ': !tieneError('chofer') }">
                             <option value='0'>SELECCIONE UN CHOFER</option>s
@@ -42,11 +76,9 @@
                             }
                         </select>
                     </div>
-                    
+
                     <div class="w-full">
-                        
-                        <select id="transporte" formControlName="transporte" 
-                        
+                        <select id="transporte" formControlName="transporte"
                             aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
                             [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
                             <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
@@ -57,7 +89,7 @@
                             }
                         </select>
                     </div>
-                    @if (estaHabilitado('tipo_servicio')){                    
+                    @if (estaHabilitado('tipo_servicio')){
                     <div class="w-full">
                         <select id="transporte" formControlName="tipo_servicio"
                             aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
@@ -69,11 +101,11 @@
                         </select>
                     </div>
                 }
-                
+
                 </div>
                     <!-- <div class="max-w-[32rem] ">
                          <label for="end-time"
-                            class="block  mb-2 text-sm font-medium text-gray-900 dark:text-white">Kilometraje</label> 
+                            class="block  mb-2 text-sm font-medium text-gray-900 dark:text-white">Kilometraje</label>
                          <div class="grid sm:grid-cols-2 grid-cols-1 gap-2">
                             <div class="relative flex items-center mb-2">
                                 <button type="button" [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
@@ -119,7 +151,7 @@
                                     <app-plus />
                                 </button>
                             </div>
-                        </div> 
+                        </div>
                         @if(formRegistro.errors && formRegistro.errors["kilometrajeInvalido"]){
                         <div
                             class="text-red-500 dark:bg-white  dark:text-pink-500  text-xs text-center rounded  p-1.5 w-full">
@@ -147,7 +179,7 @@
                                     class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                                     <app-time />
                                 </div>
-                                <input type="time"                                
+                                <input type="time"
                                  id="start-time" tabindex="2" formControlName="hora_salida"
                                     name="hora_salida"
                                     class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -184,11 +216,11 @@
                                     class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                                     <app-time />
                                 </div>
-                                <input  type="time"                                 
-                                        id="start-time" 
-                                        tabindex="2" 
-                                        formControlName="hora_regreso" 
-                                        name="hora_regreso"                                        
+                                <input  type="time"
+                                        id="start-time"
+                                        tabindex="2"
+                                        formControlName="hora_regreso"
+                                        name="hora_regreso"
                                     class="bg-gray-50  leading-none border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     value="00:00" required />
 
@@ -212,8 +244,8 @@
                     </div>
                     } -->
                 </div>
-            
-                <div class="sm:w-1/2 w-full space-y-4">                
+
+                <div class="sm:w-1/2 w-full space-y-4">
                     @if (estaHabilitado('remisiones')){
                         <div class="w-full">
                             <p-chips variant="filled"
@@ -226,7 +258,7 @@
                             </p-chips>
                         </div>
                     }
-                    @if (estaHabilitado('destino')){                    
+                    @if (estaHabilitado('destino')){
                     <div class="w-full">
                         <input name="destino" placeholder="Destino" formControlName="destino"
                             [ngClass]="{'input-invalido': tieneError('destino'), 'input ': !tieneError('destino') }" />
@@ -238,7 +270,7 @@
                             placeholder="Escribe tus observaciones aqui..."></textarea>
                     </div>
                 </div>
-            
+
             </div>
         </form>
     </div>
