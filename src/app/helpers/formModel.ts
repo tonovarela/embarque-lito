@@ -10,9 +10,9 @@ export const createFormRegistroInternoBuilder = (fb: FormBuilder) => {
   return fb.group({
     transporte: [0, MayorACeroValidator()],
     chofer: [0, MayorACeroValidator()],
+    ayudante1:[0],
+    ayudante2:[0],
     tipo_servicio: [0, MayorACeroValidator()],
-    //factura: ['N/A', Validators.required],
-    //importe_factura: [{ value: '0' }, [Validators.required, MayorACeroValidator()]],
     remisiones: fb.array([], Validators.required),
 
     id_previo: [null],
@@ -51,10 +51,12 @@ export const createFormRegistroProgramadorBuilder = (fb: FormBuilder) => {
     transporte: [0, MayorACeroValidator()],
     retorno:[false],
     chofer: [0, MayorACeroValidator()],
+    ayudante1:[0],
+    ayudante2:[0],
     tipo_servicio: [0, MayorACeroValidator()],
-    remisiones: fb.array([], Validators.required),  
+    remisiones: fb.array([], Validators.required),
     destino: [{ value: '' }, Validators.required],
-    ops: fb.array([''], Validators.required),  
+    ops: fb.array([''], Validators.required),
     observaciones: [''],
   }
 );
@@ -62,12 +64,12 @@ export const createFormRegistroProgramadorBuilder = (fb: FormBuilder) => {
 
 export const createFormRetornoBuilder = (fb: FormBuilder) => {
   return fb.group({
-    
+
     id_motivo: [0, MayorACeroValidator()],
     tipo:['', Validators.required],
     fecha_rechazo: ['', Validators.required],
     numero_documento: ['', ],
-    ops: fb.array([], Validators.required),  
+    ops: fb.array([], Validators.required),
     cantidad:[0, MayorACeroValidator()],
     observaciones: [''],
     adjuntos: fb.array([]),
@@ -118,7 +120,6 @@ export const resetFormCarga = (formRegistro: FormGroup) => {
   formRegistro.get("id_previo")!.setValue(null);
   formRegistro.get("kilometraje_inicial")!.setValue(0);
   formRegistro.get("kilometraje_final")!.setValue(0);
-
   formRegistro.get("kilometraje_inicial")!.disable();
   formRegistro.get("kilometraje_final")!.disable();
 
@@ -166,13 +167,15 @@ export const resetFormRecorridoExterno = (formRegistro: FormGroup) => {
 export const resetFormRecorridoProgramado = (formRegistro: FormGroup) => {
 
   formRegistro.reset();
-  
+
   formRegistro.get("transporte")!.setValue("0");
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get("observaciones")!.setValue('');
+  formRegistro.get("ayudante1")?.setValue(0);
+  formRegistro.get("ayudante2")?.setValue(0);
   formRegistro.setControl("remisiones", new FormArray([], Validators.required));
-  formRegistro.get("chofer")!.setValue("0");  
-  formRegistro.get("tipo_servicio")!.setValue(0);  
+  formRegistro.get("chofer")!.setValue("0");
+  formRegistro.get("tipo_servicio")!.setValue(0);
   formRegistro.get('destino')!.setValue('');
 
 }
@@ -186,7 +189,8 @@ export const resetFormRecorridoInterno = (formRegistro: FormGroup) => {
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get("id_previo")!.setValue(null);
   formRegistro.get("observaciones")!.setValue('');
-
+  formRegistro.get("ayudante1")?.setValue(0);
+  formRegistro.get("ayudante2")?.setValue(0);
   formRegistro.setControl("remisiones", new FormArray([], Validators.required));
   formRegistro.get("chofer")!.setValue("0");
   formRegistro.get("kilometraje_inicial")!.disable();

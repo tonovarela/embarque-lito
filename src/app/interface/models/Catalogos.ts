@@ -5,6 +5,13 @@ import { TipoServicio } from "./Recorrido";
 export interface Choferes {
     internos: Chofer[];
     externos: Chofer[];
+    ayudantes:Ayudante[]
+}
+
+
+export interface Ayudante{
+  id:string;
+  nombre:string
 }
 
 
@@ -18,7 +25,7 @@ export interface Transportes {
 export interface MotivoMantenimiento {
     id_motivo: number;
     descripcion: string;
-        
+
 }
 
 

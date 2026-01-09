@@ -1,214 +1,378 @@
-<div id="wrapper" class="flex justify-center  ">
-    <div
-        class="font-roboto  w-full lg:w-3/4 2xl:w-2/3   mx-1 mt-1 p-5  bg-white  space-y-1 border border-gray-400  rounded-md  dark:border-white dark:bg-gray-900/50">
-
-        <form [formGroup]="formRegistro">
-            <div class="flex sm:flex-row flex-col  space-x-2">
-                <div class="sm:w-1/2 w-full space-y-2">
-
-                    <div class="grid  gap-1 ">
-                        <app-autocomplete [hasError]="tieneError('ops')"
-                            (onSelect)="onSelectOP($event)"></app-autocomplete>
-                        <div class="flex items-start justify-start flex-wrap gap-2 mt-2 w-full ">
-                            @for (op of formRegistro.get('ops')!.value;track op){
-                            <p-chip
-                                styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
-                                label="{{op}}" (onRemove)="onRemoverOP(op)" [removable]="true"></p-chip>
-                            }
-                        </div>
-                    </div>
-                    <div class="w-full">
-                        <select id="chofer" formControlName="chofer" (change)="actualizarTransporte()"
-                            aria-placeholder="Seleccione un chofer"
-                            [ngClass]="{'input-invalido': tieneError('chofer'), 'input ': !tieneError('chofer') }">
-                            <option value='0'>SELECCIONE UN CHOFER</option>s
-                            @for (chofer of choferes();track chofer.id){
-                            <option value="{{chofer.id}}">{{chofer.nombre}}</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="w-full">
-                        <select id="transporte" formControlName="transporte" (change)="actualizarKilometrajeInicial()"
-                            aria-placeholder="Seleccione una unidad de transporte" class="capitalize"
-                            [ngClass]="{'input-invalido': tieneError('transporte'), 'input': !tieneError('transporte') }">
-                            <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
-                            @for (transporte of transportes();track transporte.id_transporte){
-                            <option value="{{transporte.id_transporte}}">                                                                    
-                                    <span
-                                        class="text-sm font-medium text-red-900 dark:text-white">{{transporte.descripcion}}- {{transporte.placas}}</span>                                
-                            </option>
-                            }
-                        </select>
-                    </div>
-                    <div class="w-full">
-                        <select id="transporte" formControlName="tipo_servicio"
-                            aria-placeholder="Seleccione un tipo de servicio" class="uppercase"
-                            [ngClass]="{'input-invalido': tieneError('tipo_servicio'), 'input': !tieneError('tipo_servicio') }">
-                            <option value="0">SELECCIONE UN TIPO DE SERVICIO</option>
-                            @for (tipo of tipoServicios();track tipo.id){
-                            <option value="{{tipo.id}}">{{tipo.descripcion}} </option>
-                            }
-                        </select>
-                    </div>
-                    <div class="max-w-[32rem] ">
-                        <label for="end-time"
-                            class="block  mb-2 text-sm font-medium text-gray-900 dark:text-white">Kilometraje</label>
-                        <div class="grid sm:grid-cols-2 grid-cols-1 gap-2">
-                            <div class="relative flex items-center mb-2">
-                                <button type="button" [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
-                                    (click)="incrementar(-1,'kilometraje_inicial')" id="decrement-button"
-                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
-                                    <app-minus />
-                                </button>
-                                <input type="text" formControlName="kilometraje_inicial"
-                                    (input)="onInputNumber($event,'kilometraje_inicial')"
-                                    (focus)="onFocusNumber($event,'kilometraje_inicial')"
-                                    class=" bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
-                                    placeholder="" required />
-                                <div
-                                    class="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse">
-                                    <app-gauge />
-                                    <span> Inicial</span>
-                                </div>
-                                <button type="button" [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
-                                    id="increment-button" (click)="incrementar(1,'kilometraje_inicial')"
-                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
-                                    <app-plus />
-                                </button>
-                            </div>
-                            <div class="relative flex items-center mb-2">
-                                <button type="button" [disabled]="formRegistro.get('kilometraje_final')!.disabled"
-                                    (click)="incrementar(-1,'kilometraje_final')" id="decrement-button"
-                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
-                                    <app-minus />
-                                </button>
-                                <input type="text" formControlName="kilometraje_final"
-                                    (input)="onInputNumber($event,'kilometraje_final')"
-                                    (focus)="onFocusNumber($event,'kilometraje_final')"
-                                    class="bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
-                                    placeholder="" required />
-                                <div
-                                    class="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse">
-                                    <app-gauge />
-                                    <span> Final</span>
-                                </div>
-                                <button type="button" [disabled]="formRegistro.get('kilometraje_final')!.disabled"
-                                    id="increment-button" (click)="incrementar(1,'kilometraje_final')"
-                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed">
-                                    <app-plus />
-                                </button>
-                            </div>
-                        </div>
-                        @if(formRegistro.errors && formRegistro.errors["kilometrajeInvalido"]){
-                        <div
-                            class="text-red-500 dark:bg-white  dark:text-pink-500  text-xs text-center rounded  p-1.5 w-full">
-                            {{formRegistro.errors["mensaje"]}}
-
-                        </div>
-                        }
-                    </div>
-                    <div class="max-w-[32rem]  space-y-2">
-                        <label for="start-time"
-                            class="block  text-xs font-medium text-gray-900 dark:text-white">Salida</label>
-                        <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
-                            <div class="relative ">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <app-calendar />
-                                </div>
-                                <input id="fecha_salida" (changeDate)="actualizarFecha($event,'fecha_salida')"
-                                    name="fecha_salida" datepicker datepicker-autohide datepicker-format="dd-mm-yyyy"
-                                    (keypress)="OnKeyPress($event)" type="text" tabindex="1"
-                                    class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  ps-10 p-2  text-center  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Fecha de salida" />
-                            </div>
-                            <div class="relative">
-                                <div
-                                    class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                    <app-time />
-                                </div>
-                                <input type="time" id="start-time" tabindex="2" formControlName="hora_salida"
-                                    name="hora_salida"
-                                    class="bg-gray-50   leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value="00:00" required />
-                            </div>
-                        </div>
-                        @if (formRegistro.errors && formRegistro.errors["fechaSalidaInvalida"] ){
-                        <div
-                            class="text-red-500 dark:bg-white dark:text-pink-500 text-xs flex  sm:flex-row flex-col  justify-between rounded  p-1.5 w-full">
-                            <p>Fecha mínima : {{fechaMinimaSalida | date:'dd-MM-yyyy hh:mm a'}} </p>
-                        </div>
-                        }
-
-                        <label for="end-time"
-                            class="block   text-sm font-medium text-gray-900 dark:text-white">Regreso</label>
-                        <div class="w-full grid  sm:grid-cols-2  grid-cols-1 gap-2 ">
-                            <div>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <app-calendar />
-                                    </div>
-                                    <input id="fecha_regreso" tabindex="3" datepicker datepicker-autohide
-                                        datepicker-format="dd-mm-yyyy" type="text" readonly name="fecha_regreso"
-                                        (keypress)="OnKeyPress($event)"
-                                        (changeDate)="actualizarFecha($event,'fecha_regreso')"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Fecha regreso">
-
-                                </div>
-                            </div>
-                            <div class="relative">
-
-                                <div
-                                    class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                    <app-time />
-                                </div>
-                                <input type="time" id="start-time" tabindex="2" formControlName="hora_regreso"
-                                    name="hora_regreso"
-                                    class="bg-gray-50  leading-none border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    value="00:00" required />
-
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="max-w-[24rem] mx-auto flex  items-center justify-around text-2xl text-gray-500 dark:text-white">
-                        @if(diferenciaTiempo.horas> 0){
-                        <div>{{diferenciaTiempo.horas}} hora{{diferenciaTiempo.horas>1?'s':''}}</div>
-                        }
-                        @if(diferenciaTiempo.minutos > 0){
-                        <div>{{diferenciaTiempo.minutos}} minuto{{diferenciaTiempo.minutos>1?'s':''}} </div>
-                        }
-                    </div>
-                    @if ( tieneError('hora_regreso') )
-                    {
-                    <div
-                        class="text-red-500 dark:text-pink-500  dark:bg-white text-xs text-center rounded  p-1.5 w-full">
-                        La diferencia entre la salida y el regreso debe de ser mayor a 1 minuto
-                    </div>
-                    }
-                </div>
-                <div class="sm:w-1/2 w-full space-y-4">
-                    <div class="w-full">
-                        <p-chips variant="filled"
-                            [styleClass]="tieneError('remisiones')?'chips-contenedor-invalido':'chips-contenedor-valido'"
-                            allowDuplicate="false" [ngModel]="remisionesArray.value"
-                            [ngModelOptions]="{standalone: true}" (onAdd)="onAddRemision($event)"
-                            (onRemove)="onRemoveRemision($event)" (onBlur)="onBlurRemision($event)" separator=","
-                            placeholder="Remisión Ejemplo: 4661 , 6691 , 444"
-                            [inputStyleClass]="tieneError('remisiones')?'chip-input-invalido':'chip-input'">
-                        </p-chips>
-                    </div>
-                    <div class="w-full">
-                        <input name="destino" placeholder="Destino" formControlName="destino"
-                            [ngClass]="{'input-invalido': tieneError('destino'), 'input ': !tieneError('destino') }" />
-                    </div>
-                    <div class="w-full">
-                        <textarea id="observaciones" rows="15" formControlName="observaciones"
-                            class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Escribe tus observaciones aqui..."></textarea>
-                    </div>
-                </div>
+<div id="wrapper" class="flex justify-center">
+  <div
+    class="font-roboto w-full lg:w-3/4 2xl:w-2/3 mx-1 mt-1 p-5 bg-white space-y-1 border border-gray-400 rounded-md dark:border-white dark:bg-gray-900/50"
+  >
+    <form [formGroup]="formRegistro">
+      <div class="flex sm:flex-row flex-col space-x-2">
+        <div class="sm:w-1/2 w-full space-y-2">
+          <div class="grid gap-1">
+            <app-autocomplete
+              [hasError]="tieneError('ops')"
+              (onSelect)="onSelectOP($event)"
+            ></app-autocomplete>
+            <div
+              class="flex items-start justify-start flex-wrap gap-2 mt-2 w-full"
+            >
+              @for (op of formRegistro.get('ops')!.value;track op){
+              <p-chip
+                styleClass="bg-blue-100  text-blue-500 text-xs border px-2 font-roboto border-blue-700 dark:bg-gray-700 dark:text-white"
+                label="{{ op }}"
+                (onRemove)="onRemoverOP(op)"
+                [removable]="true"
+              ></p-chip>
+              }
             </div>
-        </form>
-    </div>
+          </div>
+          <div class="w-full">
+            <select
+              id="chofer"
+              formControlName="chofer"
+              (change)="actualizarTransporte()"
+              aria-placeholder="Seleccione un chofer"
+              [ngClass]="{
+                'input-invalido': tieneError('chofer'),
+                'input ': !tieneError('chofer')
+              }"
+            >
+              <option value="0">SELECCIONE UN CHOFER</option>
+              s @for (chofer of choferes();track chofer.id){
+              <option value="{{ chofer.id }}">{{ chofer.nombre }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="py-3 space-y-2">
+            <div class="w-full">
+              <select
+                id="ayudante1"
+                formControlName="ayudante1"
+                class="input"
+                aria-placeholder="Seleccione un ayudante"
+              >
+                <option value="0">SELECCIONE UN AYUDANTE</option>
+                s @for (ayudante of ayudantes();track ayudante.id){
+                <option value="{{ ayudante.id }}">{{ ayudante.nombre }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="w-full">
+              <select
+                id="ayudante2"
+                formControlName="ayudante2"
+                class="input"
+                aria-placeholder="Seleccione un ayudante"
+              >
+                <option value="0">SELECCIONE UN AYUDANTE</option>
+                s @for (ayudante of ayudantes();track ayudante.id){
+                <option value="{{ ayudante.id }}">{{ ayudante.nombre }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="w-full">
+            <select
+              id="transporte"
+              formControlName="transporte"
+              (change)="actualizarKilometrajeInicial()"
+              aria-placeholder="Seleccione una unidad de transporte"
+              class="capitalize"
+              [ngClass]="{
+                'input-invalido': tieneError('transporte'),
+                input: !tieneError('transporte')
+              }"
+            >
+              <option value="0">SELECCIONE UNA UNIDAD DE TRANSPORTE</option>
+              @for (transporte of transportes();track transporte.id_transporte){
+              <option value="{{ transporte.id_transporte }}">
+                <span class="text-sm font-medium text-red-900 dark:text-white"
+                  >{{ transporte.descripcion }}- {{ transporte.placas }}</span
+                >
+              </option>
+              }
+            </select>
+          </div>
+          <div class="w-full">
+            <select
+              id="transporte"
+              formControlName="tipo_servicio"
+              aria-placeholder="Seleccione un tipo de servicio"
+              class="uppercase"
+              [ngClass]="{
+                'input-invalido': tieneError('tipo_servicio'),
+                input: !tieneError('tipo_servicio')
+              }"
+            >
+              <option value="0">SELECCIONE UN TIPO DE SERVICIO</option>
+              @for (tipo of tipoServicios();track tipo.id){
+              <option value="{{ tipo.id }}">{{ tipo.descripcion }}</option>
+              }
+            </select>
+          </div>
+          <div class="max-w-[32rem]">
+            <label
+              for="end-time"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Kilometraje</label
+            >
+            <div class="grid sm:grid-cols-2 grid-cols-1 gap-2">
+              <div class="relative flex items-center mb-2">
+                <button
+                  type="button"
+                  [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
+                  (click)="incrementar(-1, 'kilometraje_inicial')"
+                  id="decrement-button"
+                  class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed"
+                >
+                  <app-minus />
+                </button>
+                <input
+                  type="text"
+                  formControlName="kilometraje_inicial"
+                  (input)="onInputNumber($event, 'kilometraje_inicial')"
+                  (focus)="onFocusNumber($event, 'kilometraje_inicial')"
+                  class="bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
+                  placeholder=""
+                  required
+                />
+                <div
+                  class="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse"
+                >
+                  <app-gauge />
+                  <span> Inicial</span>
+                </div>
+                <button
+                  type="button"
+                  [disabled]="formRegistro.get('kilometraje_inicial')!.disabled"
+                  id="increment-button"
+                  (click)="incrementar(1, 'kilometraje_inicial')"
+                  class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed"
+                >
+                  <app-plus />
+                </button>
+              </div>
+              <div class="relative flex items-center mb-2">
+                <button
+                  type="button"
+                  [disabled]="formRegistro.get('kilometraje_final')!.disabled"
+                  (click)="incrementar(-1, 'kilometraje_final')"
+                  id="decrement-button"
+                  class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed"
+                >
+                  <app-minus />
+                </button>
+                <input
+                  type="text"
+                  formControlName="kilometraje_final"
+                  (input)="onInputNumber($event, 'kilometraje_final')"
+                  (focus)="onFocusNumber($event, 'kilometraje_final')"
+                  class="bg-gray-50 border-x-0 border-gray-300 h-10 font-medium text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed disabled:bg-gray-200"
+                  placeholder=""
+                  required
+                />
+                <div
+                  class="absolute bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-xs text-gray-400 space-x-1 rtl:space-x-reverse"
+                >
+                  <app-gauge />
+                  <span> Final</span>
+                </div>
+                <button
+                  type="button"
+                  [disabled]="formRegistro.get('kilometraje_final')!.disabled"
+                  id="increment-button"
+                  (click)="incrementar(1, 'kilometraje_final')"
+                  class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-10 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none disabled:cursor-not-allowed"
+                >
+                  <app-plus />
+                </button>
+              </div>
+            </div>
+            @if(formRegistro.errors &&
+            formRegistro.errors["kilometrajeInvalido"]){
+            <div
+              class="text-red-500 dark:bg-white dark:text-pink-500 text-xs text-center rounded p-1.5 w-full"
+            >
+              {{ formRegistro.errors["mensaje"] }}
+            </div>
+            }
+          </div>
+          <div class="max-w-[32rem] space-y-2">
+            <label
+              for="start-time"
+              class="block text-xs font-medium text-gray-900 dark:text-white"
+              >Salida</label
+            >
+            <div class="w-full grid sm:grid-cols-2 grid-cols-1 gap-2">
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                >
+                  <app-calendar />
+                </div>
+                <input
+                  id="fecha_salida"
+                  (changeDate)="actualizarFecha($event, 'fecha_salida')"
+                  name="fecha_salida"
+                  datepicker
+                  datepicker-autohide
+                  datepicker-format="dd-mm-yyyy"
+                  (keypress)="OnKeyPress($event)"
+                  type="text"
+                  tabindex="1"
+                  class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Fecha de salida"
+                />
+              </div>
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none"
+                >
+                  <app-time />
+                </div>
+                <input
+                  type="time"
+                  id="start-time"
+                  tabindex="2"
+                  formControlName="hora_salida"
+                  name="hora_salida"
+                  class="bg-gray-50 leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-center dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value="00:00"
+                  required
+                />
+              </div>
+            </div>
+            @if (formRegistro.errors &&
+            formRegistro.errors["fechaSalidaInvalida"] ){
+            <div
+              class="text-red-500 dark:bg-white dark:text-pink-500 text-xs flex sm:flex-row flex-col justify-between rounded p-1.5 w-full"
+            >
+              <p>
+                Fecha mínima :
+                {{ fechaMinimaSalida | date : "dd-MM-yyyy hh:mm a" }}
+              </p>
+            </div>
+            }
+
+            <label
+              for="end-time"
+              class="block text-sm font-medium text-gray-900 dark:text-white"
+              >Regreso</label
+            >
+            <div class="w-full grid sm:grid-cols-2 grid-cols-1 gap-2">
+              <div>
+                <div class="relative">
+                  <div
+                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                  >
+                    <app-calendar />
+                  </div>
+                  <input
+                    id="fecha_regreso"
+                    tabindex="3"
+                    datepicker
+                    datepicker-autohide
+                    datepicker-format="dd-mm-yyyy"
+                    type="text"
+                    readonly
+                    name="fecha_regreso"
+                    (keypress)="OnKeyPress($event)"
+                    (changeDate)="actualizarFecha($event, 'fecha_regreso')"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm text-center rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Fecha regreso"
+                  />
+                </div>
+              </div>
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none"
+                >
+                  <app-time />
+                </div>
+                <input
+                  type="time"
+                  id="start-time"
+                  tabindex="2"
+                  formControlName="hora_regreso"
+                  name="hora_regreso"
+                  class="bg-gray-50 leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full text-center p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value="00:00"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="max-w-[24rem] mx-auto flex items-center justify-around text-2xl text-gray-500 dark:text-white"
+          >
+            @if(diferenciaTiempo.horas> 0){
+            <div>
+              {{ diferenciaTiempo.horas }} hora{{
+                diferenciaTiempo.horas > 1 ? "s" : ""
+              }}
+            </div>
+            } @if(diferenciaTiempo.minutos > 0){
+            <div>
+              {{ diferenciaTiempo.minutos }} minuto{{
+                diferenciaTiempo.minutos > 1 ? "s" : ""
+              }}
+            </div>
+            }
+          </div>
+          @if ( tieneError('hora_regreso') ) {
+          <div
+            class="text-red-500 dark:text-pink-500 dark:bg-white text-xs text-center rounded p-1.5 w-full"
+          >
+            La diferencia entre la salida y el regreso debe de ser mayor a 1
+            minuto
+          </div>
+          }
+        </div>
+        <div class="sm:w-1/2 w-full space-y-4">
+          <div class="w-full">
+            <p-chips
+              variant="filled"
+              [styleClass]="
+                tieneError('remisiones')
+                  ? 'chips-contenedor-invalido'
+                  : 'chips-contenedor-valido'
+              "
+              allowDuplicate="false"
+              [ngModel]="remisionesArray.value"
+              [ngModelOptions]="{ standalone: true }"
+              (onAdd)="onAddRemision($event)"
+              (onRemove)="onRemoveRemision($event)"
+              (onBlur)="onBlurRemision($event)"
+              separator=","
+              placeholder="Remisión Ejemplo: 4661 , 6691 , 444"
+              [inputStyleClass]="
+                tieneError('remisiones') ? 'chip-input-invalido' : 'chip-input'
+              "
+            >
+            </p-chips>
+          </div>
+          <div class="w-full">
+            <input
+              name="destino"
+              placeholder="Destino"
+              formControlName="destino"
+              [ngClass]="{
+                'input-invalido': tieneError('destino'),
+                'input ': !tieneError('destino')
+              }"
+            />
+          </div>
+          <div class="w-full">
+            <textarea
+              id="observaciones"
+              rows="15"
+              formControlName="observaciones"
+              class="block dark:placeholder:text-white p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Escribe tus observaciones aqui..."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

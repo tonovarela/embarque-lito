@@ -49,6 +49,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
   transportes = computed(() => this.transporteService.transportes().internos);
   choferes = computed(() => this.choferService.choferes().internos);
+  ayudantes = computed(()=>this.choferService.choferes().ayudantes)
   tipoServicios = computed(() => this.transporteService.transportes().tipoServicios);
 
 
@@ -174,7 +175,7 @@ export class RegistroInternoComponent implements OnInit, AfterViewInit {
 
 
 
- 
+
 
 
 

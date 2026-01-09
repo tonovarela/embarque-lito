@@ -1,9 +1,10 @@
-export interface Recorrido {    
+export interface Recorrido {
 id_recorrido?: number;
 id_chofer:number;
 id_transporte: number;
-tipo: 'interno'| 'externo' 
-
+tipo: 'interno'| 'externo'
+ayudante1?:string;
+ayudante2?:string;
 kilometraje_inicial?: number;
 kilometraje_final?: number;
 fecha_salida?: Date | string;
@@ -11,9 +12,9 @@ fecha_regreso?: Date | string;
 observaciones?: string;
 id_tipo_servicio?:number;
 destino:string;
-nombre_chofer?: string;    
+nombre_chofer?: string;
 descripcion_tipo_servicio?:string;
-descripcion_transporte?: string; 
+descripcion_transporte?: string;
 fecha_registro?:Date;
 ops?:string[];
 factura?:string;

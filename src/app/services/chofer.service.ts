@@ -13,27 +13,29 @@ import { firstValueFrom, tap } from 'rxjs';
 export class ChoferService {
 
   public nowServer= signal<Date| null>(null);
-  
-  choferes = signal<Choferes>({ internos: [], externos: [] });
+
+  choferes = signal<Choferes>({ internos: [], externos: [],ayudantes:[] });
+
   readonly API_URL = environment.API_URL;
   http = inject(HttpClient);
   constructor() { }
 
   async cargar() {
-    const resp = await firstValueFrom(this.http.get<Choferes>(`${this.API_URL}/api/chofer`));    
+    const resp = await firstValueFrom(this.http.get<Choferes>(`${this.API_URL}/api/chofer`));
     this.choferes.set(resp);
+
   }
 
 
   async estaEnCurso(id_chofer: string) {
     const resp = await firstValueFrom(this.http.get<ResponseRecorridoActivo>(`${this.API_URL}/api/chofer/recorrido/${id_chofer}`).pipe(
-      tap((resp) => {        
-        this.nowServer.set(new Date(resp.horaActual!));        
+      tap((resp) => {
+        this.nowServer.set(new Date(resp.horaActual!));
       })
     ));
     return resp;
   }
 
-  
+
 
 }

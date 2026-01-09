@@ -34,7 +34,7 @@ export default class NuevaComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     initFlowbite();
     this.changeDetectorRef.detectChanges();
-    
+
   }
 
 
@@ -43,7 +43,7 @@ export default class NuevaComponent implements AfterViewInit {
   uiService = inject(UiService);
   fb = inject(FormBuilder);
   router = inject(Router);
-  
+
   guardandoRecorrido = signal<boolean>(false);
   registro = signal<'interno' | 'externo' | 'programado'>('interno');
 
@@ -53,7 +53,7 @@ export default class NuevaComponent implements AfterViewInit {
     registroProgramado: createFormRegistroProgramadorBuilder(this.fb)
   })
 
-  
+
 
 
   public guardarRegistro() {
@@ -74,7 +74,7 @@ export default class NuevaComponent implements AfterViewInit {
         console.log('No se reconoce el tipo de registro');
         break;
     }
-    
+
   }
 
   public regresar() {
@@ -119,13 +119,16 @@ export default class NuevaComponent implements AfterViewInit {
     if (registroInterno.invalid) {
       return;
     }
-    const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo, remisiones } = registroInterno.getRawValue();
+
+    const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo, remisiones,ayudante1,ayudante2 } = registroInterno.getRawValue();
     const registro: Recorrido = {
       ops,
       observaciones,
       destino,
       remisiones,
       factura: "N/A",
+      ayudante1:ayudante1==0?null:ayudante1,
+      ayudante2:ayudante2==0?null:ayudante2,
       importe_factura: 0,
       id_previo: id_previo ?? null,
       id_tipo_servicio: tipo_servicio,
@@ -144,32 +147,41 @@ export default class NuevaComponent implements AfterViewInit {
     const formRegistro = this.formRegistro.get("registroProgramado")!;
     this.formRegistro.get("registroProgramado")!.markAllAsTouched();
     this.formRegistro.get("registroProgramado")!.updateValueAndValidity();
-    
+
     if (formRegistro.invalid) {
       return;
     }
-  
+
     this.guardandoRecorrido.set(true);
-    const {retorno,  ops, transporte, tipo_servicio, chofer,  destino,  observaciones, id_previo, remisiones } = formRegistro.getRawValue();
+    const {retorno,  ops, transporte, tipo_servicio, chofer,  destino,  observaciones, id_previo, remisiones, ayudante1, ayudante2 } = formRegistro.getRawValue();
 
     const registro: Recorrido = {
       ops:retorno?["Retorno"]:ops,
       observaciones,
+      ayudante1:ayudante1==0?null:ayudante1,
+      ayudante2:ayudante2==0?null:ayudante2,
       destino:retorno?"Retorno Litoprocess":destino,
       remisiones:retorno?["N/A"]:remisiones,
       factura: "N/A",
       importe_factura: 0,
       id_previo: id_previo ?? null,
-      id_tipo_servicio: retorno?"16":tipo_servicio,    
+      id_tipo_servicio: retorno?"16":tipo_servicio,
       id_transporte: +transporte,
-      id_chofer: +chofer,    
+      id_chofer: +chofer,
       tipo: 'interno'
-    };    
-    await this.registrarRecorrido(registro);      
+    };
+    await this.registrarRecorrido(registro);
     this.guardandoRecorrido.set(false);
   }
 
   private async registrarRecorrido(recorrido: Recorrido) {
+      if (recorrido.ayudante1 !="0" && recorrido.ayudante2 !="0" && recorrido.ayudante1==recorrido.ayudante2 ){
+
+        console.log("Ayudanted iguales")
+
+      }
+      console.log(recorrido)
+      return;
 
     try {
       this.guardandoRecorrido.set(true);
@@ -197,7 +209,7 @@ export default class NuevaComponent implements AfterViewInit {
         resetFormRecorridoExterno(this.formRegistro.get('registroExterno') as FormGroup);
         break;
       case 'programado':
-        
+
         resetFormRecorridoProgramado(this.formRegistro.get('registroProgramado') as FormGroup);
         break;
       default:
