@@ -146,6 +146,8 @@ export const resetFormRecorridoExterno = (formRegistro: FormGroup) => {
   formRegistro.setControl("ops", new FormArray([], Validators.required));
   formRegistro.get('destino')!.setValue('');
   formRegistro.get("id_previo")!.setValue(null);
+  formRegistro.get("ayudante1")?.setValue(0);
+  formRegistro.get("ayudante2")?.setValue(0);
   formRegistro.get("observaciones")!.setValue('');
   formRegistro.get("importe_factura")!.setValue(0);
   formRegistro.get("factura")!.setValue('');

@@ -3,8 +3,8 @@ id_recorrido?: number;
 id_chofer:number;
 id_transporte: number;
 tipo: 'interno'| 'externo'
-ayudante1?:string;
-ayudante2?:string;
+ayudante1?:number;
+ayudante2?:number;
 kilometraje_inicial?: number;
 kilometraje_final?: number;
 fecha_salida?: Date | string;

@@ -88,6 +88,7 @@ export default class NuevaComponent implements AfterViewInit {
     this.formRegistro.get("registroExterno")!.markAllAsTouched();
     this.formRegistro.get("registroExterno")!.updateValueAndValidity();
     const registroExterno = this.formRegistro.get("registroExterno")!;
+
     if (registroExterno.invalid) {
       return;
     }
@@ -99,6 +100,8 @@ export default class NuevaComponent implements AfterViewInit {
       ops,
       factura,
       remisiones,
+      ayudante1:0,
+      ayudante2:0,
       importe_factura: obtenerValorNumerico(importe_factura),
       id_tipo_servicio: tipo_servicio,
       tipo: 'externo',
@@ -114,10 +117,9 @@ export default class NuevaComponent implements AfterViewInit {
   private async guardarRecorridoInterno() {
     this.formRegistro.get("registroInterno")!.markAllAsTouched();
     this.formRegistro.get("registroInterno")!.updateValueAndValidity();
+
     const registroInterno = this.formRegistro.get("registroInterno")!;
-    if (registroInterno.invalid) {
-      return;
-    }
+    if (registroInterno.invalid) { return;}
 
     const { fecha_salida, hora_salida, fecha_regreso, hora_regreso, ops, transporte, tipo_servicio, chofer, kilometraje_final, destino, kilometraje_inicial, observaciones, id_previo, remisiones,ayudante1,ayudante2 } = registroInterno.getRawValue();
     const registro: Recorrido = {
@@ -126,8 +128,8 @@ export default class NuevaComponent implements AfterViewInit {
       destino,
       remisiones,
       factura: "N/A",
-      ayudante1:ayudante1==0?null:ayudante1,
-      ayudante2:ayudante2==0?null:ayudante2,
+      ayudante1:+ayudante1,
+      ayudante2:+ayudante2,
       importe_factura: 0,
       id_previo: id_previo ?? null,
       id_tipo_servicio: tipo_servicio,
@@ -157,8 +159,8 @@ export default class NuevaComponent implements AfterViewInit {
     const registro: Recorrido = {
       ops:retorno?["Retorno"]:ops,
       observaciones,
-      ayudante1:ayudante1==0?null:ayudante1,
-      ayudante2:ayudante2==0?null:ayudante2,
+      ayudante1:+ayudante1,
+      ayudante2:+ayudante2,
       destino:retorno?"Retorno Litoprocess":destino,
       remisiones:retorno?["N/A"]:remisiones,
       factura: "N/A",
@@ -174,10 +176,17 @@ export default class NuevaComponent implements AfterViewInit {
   }
 
   private async registrarRecorrido(recorrido: Recorrido) {
-      if (recorrido.ayudante1 !="0" && recorrido.ayudante2 !="0" && recorrido.ayudante1==recorrido.ayudante2 ){
+
+
+
+      if ( recorrido.tipo=="interno" &&
+           recorrido.ayudante1 !=0 &&
+           recorrido.ayudante2 !=0 &&
+          (recorrido.ayudante1==recorrido.ayudante2)  ){
         this.uiService.mostrarAlertaError("Embarques","Los ayudantes no pueden ser iguales");
         return;
       }
+
 
 
     try {
@@ -206,7 +215,6 @@ export default class NuevaComponent implements AfterViewInit {
         resetFormRecorridoExterno(this.formRegistro.get('registroExterno') as FormGroup);
         break;
       case 'programado':
-
         resetFormRecorridoProgramado(this.formRegistro.get('registroProgramado') as FormGroup);
         break;
       default:
