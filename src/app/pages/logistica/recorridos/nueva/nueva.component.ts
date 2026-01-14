@@ -177,8 +177,6 @@ export default class NuevaComponent implements AfterViewInit {
 
   private async registrarRecorrido(recorrido: Recorrido) {
 
-
-
       if ( recorrido.tipo=="interno" &&
            recorrido.ayudante1 !=0 &&
            recorrido.ayudante2 !=0 &&
@@ -186,8 +184,6 @@ export default class NuevaComponent implements AfterViewInit {
         this.uiService.mostrarAlertaError("Embarques","Los ayudantes no pueden ser iguales");
         return;
       }
-
-
 
     try {
       this.guardandoRecorrido.set(true);
