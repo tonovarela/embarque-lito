@@ -48,7 +48,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   ubicacionesRecorrido: ubicacionRecorrido = {inicial:null, final:null};
 
   public cargando = signal<boolean>(false);
-  public cargandoUbicaciones = signal<boolean>(false);  
+  public cargandoUbicaciones = signal<boolean>(false);
   public firma:Firma | null = null;
 
   public visibleEditarInfo = signal<boolean>(false);
@@ -63,7 +63,7 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
 
   public titulo = signal<string>("");
 
-  
+
 
 
   detalleRecorridoVisible: boolean = false;
@@ -76,19 +76,19 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
    toogleRecorridosPendientes() {
     // if (this.cargando()){
     //   return;
-    // }        
-    // this._mostrarRecorridosPendientes.set(!this._mostrarRecorridosPendientes());        
+    // }
+    // this._mostrarRecorridosPendientes.set(!this._mostrarRecorridosPendientes());
     // this.cargarInformacion();
   }
 
   cargarInformacion() {
     this.cargando.set(true);
     const pendientes = this.mostrarRecorridosPendientes();
-    this.recorridoService.listar(pendientes).subscribe(({ recorridos }) => {    
-      const _recorridos = recorridos.map((recorrido) => {        
+    this.recorridoService.listar(pendientes).subscribe(({ recorridos }) => {
+      const _recorridos = recorridos.map((recorrido) => {
         const color = obtenerColorTransporte(recorrido.id_transporte);
         return { ...recorrido, color_transporte: color };
-      });      
+      });
       this._recorridos.set(_recorridos);
       this.cargando.set(false);
     });
@@ -96,21 +96,21 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
 
   ngOnInit(): void {
     this.autoFitColumns = false;
-    this.iniciarResizeGrid(this.minusHeight);    
-    this.route.data.subscribe((data:any)=> {      
+    this.iniciarResizeGrid(this.minusHeight);
+    this.route.data.subscribe((data:any)=> {
       const pendientes =data.type=='solicitudes';
       this.titulo.set(pendientes ? "Solicitudes" : "Recorridos");
       this._mostrarRecorridosPendientes.set(pendientes);
-      this.cargarInformacion();        
+      this.cargarInformacion();
     })
   }
-  
-  
+
+
   constructor() {
     super();
   }
 
-  
+
 
   showEditDialog(recorrido: Recorrido) {
     this.recorridoActivo = recorrido;
@@ -219,12 +219,12 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
     try {
       this.cargandoUbicaciones.set(true);
       this.visibleUbicaciones.set(true);
-      const { ubicaciones,firma } = await firstValueFrom(this.recorridoService.obtenerUbicacion(id_recorrido!));      
+      const { ubicaciones,firma } = await firstValueFrom(this.recorridoService.obtenerUbicacion(id_recorrido!));
       this.firma = firma || null;
       const inicial = ubicaciones.find((u) => u.type === "Inicio");
-      const final = ubicaciones.find((u) => u.type === "Fin");      
+      const final = ubicaciones.find((u) => u.type === "Fin");
       this.ubicacionesRecorrido.inicial = inicial ? getMapboxImageUrl(inicial.longitude,inicial.latitude,): null;
-      this.ubicacionesRecorrido.final = final ? getMapboxImageUrl(final.longitude,final.latitude): null;      
+      this.ubicacionesRecorrido.final = final ? getMapboxImageUrl(final.longitude,final.latitude): null;
     } catch (_) {
       this.uiService.mostrarAlertaError("Recorridos", "Error al obtener las ubicaciones");
     }
@@ -234,13 +234,13 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
   }
 
 
-  irUbicacionGooleMaps(ubicacion: string) {    
+  irUbicacionGooleMaps(ubicacion: string) {
     try {
       // Extraer las coordenadas de la URL
       const coordenadas = ubicacion.split("/").slice(-2)[0].split(",");
       const latitude = parseFloat(coordenadas[1]);
       const longitude = parseFloat(coordenadas[0]);
-  
+
       // Validar que las coordenadas sean números válidos
       if (!isNaN(latitude) && !isNaN(longitude)) {
         const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
@@ -252,10 +252,14 @@ export default class ListadoComponent extends BaseGridComponent implements OnIni
       this.uiService.mostrarAlertaError("Error", "No se pudieron obtener las coordenadas correctamente");
     }
   }
-  
+
 
   mostrarDetalleRecorrido(recorrido: any) {
     this.recorridoSeleccionado = recorrido;
+    const {nombreAyudante1, nombreAyudante2 } = this.recorridoSeleccionado ;
+    const ayudantes = [nombreAyudante1,nombreAyudante2].filter((a:any)=>a!=null);
+    this.recorridoSeleccionado.ayudantes = ayudantes.join(",");
+
     this.recorridoSeleccionado.fotoChofer= `${!environment.production?'https://servicios.litoprocess.com':''}/colaboradores/api/foto/${recorrido.personalChofer==0?'XXX':recorrido.personalChofer}`;
     this.detalleRecorridoVisible = true;
   }
